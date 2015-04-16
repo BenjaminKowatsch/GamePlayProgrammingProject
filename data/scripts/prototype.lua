@@ -10,12 +10,10 @@ do
 end
 
 PhysicsSystem:setDebugDrawingEnabled(true)
-boxSpeed = 400
-yAngle = 0
-xAngle = 0
-function boxUpdate(guid,deltaTime)
+ballSpeed = 200
+function ballUpdate(guid,deltaTime)
 	DebugRenderer:printText(Vec2(-0.2,0.5),"guid "..guid)
-	--[[
+	
 	local vel = Vec3(0,0,0)
 	if(InputHandler:isPressed(Key.Up)) then
 		vel.y = vel.y + boxSpeed * deltaTime
@@ -36,41 +34,17 @@ function boxUpdate(guid,deltaTime)
 	if(InputHandler:isPressed(Key.S)) then
 		vel.z = vel.z+ boxSpeed * deltaTime
 	end
-	]]--
-	if(InputHandler:isPressed(Key.Right)) then
-		box:setRotation(QuaternionFromEuler(0,yAngle,0))
-		yAngle = yAngle + 60*deltaTime
-	end
-	if(InputHandler:isPressed(Key.Left)) then
-		box:setRotation(QuaternionFromEuler(0,yAngle,0))
-		yAngle = yAngle - 60*deltaTime
-	end
-	if(InputHandler:isPressed(Key.Down)) then
-		box:setRotation(QuaternionFromEuler(xAngle,0,0))
-		xAngle = xAngle + 60*deltaTime
-	end
-	if(InputHandler:isPressed(Key.Up)) then
-		box:setRotation(QuaternionFromEuler(xAngle,0,0))
-		xAngle = xAngle - 60*deltaTime
-	end
 	
-	cam.cc:setPosition(ball:getWorldPosition():add(Vec3(0,-10,5)))
-	cam.cc:setViewTarget(ball)
+	cam.cc:lookAt(ball.rb:getPosition())
 	
-	--box.rb:setLinearVelocity(vel)
-end
-
-function QuaternionFromEuler(xAngle, yAngle, zAngle)
-    return Quaternion(Vec3(1.0, 0.0, 0.0), xAngle) -- Rotation about the X axis
-         * Quaternion(Vec3(0.0, 1.0, 0.0), yAngle) -- Rotation about the Y axis
-         * Quaternion(Vec3(0.0, 0.0, 1.0), zAngle) -- Rotation about the Z axis
+	box.rb:setLinearVelocity(vel)
 end
 
 box = GameObjectManager:createGameObject("box")
 box.pc = box:createPhysicsComponent()
 cinfo = RigidBodyCInfo()
-cinfo.shape = PhysicsFactory:createBox(Vec3(8,8,0.1))
-cinfo.motionType = MotionType.Keyframed
+cinfo.shape = PhysicsFactory:createBox(Vec3(20,20,0.01))
+cinfo.motionType = MotionType.fixed
 cinfo.restitution = 0.95
 cinfo.position = Vec3(0,0,-4)
 box.rb = box.pc:createRigidBody(cinfo)
@@ -82,8 +56,8 @@ ball.pc = ball:createPhysicsComponent()
 cinfo = RigidBodyCInfo()
 cinfo.shape = PhysicsFactory:createSphere(0.5)
 cinfo.motionType = MotionType.Dynamic
-cinfo.mass = 100.0
-cinfo.restitution = 0.5
+cinfo.mass = 1.0
+cinfo.restitution = 1.0
 cinfo.position = Vec3(0,0,-1)
 cinfo.maxLinearVelocity = 10
 ball.rb = ball.pc:createRigidBody(cinfo)
@@ -95,7 +69,7 @@ function update(deltaTime)
 	end
 end
 
---Events.Update:registerListener(update)
+Events.Update:registerListener(update)
 
 cam = GameObjectManager:createGameObject("cam")
 cam.cc= cam:createCameraComponent()
