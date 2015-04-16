@@ -1,6 +1,6 @@
 
 logMessage("=== Executing initialize.lua ================")
 
-include("pong/main.lua")
+include("GPP_04_Skeleton.lua")
 
 logMessage("=== Finished initialize.lua =================")
