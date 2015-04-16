@@ -1,0 +1,86 @@
+---
+# We base our custom style off of the LLVM style.
+#BasedOnStyle: LLVM
+
+---
+# The following rules are for C++.
+Language: Cpp
+
+# Set to `true` to disable formatting.
+DisableFormat: false
+
+# Number of whitespace to use for indentation.
+IndentWidth: 4
+
+# The number of whitespace for `public:` etc. to be indented with.
+AccessModifierOffset: -4
+
+# How many characters to have on a single line at max. 0 means unlimited.
+ColumnLimit: 0
+
+# If `true`, would deduce on which side a pointer would be based on the rest of the file.
+DerivePointerAlignment: false
+
+# When the pointer should go: "auto* pPtr = get();" vs "auto *pPtr = get();".
+PointerAlignment: Left
+
+# When `false`, all arguments/parameters will either be on the same line,
+# or each gets on their own line.
+BinPackArguments:  false
+BinPackParameters: false
+
+# Always add a line-break before a brace `{`.
+BreakBeforeBraces: Allman
+
+# Whether if-statements are allowed to be on a single line.
+AllowShortIfStatementsOnASingleLine: true
+
+# Number of empty lines to keep.
+MaxEmptyLinesToKeep: 2
+
+# Whether to indent namespace content. Can be `None`, `Inner`, `All`
+NamespaceIndentation: All
+
+# Whether to add a space after a C-style cast: "(int*) pFloat" vs "(int*)pFloat".
+SpaceAfterCStyleCast: false
+
+# Defines in which cases to put a space before opening parentheses.
+# Values: 
+#   - Never:             Never put a space before opening parentheses.
+#   - ControlStatements: Put a space before opening parentheses
+#                        only after control statement keywords
+#                        (for/if/while...).
+#   - Always:            Always put a space before opening parentheses,
+#                        except when it’s prohibited by the syntax rules
+#                        (in function-like macro definitions) or when
+#                        determined by other style rules
+#                        (after unary operators, opening parentheses, etc.)
+SpaceBeforeParens: ControlStatements
+
+# "( )" vs "()"
+SpaceInEmptyParentheses: false
+
+# Number of spaces before a trailing // comment.
+SpacesBeforeTrailingComments: 1
+
+# "template< typename T >" vs "template<typename T>"
+SpacesInAngles: false
+
+# "( int* )pFloat" vs "(int*)pFloat"
+SpacesInCStyleCastParentheses: false
+
+# "foo( bar )" vs "foo(bar)"
+SpacesInParentheses: false
+
+# "foo[ 0 ]" vs "foo[0]"
+SpacesInSquareBrackets: false
+
+# Never use tab characters
+UseTab: Never
+
+BreakBeforeBinaryOperators: true
+
+BreakConstructorInitializersBeforeComma: true
+
+# End of YAML file.
+...
