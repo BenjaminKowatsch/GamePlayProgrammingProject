@@ -11,8 +11,9 @@ end
 
 PhysicsSystem:setDebugDrawingEnabled(true)
 boxSpeed = 400
-yAngle = 0
-xAngle = 0
+rotationSpeed = 40
+maxAngle = 20
+local n = Vec3(0,0,1)
 function boxUpdate(guid,deltaTime)
 	DebugRenderer:printText(Vec2(-0.2,0.5),"guid "..guid)
 	--[[
@@ -37,40 +38,67 @@ function boxUpdate(guid,deltaTime)
 		vel.z = vel.z+ boxSpeed * deltaTime
 	end
 	]]--
-	if(InputHandler:isPressed(Key.Right)) then
-		--box:setRotation(QuaternionFromEuler(0,yAngle,0))
-		box.rb:applyAngularImpulse(Vec3(0,yAngle,0))
-		yAngle = yAngle + 60*deltaTime
+	
+	
+	local AngularVelocity = Vec3(0,0,0)
+	local up = Vec3(0,0,1)
+	
+	if(InputHandler:isPressed(Key.Right))  then
+		AngularVelocity.y = 1
 	end
 	if(InputHandler:isPressed(Key.Left)) then
-		box:setRotation(QuaternionFromEuler(0,yAngle,0))
-		box.rb:applyAngularImpulse(Vec3(0,yAngle,0))
-		yAngle = yAngle - 60*deltaTime
+		AngularVelocity.y =-1
 	end
 	if(InputHandler:isPressed(Key.Down)) then
-		box:setRotation(QuaternionFromEuler(xAngle,0,0))
-		box.rb:applyAngularImpulse(Vec3(0,yAngle,0))
-		xAngle = xAngle + 60*deltaTime
+		AngularVelocity.x =1
 	end
 	if(InputHandler:isPressed(Key.Up)) then
-		box:setRotation(QuaternionFromEuler(xAngle,0,0))
-		box.rb:applyAngularImpulse(Vec3(0,yAngle,0))
-		xAngle = xAngle - 60*deltaTime
+		AngularVelocity.x =-1
 	end
+	
+	if (AngularVelocity:squaredLength()~= 0) then
+		AngularVelocity = AngularVelocity:normalized()	
+		AngularVelocity = AngularVelocity:mulScalar(rotationSpeed * deltaTime)
+	end
+	
+	box.rb:setAngularVelocity(AngularVelocity)
+	n = n + AngularVelocity
 	
 	cam.cc:setPosition(ball:getWorldPosition():add(Vec3(0,-10,5)))
 	cam.cc:setViewTarget(ball)
+	
 	local rotation = EulerFromQuaternion(box:getRotation())
-	DebugRenderer:printText(Vec2(0.1,0.1),
-							"Rotation: x:" .. rotation.x .. " y:" .. rotation.y .. " z:" .. rotation.z,
+	DebugRenderer:printText(Vec2(0.2,0.2),
+							" " .. angleBetweenVec3(up,n),
 							Color(1,0,0,1))
 	
 	--box.rb:setLinearVelocity(vel)
 end
 
+function angleBetweenVec3(a,b)
+	return math.acos((a.x*b.x+a.y*b.y+a.z*b.z )/(a:length()*b:length()))
+end
+
 function EulerFromQuaternion(q)
 	local mat = q:toMat3()
-	return Vec3(math.atan2(-mat.m20,mat.m00),math.asin(mat.m10),math.atan2(-mat.m12,mat.m11))
+	--return Vec3(math.atan2(-mat.m20,mat.m00),
+	--			math.asin(mat.m10),
+	--			math.atan2(-mat.m12,mat.m11))
+	
+	--return Vec3(math.atan2(mat.m21,mat.m22),
+	--			math.atan2(-mat.m20,math.sqrt(mat.m21*mat.m21+mat.m22*mat.m22)),
+	--			math.atan2(mat.m10,mat.m00))
+	--local b  = math.atan2(-mat.m20,math.sqrt(mat.m00*mat.m00+mat.m10*mat.m10))
+	--if(b == math.pi/2 ) then
+	--		return Vec3(0,b,math.atan2(mat.m01,mat.m11))
+	--	elseif (b == -math.pi/2) then
+	--		return Vec3(0,b,-math.atan2(mat.m01,mat.m11))			
+	--	else
+	--	return Vec3(math.atan2(mat.m10,mat.m00),b,math.atan2(mat.m21,mat.m22))	
+	--end
+	return Vec3(math.atan2(mat.m20,mat.m21),
+				math.acos(mat.m22),
+				-math.atan2(mat.m02,mat.m12))
 end
 
 
@@ -83,7 +111,7 @@ end
 box = GameObjectManager:createGameObject("box")
 box.pc = box:createPhysicsComponent()
 cinfo = RigidBodyCInfo()
-cinfo.shape = PhysicsFactory:createBox(Vec3(8,8,0.1))
+cinfo.shape = PhysicsFactory:createBox(Vec3(15,15,0.1))
 cinfo.motionType = MotionType.Dynamic
 cinfo.mass = 10
 cinfo.restitution = 0.95
@@ -97,8 +125,12 @@ ball.pc = ball:createPhysicsComponent()
 cinfo = RigidBodyCInfo()
 cinfo.shape = PhysicsFactory:createSphere(0.5)
 cinfo.motionType = MotionType.Dynamic
-cinfo.mass = 100.0
-cinfo.restitution = 0.5
+cinfo.mass = 0.3
+cinfo.rollingFrictionMultiplier = 0.2
+cinfo.linearDamping = 0.4
+cinfo.angularDamping = 0.4
+cinfo.restitution = 0.8
+cinfo.friction = 0.7
 cinfo.position = Vec3(0,0,-1)
 cinfo.maxLinearVelocity = 10
 ball.rb = ball.pc:createRigidBody(cinfo)
