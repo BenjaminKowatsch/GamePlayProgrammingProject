@@ -14,7 +14,7 @@ math.random(); math.random(); math.random() -- Why are we doing that? http://lua
 
 local playerSpeed = 12.0
 local playerRotSpeed = 2.5
-local maxLinearVelocity = 15
+local maxLinearVelocity = 10
 
 p1 = GameObjectManager:createGameObject("player1")
 p2 = GameObjectManager:createGameObject("player2")
