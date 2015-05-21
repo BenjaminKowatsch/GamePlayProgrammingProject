@@ -106,6 +106,13 @@ namespace gep
         /// \brief Casts a ray defined in \a input into this world. The output is represented by the \a output argument.
         virtual void castRay(const RayCastInput& input, RayCastOutput& output) const = 0;
 
+        /// \brief gets the current gravity of the World
+        ///
+        /// Gets the current active Gravity of the World
+        virtual vec3 getGravity() = 0;
+        /// \brief Sets the current gravity of the Physics World
+        virtual void setGravity(const vec3&) = 0;
+
         virtual void   markForRead() const = 0;
         virtual void unmarkForRead() const = 0;
         virtual void   markForWrite() = 0;
@@ -126,6 +133,8 @@ namespace gep
             LUA_BIND_FUNCTION(getCollisionRemovedEvent)
             LUA_BIND_FUNCTION(addConstraint)
             LUA_BIND_FUNCTION(removeConstraint)
+            LUA_BIND_FUNCTION(getGravity)
+            LUA_BIND_FUNCTION(setGravity)
         LUA_BIND_REFERENCE_TYPE_END
 
     private:

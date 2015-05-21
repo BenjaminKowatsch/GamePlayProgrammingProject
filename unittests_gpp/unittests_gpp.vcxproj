@@ -74,8 +74,6 @@
     <OutDir>..\bin\bin$(PlatformArchitecture)\</OutDir>
     <IntDir>..\intermediates\$(ProjectName)\$(Configuration)_$(Platform)\</IntDir>
     <TargetName>$(ProjectName)$(ConfigSuffix)</TargetName>
-    <IncludePath>C:\Program Files %28x86%29\Microsoft Visual Studio 11.0\VC\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files %28x86%29\Microsoft Visual Studio 11.0\VC\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>

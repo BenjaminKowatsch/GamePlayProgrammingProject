@@ -265,3 +265,43 @@ bool gep::areEqual(const char* lhs, const char* rhs, size_t count /*= -1*/)
 
     return true;
 }
+
+GEP_API gep::ArrayPtr< char > gep::extractDataPath( gep::ArrayPtr< char > path )
+{
+    const char dataString[] = "/data/";
+    ArrayPtr<char> idx = strrstr( path, ArrayPtr< char>( const_cast<char*>( dataString ), GEP_ARRAY_SIZE( dataString ) - 1 ) );
+    if (idx.getPtr() != nullptr)
+    {
+        return ArrayPtr<char>( idx.getPtr() + 1, (path.length() - ( idx.getPtr() - path.getPtr() )) - 1 );
+    }
+    else
+    {
+        return ArrayPtr<char>();
+    }
+}
+
+
+GEP_API gep::ArrayPtr<char> gep::strrstr( const ArrayPtr< char >& haystack, const ArrayPtr< char >& needle )
+{
+    if (needle.length() <= haystack.length() && haystack.length() != 0 && needle.length() != 0)
+    {
+        for( size_t i = haystack.length() - 1; i >= needle.length(); i-- )
+        {
+            bool match = true;
+            for( size_t x = needle.length()-1; x > 0; x-- )
+            {
+                if (needle[x] != haystack[i-needle.length()+x])
+                {
+                    match = false;
+                    break;
+                }
+            }
+            if( match )
+            {
+                return haystack( i - needle.length(), i );
+            }
+        }
+    }
+
+    return ArrayPtr<char>();
+}

@@ -59,6 +59,22 @@ namespace gep
         };
     };
 
+    /// \brief Finds the last occurence of a string \c needle in the \c haystack if any
+    ///
+    /// This is the opposite of the std c \c strstr
+    ///
+    /// \return A pointer to the start index with length of the \c needle if any is found,
+    /// otherwise a nullptr with length 0
+    GEP_API ArrayPtr<char> strrstr( const ArrayPtr< char >& haystack, const ArrayPtr<char  >& needle );
+
+    /// \brief Extracts the relative data path of a given absolute path if any data path is found
+    ///
+    /// Does the following:
+    /// Searches a path for the last occurrence of /data/ and returns a pointer the starting index of the relative data dir
+    /// E.g. C:/gep/data/model/model.fbx -> data/model/model.fbx
+    /// \return The substring of the data path if any, otherwise a nullptr
+    GEP_API ArrayPtr< char > extractDataPath( ArrayPtr< char > path);
+
     /// \brief Normalizes the given \a path.
     ///
     /// Does the following:

@@ -298,6 +298,8 @@ namespace gep
             LUA_BIND_FUNCTION(setRestitution)
             LUA_BIND_FUNCTION(getMotionType)
             LUA_BIND_FUNCTION(setMotionType)
+            LUA_BIND_FUNCTION(getGravityFactor)
+            LUA_BIND_FUNCTION(setGravityFactor)
             LUA_BIND_FUNCTION(getMass)
             LUA_BIND_FUNCTION(setMass)
 

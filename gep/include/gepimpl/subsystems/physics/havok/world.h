@@ -106,5 +106,10 @@ namespace gep
 
         virtual void addConstraint(Constraint constraint) override;
         virtual void removeConstraint(Constraint constraint) override;
+
+        virtual vec3 getGravity() override;
+
+        virtual void setGravity( const vec3& ) override;
+
     };
 }

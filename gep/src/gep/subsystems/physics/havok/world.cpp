@@ -300,3 +300,22 @@ void gep::HavokWorld::removeConstraint(Constraint constraint)
     auto pActualConstraint = reinterpret_cast<hkpConstraintInstance*>(constraint.pData);
     m_pWorld->removeConstraint(pActualConstraint);
 }
+
+gep::vec3 gep::HavokWorld::getGravity()
+{
+    m_pWorld->lock();
+    m_pWorld->markForRead();
+    auto gravity = m_pWorld->getGravity();
+    m_pWorld->unmarkForRead();
+    m_pWorld->unlock();
+    return conversion::hk::from( gravity );
+}
+
+void gep::HavokWorld::setGravity( const vec3& gravity )
+{
+    m_pWorld->lock();
+    m_pWorld->markForWrite();
+    m_pWorld->setGravity( conversion::hk::to( gravity ) );
+    m_pWorld->unmarkForWrite();
+    m_pWorld->unlock();
+}

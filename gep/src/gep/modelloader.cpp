@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "gep/exception.h"
+#include "gep/utils.h"
 #include "gep/modelloader.h"
 
 #include "thModelloader.inl"

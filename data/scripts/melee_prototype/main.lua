@@ -96,7 +96,7 @@ end
 function defaultUpdate(updateData)
 
 	local elapsedTime = updateData:getElapsedTime()
-	
+
 	-- switch between normal and debug camera
 	if (InputHandler:wasTriggered(Key.C) or bit32.btest(InputHandler:gamepad(0):buttonsTriggered(), Button.Start)) then
 		debugCamEnabled = not debugCamEnabled

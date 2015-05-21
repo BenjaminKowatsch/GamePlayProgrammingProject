@@ -12,7 +12,7 @@ namespace
     }
 }
 
-void gep::ModelLoader::loadThModel(const char* pFilename, uint32 loadWhat)
+inline void gep::ModelLoader::loadThModel(const char* pFilename, uint32 loadWhat)
 {
     Chunkfile file(pFilename, Chunkfile::Operation::read);
 

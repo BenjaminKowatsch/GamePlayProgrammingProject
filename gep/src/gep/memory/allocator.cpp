@@ -122,7 +122,6 @@ void gep::StdAllocator::destroyInstance()
         #endif
     }
 }
-
 gep::IAllocatorStatistics* gep::StdAllocatorPolicy::getAllocator()
 {
     return &StdAllocator::globalInstance();

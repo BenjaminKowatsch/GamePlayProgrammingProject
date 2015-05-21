@@ -5,6 +5,7 @@
 #include "gep/globalManager.h"
 #include "gep/container/hashmap.h"
 #include "gpp/gameComponents/renderComponent.h"
+#include "gep/interfaces/logging.h"
 
 
 class RenderComponent;
@@ -200,6 +201,11 @@ void gpp::AnimationComponent::getBoneMapping(gep::ArrayPtr<const char*> boneName
 
     for(auto name : boneNames)
     {
-        boneIds.append(m_AnimatedSkeleton->findBoneForName(name));
+        auto id = m_AnimatedSkeleton->findBoneForName( name );
+        if( id == -1 )
+        {
+            g_globalManager.getLogging()->logError( "Failed to find index for bone Name: %s", name );
+        }
+        boneIds.append(id);
     }
 }
