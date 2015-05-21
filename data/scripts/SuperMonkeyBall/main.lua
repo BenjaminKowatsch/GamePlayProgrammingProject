@@ -19,10 +19,11 @@ cam.cc:lookAt(Vec3(0,-2.5,0))
 cam.cc:setState(ComponentState.Active)
 
 ball = createBall()
+ball.moveSpeed = 40
 
 box = createBox()
-box.rotationSpeed = 40
 box.maxAngle = 10
+box.rotationSpeed = 30
 
 function defaultUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
@@ -42,9 +43,10 @@ function defaultUpdate(updateData)
 	move = move + leftStick
 	local jump = (InputHandler:wasTriggered(Key.Space) or bit32.btest(InputHandler:gamepad(0):buttonsTriggered(), Button.A))
 	
-	ball.update(jump)
-	
 	box:update(elapsedTime,move)
+	
+	ball:update(jump,elapsedTime,move)
+	
 	
 	DebugRenderer:printText(Vec2(-0.2,0.5),"Move: " .. move.x .. "  " .. move.y)
 	

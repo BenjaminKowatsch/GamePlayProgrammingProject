@@ -1,6 +1,6 @@
 
 logMessage("=== Executing initialize.lua ================")
 
-include("/asteroids/main.lua")
+include("/SuperMonkeyBall/main.lua")
 
 logMessage("=== Finished initialize.lua =================")

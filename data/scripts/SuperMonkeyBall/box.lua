@@ -8,7 +8,7 @@ function createBox()
 	cinfo.rollingFrictionMultiplier = 0.1
 	cinfo.linearDamping = 0.1
 	cinfo.angularDamping = 0.1
-	cinfo.restitution = 0.8
+	cinfo.restitution = 0.0
 	cinfo.friction = 0.5
 	cinfo.position = Vec3(0,0,-4)
 	box.rb = box.pc:createRigidBody(cinfo)
