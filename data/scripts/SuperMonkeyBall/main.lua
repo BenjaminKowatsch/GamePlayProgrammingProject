@@ -29,8 +29,8 @@ local counter=0
 local maxCounter = 25
 local tiltSpeed = 40
 
-local angle=0
-
+local offsetAngle=0
+local cAngle = 0
 function defaultUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
 	
@@ -58,44 +58,66 @@ function defaultUpdate(updateData)
 	-- tilt camera
 	if (move.x~=0) then
 		if(move.x<0 and counter > -maxCounter) then
-			cam.cc:tilt(-tiltSpeed*elapsedTime)
+			--cam.cc:tilt(-tiltSpeed*elapsedTime)
 			counter = counter-1
 		elseif (move.x>0 and counter <maxCounter) then
-			cam.cc:tilt(tiltSpeed*elapsedTime)
+			--cam.cc:tilt(tiltSpeed*elapsedTime)
 			counter = counter+1
 		end
 	else
 		if(counter>0) then	
-			cam.cc:tilt(-tiltSpeed*elapsedTime)
+			--cam.cc:tilt(-tiltSpeed*elapsedTime)
 			counter = counter -1
 		elseif(counter<0) then	
-			cam.cc:tilt(tiltSpeed*elapsedTime)
+			--cam.cc:tilt(tiltSpeed*elapsedTime)
 			counter = counter +1
 		end
 	end
-	--rotate movement vector relative to camera rotation
-	angle = angle -move.x
-	local z = Quaternion(Vec3(0.0, 0.0, 1.0), angle)
+	
+	local z = Quaternion(Vec3(0.0, 0.0, 1.0), cAngle)
 	local moveVector3Rot = z:toMat3():mulVec3(Vec3(move.x,move.y,0))
 	
-	--draw rotated movement vector
-	--if (moveVector3Rot:length() > 0) then -- FIXME Prevents crash when rendering the arrow
-	--	DebugRenderer:drawArrow(ball:getPosition(), ball:getPosition() + moveVector3Rot:mulScalar(5), Color(0, 1, 1, 1))
-	--end
+	if(move:length() > 0) then
+		offsetAngle = angleBetweenVec2(Vec2(offset.x,offset.y),Vec2(-moveVector3Rot.x,-moveVector3Rot.y))
+	else
+		offsetAngle = 0
+	end	
+	local angle = offsetAngle * elapsedTime
+	-- rotate camera
+	local q = Quaternion(Vec3(0.0, 0.0, 1.0), angle)
+	offset = q:toMat3():mulVec3(offset)
+	--rotate movement vector relative to camera rotation
+	cAngle = cAngle + angle
 	
+	--draw rotated movement vector
+	if (moveVector3Rot:length() > 0) then -- FIXME Prevents crash when rendering the arrow
+		DebugRenderer:drawArrow(ball:getPosition(), ball:getPosition() + moveVector3Rot:mulScalar(5), Color(0, 1, 1, 1))
+	end
+	--if (moveVector3Rot:length() > 0) then -- FIXME Prevents crash when rendering the arrow
+		--DebugRenderer:drawArrow(ball:getPosition(), ball:getPosition() + Vec3(0,-8,1):normalized():mulScalar(8), Color(0, 1, 0, 1))
+	--end
 	ball:update(jump,elapsedTime,Vec2(moveVector3Rot.x,moveVector3Rot.y))
 	
-	-- rotate camera
-	local q = Quaternion(Vec3(0.0, 0.0, 1.0), -move.x)
-	offset = q:toMat3():mulVec3(offset)
-	
-	
-	DebugRenderer:printText(Vec2(-0.2,0.5),"Move: " .. move.x .. "  " .. move.y)
+	DebugRenderer:printText(Vec2(-0.2,0.5),"Move: " .. move.x .. "  " .. move.y.."\nAngle:"..offsetAngle)
 	
 	cam.cc:setPosition(ball:getWorldPosition():add(offset))
 	cam.cc:setViewTarget(ball)
 	
 	return EventResult.Handled
+end
+
+
+
+function angleBetweenVec2(vector1, vector2)
+	local angleRad = math.atan2(vector2.y, vector2.x) - math.atan2(vector1.y, vector1.x)
+	local angleDeg = (angleRad/math.pi)*180
+	if (angleDeg > 180) then
+		angleDeg = angleDeg - 360
+	end
+	if (angleDeg < -180) then
+		angleDeg = angleDeg + 360
+	end
+	return angleDeg
 end
 
 --Events.PostInitialization:registerListener(function()
