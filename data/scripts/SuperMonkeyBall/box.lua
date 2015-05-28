@@ -1,9 +1,13 @@
 function createBox()
 	local box = GameObjectManager:createGameObject("box")
+	box.rc = box:createRenderComponent()
+	box.rc:setPath("data/scripts/SuperMonkeyBall/terrain.FBX")
 	box.pc = box:createPhysicsComponent()
 	local cinfo = RigidBodyCInfo()
-	cinfo.shape = PhysicsFactory:createBox(Vec3(35,35,0.1))
-	cinfo.motionType = MotionType.Keyframed
+	cinfo.motionType = MotionType.Fixed
+	--cinfo.motionType = MotionType.Keyframed
+	--cinfo.shape = PhysicsFactory:createBox(Vec3(35,35,0.1))
+	cinfo.shape = PhysicsFactory:loadCollisionMesh("data/collision/terrain.hkx")
 	cinfo.mass = 10
 	cinfo.position = Vec3(0,0,-4)
 	box.rb = box.pc:createRigidBody(cinfo)

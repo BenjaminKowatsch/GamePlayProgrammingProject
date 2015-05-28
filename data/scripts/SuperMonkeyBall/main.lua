@@ -58,18 +58,18 @@ function defaultUpdate(updateData)
 	-- tilt camera
 	if (move.x~=0) then
 		if(move.x<0 and counter > -maxCounter) then
-			--cam.cc:tilt(-tiltSpeed*elapsedTime)
+			cam.cc:tilt(-tiltSpeed*elapsedTime)
 			counter = counter-1
 		elseif (move.x>0 and counter <maxCounter) then
-			--cam.cc:tilt(tiltSpeed*elapsedTime)
+			cam.cc:tilt(tiltSpeed*elapsedTime)
 			counter = counter+1
 		end
 	else
 		if(counter>0) then	
-			--cam.cc:tilt(-tiltSpeed*elapsedTime)
+			cam.cc:tilt(-tiltSpeed*elapsedTime)
 			counter = counter -1
 		elseif(counter<0) then	
-			--cam.cc:tilt(tiltSpeed*elapsedTime)
+			cam.cc:tilt(tiltSpeed*elapsedTime)
 			counter = counter +1
 		end
 	end
@@ -78,11 +78,12 @@ function defaultUpdate(updateData)
 	local moveVector3Rot = z:toMat3():mulVec3(Vec3(move.x,move.y,0))
 	
 	if(move:length() > 0) then
-		offsetAngle = angleBetweenVec2(Vec2(offset.x,offset.y),Vec2(-moveVector3Rot.x,-moveVector3Rot.y))
+			local ballMovement = ball.rb:getLinearVelocity()
+			offsetAngle = angleBetweenVec2(Vec2(offset.x,offset.y),Vec2(-ballMovement.x,-ballMovement.y))
 	else
 		offsetAngle = 0
 	end	
-	local angle = offsetAngle * elapsedTime
+	local angle = offsetAngle *0.6*elapsedTime
 	-- rotate camera
 	local q = Quaternion(Vec3(0.0, 0.0, 1.0), angle)
 	offset = q:toMat3():mulVec3(offset)
@@ -90,9 +91,9 @@ function defaultUpdate(updateData)
 	cAngle = cAngle + angle
 	
 	--draw rotated movement vector
-	if (moveVector3Rot:length() > 0) then -- FIXME Prevents crash when rendering the arrow
-		DebugRenderer:drawArrow(ball:getPosition(), ball:getPosition() + moveVector3Rot:mulScalar(5), Color(0, 1, 1, 1))
-	end
+	--if (moveVector3Rot:length() > 0) then -- FIXME Prevents crash when rendering the arrow
+		--DebugRenderer:drawArrow(ball:getPosition(), ball:getPosition() + moveVector3Rot:mulScalar(5), Color(0, 1, 1, 1))
+	--end
 	--if (moveVector3Rot:length() > 0) then -- FIXME Prevents crash when rendering the arrow
 		--DebugRenderer:drawArrow(ball:getPosition(), ball:getPosition() + Vec3(0,-8,1):normalized():mulScalar(8), Color(0, 1, 0, 1))
 	--end
