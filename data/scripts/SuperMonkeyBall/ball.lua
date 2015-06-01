@@ -2,32 +2,32 @@ function createBall()
 	
 	local ball = GameObjectManager:createGameObject("ball")
 	--ball.rc = ball:createRenderComponent()
-	--ball.rc:setPath("data/models/ball.thModel")
+	--ball.rc:setPath("data/models/monkey/monkey.FBX")
 	ball.pc = ball:createPhysicsComponent()
 	local cinfo = RigidBodyCInfo()
-	cinfo.shape = PhysicsFactory:createSphere(1)
+	cinfo.shape = PhysicsFactory:createSphere(11.181)
 	cinfo.motionType = MotionType.Dynamic
-	cinfo.mass = 2
-	cinfo.position = Vec3(0,0,-1)
-	cinfo.maxLinearVelocity = 15
-	cinfo.restitution = 0.3
-	cinfo.linearDamping = 0.5
-	cinfo.angularDamping = 0.5
-	cinfo.friction = 0.5
-	cinfo.rollingFrictionMultiplier = 0.2
+	cinfo.mass = 20
+	cinfo.position = Vec3(0,0,18)
+	cinfo.maxLinearVelocity = 280
+	cinfo.restitution = 0.0 --no bounciness
+	cinfo.linearDamping = 1.0
+	cinfo.angularDamping = 1.0
+	cinfo.friction = 1.0
+	cinfo.gravityFactor = 20.0
+	cinfo.rollingFrictionMultiplier = 1.0
 	ball.rb = ball.pc:createRigidBody(cinfo)
 	--Custom attributes
-	ball.maxMoveSpeed = 30
-	
+	ball.maxMoveSpeed = 280
 	ball.update = function (self,jump,deltaTime,input)
-		
+	
 		local vel = self.rb:getLinearVelocity()
 		
 		-- add input to current velocity
 		vel = vel:add(Vec3(input.x,input.y,0):mulScalar(self.maxMoveSpeed * deltaTime))
-        
+		
 		if(jump) then
-			vel.z = vel.z+15
+			vel.z = vel.z+150
 		end
 		
 		self.rb:setLinearVelocity(vel)

@@ -5,7 +5,7 @@ include("SuperMonkeyBall/box.lua")
 -- physics world
 do
 	local cinfo = WorldCInfo()
-	cinfo.gravity = Vec3(0,0,-9.3)
+	cinfo.gravity = Vec3(0,0,-9.8)
 	cinfo.worldSize = 2000
 	local world = PhysicsFactory:createWorld(cinfo)
 	PhysicsSystem:setWorld(world)
@@ -22,12 +22,13 @@ ball = createBall()
 --ball.moveSpeed = 40
 
 box = createBox()
-box.maxAngle = 10
-box.rotationSpeed = 30
-local offset = Vec3(0,-8,5)
+--box.maxAngle = 10
+--box.rotationSpeed = 30
+local offset = Vec3(0,-70,40)
+local minLength = offset:length()
 local counter=0
 local maxCounter = 25
-local tiltSpeed = 40
+local tiltSpeed = 60
 
 local offsetAngle=0
 local cAngle = 0
@@ -50,50 +51,60 @@ function defaultUpdate(updateData)
 	-- mose input
 	local mouseDelta = InputHandler:getMouseDelta()
 	
+	DebugRenderer:printText(Vec2(-0.2,0.7),"MouseDelta: " .. mouseDelta.x .." " .. mouseDelta.y .. " " .. mouseDelta.z.."\nBoxPosition ".. box:getWorldPosition().x.." ".. box:getWorldPosition().y.." ".. box:getWorldPosition().z .. "\nBallPosition "..ball:getWorldPosition().x.." ".. ball:getWorldPosition().y.." ".. ball:getWorldPosition().z)
+	
 	move = move + leftStick
 	local jump = (InputHandler:wasTriggered(Key.Space) or bit32.btest(InputHandler:gamepad(0):buttonsTriggered(), Button.A))
 	
 	--box:update(elapsedTime,move)
+	local zoom = mouseDelta.z + rightStick.y
 	
+	-- set zoom
+	if(zoom~=0) then
+		local newoffset = offset:add(offset:normalized():mulScalar(-zoom*30))
+		if(minLength<=newoffset:length()) then
+			offset = newoffset
+		end
+	end
+
 	-- tilt camera
 	if (move.x~=0) then
 		if(move.x<0 and counter > -maxCounter) then
-			cam.cc:tilt(-tiltSpeed*elapsedTime)
+			--cam.cc:tilt(-tiltSpeed*elapsedTime)
 			counter = counter-1
 		elseif (move.x>0 and counter <maxCounter) then
-			cam.cc:tilt(tiltSpeed*elapsedTime)
+			--cam.cc:tilt(tiltSpeed*elapsedTime)
 			counter = counter+1
 		end
 	else
 		if(counter>0) then	
-			cam.cc:tilt(-tiltSpeed*elapsedTime)
+			--cam.cc:tilt(-tiltSpeed*elapsedTime)
 			counter = counter -1
 		elseif(counter<0) then	
-			cam.cc:tilt(tiltSpeed*elapsedTime)
+			--cam.cc:tilt(tiltSpeed*elapsedTime)
 			counter = counter +1
 		end
 	end
-	
-	local z = Quaternion(Vec3(0.0, 0.0, 1.0), cAngle)
-	local moveVector3Rot = z:toMat3():mulVec3(Vec3(move.x,move.y,0))
-	
+		
+	offsetAngle = 0
 	if(move:length() > 0) then
-			local ballMovement = ball.rb:getLinearVelocity()
-			offsetAngle = angleBetweenVec2(Vec2(offset.x,offset.y),Vec2(-ballMovement.x,-ballMovement.y))
-	else
-		offsetAngle = 0
-	end	
-	local angle = offsetAngle *0.6*elapsedTime
+		local ballMovement = ball.rb:getLinearVelocity()
+		offsetAngle = angleBetweenVec2(Vec2(offset.x,offset.y),Vec2(-ballMovement.x,-ballMovement.y))
+	end
+	local angle = offsetAngle *move:length() *elapsedTime
 	-- rotate camera
 	local q = Quaternion(Vec3(0.0, 0.0, 1.0), angle)
 	offset = q:toMat3():mulVec3(offset)
 	--rotate movement vector relative to camera rotation
 	cAngle = cAngle + angle
 	
+	local z = Quaternion(Vec3(0.0, 0.0, 1.0), cAngle)
+	local moveVector3Rot = z:toMat3():mulVec3(Vec3(move.x,move.y,0))
+	
 	--draw rotated movement vector
-	--if (moveVector3Rot:length() > 0) then -- FIXME Prevents crash when rendering the arrow
+	if (moveVector3Rot:length() > 0) then -- FIXME Prevents crash when rendering the arrow
 		--DebugRenderer:drawArrow(ball:getPosition(), ball:getPosition() + moveVector3Rot:mulScalar(5), Color(0, 1, 1, 1))
-	--end
+	end
 	--if (moveVector3Rot:length() > 0) then -- FIXME Prevents crash when rendering the arrow
 		--DebugRenderer:drawArrow(ball:getPosition(), ball:getPosition() + Vec3(0,-8,1):normalized():mulScalar(8), Color(0, 1, 0, 1))
 	--end

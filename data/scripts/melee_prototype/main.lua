@@ -191,7 +191,10 @@ function defaultUpdate(updateData)
 	local newCamPos = realCamPos + (camPos - realCamPos):mulScalar(5 * elapsedTime)
 	cam.cc:setPosition(newCamPos)
 	cam.cc:lookAt(camAim)
-
+	
+	DebugRenderer:drawArrow(character:getPosition(), character:getPosition() - character:getViewDirection():mulScalar(355), Color(1, 1, 0, 1))
+	DebugRenderer:drawArrow(character:getPosition(), character:getPosition() + character:getRightDirection():mulScalar(355), Color(1, 1, 0, 1))
+	
 	-- debug texts
 	DebugRenderer:printText(Vec2(-0.9, 0.55), "cameraRelativeControls " .. tostring(cameraRelativeControls))
 	DebugRenderer:printText(Vec2(-0.9, 0.50), "character.walkSpeed " .. string.format("%5.2f", character.walkSpeed))
