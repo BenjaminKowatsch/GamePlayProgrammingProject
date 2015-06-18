@@ -1,7 +1,7 @@
 -- Dependencies
 include("SuperMonkeyBall/ball.lua")
 include("SuperMonkeyBall/box.lua")
-
+include("SuperMonkeyBall/mainmenu.lua")
 -- physics world
 do
 	local cinfo = WorldCInfo()
@@ -70,18 +70,18 @@ function defaultUpdate(updateData)
 	-- tilt camera
 	if (move.x~=0) then
 		if(move.x<0 and counter > -maxCounter) then
-			--cam.cc:tilt(-tiltSpeed*elapsedTime)
+			cam.cc:tilt(-tiltSpeed*elapsedTime)
 			counter = counter-1
 		elseif (move.x>0 and counter <maxCounter) then
-			--cam.cc:tilt(tiltSpeed*elapsedTime)
+			cam.cc:tilt(tiltSpeed*elapsedTime)
 			counter = counter+1
 		end
 	else
 		if(counter>0) then	
-			--cam.cc:tilt(-tiltSpeed*elapsedTime)
+			cam.cc:tilt(-tiltSpeed*elapsedTime)
 			counter = counter -1
 		elseif(counter<0) then	
-			--cam.cc:tilt(tiltSpeed*elapsedTime)
+			cam.cc:tilt(tiltSpeed*elapsedTime)
 			counter = counter +1
 		end
 	end
@@ -155,7 +155,12 @@ State{
 }
 StateTransitions{
 	parent = "/game",
-	{ from = "__enter", to = "default" }
+	{ from = "__enter", to = "mainmenu" }
+}
+
+StateTransitions{
+	parent = "/game",
+	{ from = "mainmenu", to = "default", condition = function() return InputHandler:wasTriggered(Key.F1) end}
 }
 StateTransitions{
 	parent = "/game",
