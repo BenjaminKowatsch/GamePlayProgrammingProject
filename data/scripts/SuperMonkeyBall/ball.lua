@@ -26,7 +26,7 @@ function createBall()
 		-- add input to current velocity
 		vel = vel:add(Vec3(input.x,input.y,0):mulScalar(self.maxMoveSpeed * deltaTime))
 		
-		if(jump) then
+		if(jump)then
 			vel.z = vel.z+150
 		end
 		
