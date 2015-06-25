@@ -1,0 +1,194 @@
+log system initialized
+
+==================================================
+initializing settings
+settings initialized
+
+==================================================
+initializing memory manager
+memory manager initialized
+initializing scripting manager
+scripting manager initialized
+
+==================================================
+loading settings
+Loading and executing script: data/settings.lua
+settings loaded
+
+==================================================
+
+==================================================
+initializing timer
+timer initialized
+
+==================================================
+initializing update framework
+update framework initialized
+
+==================================================
+initializing havok system
+
+==================================================
+initializing task queue
+task queue initialized
+
+==================================================
+initializing resource manager
+resource manager initialized
+
+==================================================
+initializing renderer extractor
+renderer extractor initialized
+
+==================================================
+initializing renderer
+Initialized DirectX with feature level DX 11.0
+Using DirectX Version: 11.0 sdk 7
++++ Finalizing model.
+renderer initialized
+
+==================================================
+initializing input handler
+input handler initialized
+
+==================================================
+initializing sound system
+sound system initialized
+
+==================================================
+
+==================================================
+=== Global Manager Initialized ===================
+==================================================
+
+Initializing in game thread.
+initializing physics system
+setting up visual debugger
+hkVisualDebugger.cpp(37): VDB Server instance has been created
+System\Io\Platform\Bsd\hkBsdSocket.cpp(418): Listening on host[Benny-PC] port 25001
+hkVisualDebugger.cpp(111): Server created and will poll for new client(s) on port 25001 every frame
+physics system initialized
+initializing camera system
+camera system initialized
+initializing animation system
+animation system initialized
+State machine legend:
+  >> Entering state or state machine
+  << Leaving state or state machine
+Making script bindings...
+Loading and executing script: data/base/setup.lua
+Loading and executing script: data/base/initialize.lua
+Lua: === Executing initialize.lua ================
+Loading and executing script: data/scripts//SuperMonkeyBall/main.lua
+Loading and executing script: data/scripts/SuperMonkeyBall/ball.lua
+Loading and executing script: data/scripts/SuperMonkeyBall/box.lua
+Loading and executing script: data/scripts/SuperMonkeyBall/mainmenu.lua
+Warning: Lua: [id:6] Found empty event listener list 'update' for /game/mainmenu
+Warning: [1919420330] Dynamics\Inertia\hkpInertiaTensorComputer.cpp(136): A shape with zero volume processed. Assuming minimum trinagle thickness of 0.01 and recalculating!
+Lua: === Finished initialize.lua =================
+[Assimp] Load data/models/map3/Map3.FBX
+[Assimp] Debug: Assimp 3.1.36823676 x86 msvc debug noboost shared singlethreaded
+[Assimp] Found a matching importer for this file format
+[Assimp] Import root directory is 'data/models/map3\'
+[Assimp] FBX: ignoring empty AnimationStack (using IK?): AnimStack::Take 001
+[Assimp] Debug: ValidateDataStructureProcess begin
+[Assimp] Debug: ValidateDataStructureProcess end
+[Assimp] Entering post processing pipeline
+[Assimp] Debug: FlipUVsProcess begin
+[Assimp] Debug: FlipUVsProcess finished
+[Assimp] Debug: RemoveRedundantMatsProcess begin
+[Assimp] Debug: RemoveRedundantMatsProcess finished 
+[Assimp] Debug: FindInstancesProcess begin
+[Assimp] Debug: FindInstancesProcess finished. No instanced meshes found
+[Assimp] Debug: FindDegeneratesProcess begin
+[Assimp] Debug: FindDegeneratesProcess finished
+[Assimp] Debug: GenUVCoordsProcess begin
+[Assimp] Debug: GenUVCoordsProcess finished
+[Assimp] Debug: TransformUVCoordsProcess begin
+[Assimp] Debug: TransformUVCoordsProcess finished
+[Assimp] Debug: TriangulateProcess begin
+[Assimp] Debug: Dropping triangle with area 0
+[Assimp] TriangulateProcess finished. All polygons have been triangulated.
+[Assimp] Debug: FindInvalidDataProcess begin
+[Assimp] Debug: FindInvalidDataProcess finished. Everything seems to be OK.
+[Assimp] Debug: Generate spatially-sorted vertex cache
+[Assimp] Debug: GenVertexNormalsProcess begin
+[Assimp] Debug: GenVertexNormalsProcess finished. Normals are already there
+[Assimp] Debug: CalcTangentsProcess begin
+[Assimp] CalcTangentsProcess finished. Tangents have been calculated
+[Assimp] Debug: ImproveCacheLocalityProcess begin
+[Assimp] Debug: Mesh 0 | ACMR in: 1.939130 out: 1.939130 | ~0.0%
+[Assimp] Cache relevant are 1 meshes (115 faces). Average output ACMR is 1.939130
+[Assimp] Debug: ImproveCacheLocalityProcess finished. 
+[Assimp] Leaving post processing pipeline
+Loading of mesh data/models/map3/Map3.FBX took 0.132933 seconds
+=== Finished Initialization Phase ===
+>> /game
+>> /game/mainmenu
++++ Finalizing model.
++++ Finalizing model.
++++ Finalizing model.
++++ Finalizing model.
+<< /game/mainmenu
+>> /game/default
+<< /game/default
+<< /game
+Destroying in game thread.
+destroying animation system
+camera animation destroyed
+destroying camera system
+camera system destroyed
+destroying physics system
+hkVisualDebugger.cpp(93): Server deleted.
+physics system destroyed
+destroying resource manager
+resource manager destroyed
+
+==================================================
+
+==================================================
+destroying update framework
+update framework destroyed
+
+==================================================
+destroying input handler
+input handler destroyed
+
+==================================================
+destroying timer
+timer destroyed
+
+==================================================
+destroying resource manager
+resource manager destroyed
+
+==================================================
+destroying sound system
+sound system destroyed
+
+==================================================
+destroying renderer
+renderer destroyed
+
+==================================================
+destroying renderer extractor
+renderer extractor destroyed
+
+==================================================
+destroying memory manager
+memory manager destroyed
+
+==================================================
+destroying task queue
+task queue destroyed
+
+==================================================
+destroying scripting system
+scripting system destroyed
+
+==================================================
+destroying settings
+settings destroyed
+
+==================================================
+destroying log system

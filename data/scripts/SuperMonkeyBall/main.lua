@@ -30,7 +30,8 @@ local maxCounter = 25
 local tiltSpeed = 60
 
 local cAngle = 0
-
+local camOffset = Vec3(0,-70,40)
+local minLength = camOffset:length()
 cam = GameObjectManager:createGameObject("cam")
 cam.cc = cam:createCameraComponent()
 cam.cc:setPosition(Vec3(0,0,0))
@@ -42,14 +43,14 @@ cinfo.shape = PhysicsFactory:createSphere(2.5)
 cinfo.motionType = MotionType.Keyframed
 cinfo.mass = 50.0
 cinfo.restitution = 0.0
-cinfo.position = ball:getWorldPosition():add(Vec3(0,-70,40))
+cinfo.position = ball:getWorldPosition():add(camOffset)
 cinfo.friction = 0.0
 cinfo.maxLinearVelocity = 3000
 cinfo.linearDamping = 5.0
 cinfo.gravityFactor = 0.0
 cam.pc.rb = cam.pc:createRigidBody(cinfo)
 
-
+local newCamPos = cam.pc.rb:getPosition()
 
 function defaultUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
@@ -89,47 +90,41 @@ function defaultUpdate(updateData)
 	-- tilt camera
 	if (move.x~=0) then
 		if(move.x<0 and counter > -maxCounter) then
-			--cam.cc:tilt(-tiltSpeed*elapsedTime)
+			cam.cc:tilt(-tiltSpeed*elapsedTime)
 			counter = counter-1
 		elseif (move.x>0 and counter <maxCounter) then
-			--cam.cc:tilt(tiltSpeed*elapsedTime)
+			cam.cc:tilt(tiltSpeed*elapsedTime)
 			counter = counter+1
 		end
 	else
 		if(counter>0) then	
-			--cam.cc:tilt(-tiltSpeed*elapsedTime)
+			cam.cc:tilt(-tiltSpeed*elapsedTime)
 			counter = counter -1
 		elseif(counter<0) then	
-			--cam.cc:tilt(tiltSpeed*elapsedTime)
+			cam.cc:tilt(tiltSpeed*elapsedTime)
 			counter = counter +1
 		end
 	end
 	
-	local offsetAngle = 0	
-	local camOffset = cam.pc.rb:getPosition()-ball:getPosition()
-	DebugRenderer:printText(Vec2(-0.2,0.9),"camOffset" .. camOffset.x .." ".. camOffset.y .." ".. camOffset.z )
+
+	local camBallDiff = ball:getPosition()-cam.pc.rb:getPosition()
+	local relativeControlsAngle = -angleBetweenVec2(Vec2(camBallDiff.x,camBallDiff.y),Vec2(0,1))
+	local z = Quaternion(Vec3(0.0, 0.0, 1.0), relativeControlsAngle)
+	local moveVector3Rot = z:toMat3():mulVec3(Vec3(move.x,move.y,0))
 	
 	if(move:length() > 0) then
-		offsetAngle = angleBetweenVec2(Vec2(camOffset.x,camOffset.y),Vec2(-move.x,-move.y))
-		DebugRenderer:drawArrow(ball:getPosition(), ball:getPosition() + Vec3(-move.x,-move.y,0):mulScalar(6), Color(0, 1, 0, 1))
-	end
-	DebugRenderer:printText(Vec2(-0.2,0.7),"OffsetAngle" .. offsetAngle )
-	local angle = offsetAngle *move:length()*elapsedTime
-	--rotate movement vector relative to camera rotation
-	cAngle = cAngle + angle
-	local z = Quaternion(Vec3(0.0, 0.0, 1.0), cAngle)
-	local moveVector3Rot = z:toMat3():mulVec3(Vec3(move.x,move.y,0))
-	camOffset = z:toMat3():mulVec3(camOffset)
+		local offsetAngle = angleBetweenVec2(Vec2(-camOffset.x,-camOffset.y),Vec2(moveVector3Rot.x,moveVector3Rot.y))
+		local q = Quaternion(Vec3(0.0, 0.0, 1.0), offsetAngle)
+		camOffset = q:toMat3():mulVec3(camOffset)
+		newCamPos = ball:getPosition()+camOffset
 		
-	if (moveVector3Rot:length() > 0) then -- FIXME Prevents crash when rendering the arrow
-		DebugRenderer:drawArrow(ball:getPosition(), ball:getPosition() + camOffset, Color(0, 0, 1, 1))
+		DebugRenderer:drawArrow(ball:getPosition(), ball:getPosition() + Vec3(moveVector3Rot.x,moveVector3Rot.y,0):mulScalar(6), Color(0, 1, 0, 1))
+		DebugRenderer:drawArrow(ball:getPosition(), ball:getPosition() + moveVector3Rot:mulScalar(10), Color(0, 0, 1, 1))
 	end	
-	local newCamPos = ball:getPosition()+camOffset
-	local camVel = newCamPos-cam.pc.rb:getPosition()
+	local camMoveDir = newCamPos-cam.pc.rb:getPosition()
 	ball:update(jump,elapsedTime,Vec2(moveVector3Rot.x,moveVector3Rot.y))
 	
-	cam.pc.rb:setLinearVelocity(ball.rb:getLinearVelocity())
-	--cam.cc:setPosition(newCamPos)
+	cam.pc.rb:setLinearVelocity(camMoveDir)
 	cam.cc:setViewTarget(ball)
 	
 	return EventResult.Handled
