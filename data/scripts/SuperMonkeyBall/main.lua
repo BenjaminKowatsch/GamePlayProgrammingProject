@@ -3,6 +3,7 @@
 include("SuperMonkeyBall/ball.lua")
 include("SuperMonkeyBall/box.lua")
 include("SuperMonkeyBall/mainmenu.lua")
+include("SuperMonkeyBall/Pickup.lua")
 --include("SuperMonkeyBall/banana.lua")
 
 -- physics world
@@ -11,6 +12,7 @@ do
 	cinfo.gravity = Vec3(0,0,-9.8)
 	cinfo.worldSize = 2000
 	local world = PhysicsFactory:createWorld(cinfo)
+	world:setCollisionFilter(PhysicsFactory:createCollisionFilter_Simple())
 	PhysicsSystem:setWorld(world)
 	PhysicsSystem:setDebugDrawingEnabled(true)
 end
@@ -18,10 +20,36 @@ end
 ball = createBall()
 --ball.moveSpeed = 40
 --banana = createBanana()
+pickup = createPickup(ball)
+
+--local myTrigger = GameObjectManager:createGameObject("myTrigger")
+--myTrigger.physics = myTrigger:createPhysicsComponent()
+--local cinfo = RigidBodyCInfo()
+--	cinfo.collisionFilterInfo = 0x1
+--    cinfo.motionType      = MotionType.Fixed
+--	cinfo.position=Vec3(30,0,0)
+--    cinfo.shape           = PhysicsFactory:createSphere(20) -- 1 meter
+--    cinfo.isTriggerVolume = true -- Don't forget this! ;)
+--myTrigger.rigidBody = myTrigger.physics:createRigidBody(cinfo)
+--myTrigger.rigidBody:getTriggerEvent():registerListener(function(args)
+--    ball.rb:setLinearVelocity(ball.rb:getLinearVelocity():add(Vec3(0,0,40)))
+--end)
 
 box = createBox()
 
+function createCollisionCapsule(guid, startPos, endPos, radius)
+	local capsule = GameObjectManager:createGameObject(guid)
+	capsule.pc = capsule:createPhysicsComponent()
+	local cinfo = RigidBodyCInfo()
+	cinfo.shape = PhysicsFactory:createCapsule(startPos, endPos, radius)
+	cinfo.motionType = MotionType.Keyframed
+	cinfo.collisionFilterInfo = 0x2
+	capsule.pc.rb = capsule.pc:createRigidBody(cinfo)
+	return capsule
+end
 
+local capsule = createCollisionCapsule("capsule",Vec3(0,0,0),Vec3(0,0,100),40)
+capsule:setPosition(ball:getPosition())
 --box.maxAngle = 10
 --box.rotationSpeed = 30
 
@@ -30,7 +58,7 @@ local maxCounter = 25
 local tiltSpeed = 60
 
 local cAngle = 0
-local camOffset = Vec3(0,-70,40)
+local camOffset = Vec3(0,-50,40)
 local minLength = camOffset:length()
 cam = GameObjectManager:createGameObject("cam")
 cam.cc = cam:createCameraComponent()
@@ -40,14 +68,16 @@ cam.cc:setState(ComponentState.Active)
 cam.pc = cam:createPhysicsComponent()
 local cinfo = RigidBodyCInfo()
 cinfo.shape = PhysicsFactory:createSphere(2.5)
-cinfo.motionType = MotionType.Keyframed
+cinfo.motionType = MotionType.Dynamic
 cinfo.mass = 50.0
+cinfo.gravityFactor = 0
 cinfo.restitution = 0.0
 cinfo.position = ball:getWorldPosition():add(camOffset)
 cinfo.friction = 0.0
 cinfo.maxLinearVelocity = 3000
 cinfo.linearDamping = 5.0
 cinfo.gravityFactor = 0.0
+cinfo.collisionFilterInfo = 0x2
 cam.pc.rb = cam.pc:createRigidBody(cinfo)
 
 local newCamPos = cam.pc.rb:getPosition()
@@ -74,7 +104,9 @@ function defaultUpdate(updateData)
 	--DebugRenderer:printText(Vec2(-0.2,0.7),"MouseDelta: " .. mouseDelta.x .." " .. mouseDelta.y .. " " .. mouseDelta.z.."\nBoxPosition ".. box:getWorldPosition().x.." ".. box:getWorldPosition().y.." ".. box:getWorldPosition().z .. "\nBallPosition "..ball:getWorldPosition().x.." ".. ball:getWorldPosition().y.." ".. ball:getWorldPosition().z)
 	
 	move = move + leftStick
-	local jump = (InputHandler:wasTriggered(Key.Space) or bit32.btest(InputHandler:gamepad(0):buttonsTriggered(), Button.A))
+	if(InputHandler:wasTriggered(Key.Space) or bit32.btest(InputHandler:gamepad(0):buttonsTriggered(), Button.A)) then
+		ball.jump()
+	end
 	
 	--box:update(elapsedTime,move)
 	local zoom = mouseDelta.z + rightStick.y
@@ -105,27 +137,50 @@ function defaultUpdate(updateData)
 			counter = counter +1
 		end
 	end
-	
 
 	local camBallDiff = ball:getPosition()-cam.pc.rb:getPosition()
 	local relativeControlsAngle = -angleBetweenVec2(Vec2(camBallDiff.x,camBallDiff.y),Vec2(0,1))
 	local z = Quaternion(Vec3(0.0, 0.0, 1.0), relativeControlsAngle)
 	local moveVector3Rot = z:toMat3():mulVec3(Vec3(move.x,move.y,0))
 	
+	local ballVel = ball.rb:getLinearVelocity()
+	
 	if(move:length() > 0) then
-		local offsetAngle = angleBetweenVec2(Vec2(-camOffset.x,-camOffset.y),Vec2(moveVector3Rot.x,moveVector3Rot.y))
+		local offsetAngle = angleBetweenVec2(Vec2(-camOffset.x,-camOffset.y),Vec2(ballVel.x,ballVel.y))
 		local q = Quaternion(Vec3(0.0, 0.0, 1.0), offsetAngle)
 		camOffset = q:toMat3():mulVec3(camOffset)
-		newCamPos = ball:getPosition()+camOffset
+		local ballPos = ball:getPosition()
+		newCamPos = ballPos+camOffset		
 		
-		DebugRenderer:drawArrow(ball:getPosition(), ball:getPosition() + Vec3(moveVector3Rot.x,moveVector3Rot.y,0):mulScalar(6), Color(0, 1, 0, 1))
-		DebugRenderer:drawArrow(ball:getPosition(), ball:getPosition() + moveVector3Rot:mulScalar(10), Color(0, 0, 1, 1))
+		--DebugRenderer:drawArrow(ball:getPosition(), ball:getPosition() + Vec3(ballVel.x,ballVel.y,0):mulScalar(6), Color(0, 1, 0, 1))
+		--DebugRenderer:drawArrow(ball:getPosition(), ball:getPosition() + ballVel:mulScalar(10), Color(0, 0, 1, 1))
 	end	
-	local camMoveDir = newCamPos-cam.pc.rb:getPosition()
-	ball:update(jump,elapsedTime,Vec2(moveVector3Rot.x,moveVector3Rot.y))
+	local camMoveDir = (newCamPos-cam.pc.rb:getPosition()):mulScalar(elapsedTime*800)
+	ball:update(elapsedTime,Vec2(moveVector3Rot.x,moveVector3Rot.y))
 	
-	cam.pc.rb:setLinearVelocity(camMoveDir)
+	--cam.pc.rb:setLinearVelocity(camMoveDir)
+	cam.pc.rb:applyLinearImpulse(camMoveDir)
+	
 	cam.cc:setViewTarget(ball)
+	
+	local rightDir = cam.cc:getViewDirection():cross(Vec3(0,0,1))
+	cam.cc:setUpDirection(rightDir:cross(cam.cc:getViewDirection()))
+	
+	local capsuleVel = ball:getPosition()-capsule:getPosition()
+	capsule.pc.rb:setLinearVelocity(capsuleVel:mulScalar(30))
+	
+	--local rollAngle = 0
+	--if(move.y~=0) then
+	--	if(move.y<0) then
+	--		rollAngle = 30
+	--	else
+	--		rollAngle = -30
+	--	end
+	--end
+	--DebugRenderer:printText(Vec2(-0.2,0.7),"RollAngle: " .. rollAngle)
+	--
+	--local camRoll = Quaternion(cam.cc:getRightDirection(),-50)
+	--cam.cc:setUpDirection(cam.cc:getUpDirection():add(Vec3(0,0,0)))
 	
 	return EventResult.Handled
 end

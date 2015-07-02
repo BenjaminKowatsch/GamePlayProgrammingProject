@@ -1,21 +1,23 @@
 function createBox()
 	local box = GameObjectManager:createGameObject("box")
 	box.rc = box:createRenderComponent()
-	box.rc:setPath("data/models/map3/Map3.FBX")
+	box.rc:setPath("data/models/map1/Map1.FBX")
 	--box.rc:setPath("data/models/terrain/terrain.FBX")
 	box.pc = box:createPhysicsComponent()
 	local cinfo = RigidBodyCInfo()
 	
 	--cinfo.motionType = MotionType.Fixed
-	cinfo.shape = PhysicsFactory:loadCollisionMesh("data/collision/map3.hkx")
+	--cinfo.shape = PhysicsFactory:loadCollisionMesh("data/collision/map1.hkx")
 	
 	--cinfo.shape = PhysicsFactory:createBox(Vec3(98.425,196.85,3.937))
-	--cinfo.shape = PhysicsFactory:createBox(Vec3(398.425,396.85,3.937))
+	cinfo.shape = PhysicsFactory:createBox(Vec3(398.425,396.85,3.937))
 	cinfo.motionType = MotionType.Keyframed
 	cinfo.mass = 10
 	cinfo.position = Vec3(0,0,-4)
+	cinfo.collisionFilterInfo = 0x1
 	box.rb = box.pc:createRigidBody(cinfo)
 	box.sc = box:createScriptComponent()
+	box.rb:setUserData(box) 
 	--Custom Attributes
 	box.maxAngle = 10
 	

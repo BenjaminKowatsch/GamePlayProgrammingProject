@@ -16,18 +16,26 @@ function createBall()
 	cinfo.friction = 1.0
 	cinfo.gravityFactor = 20.0
 	cinfo.rollingFrictionMultiplier = 1.0
+	cinfo.collisionFilterInfo = 0x1
 	ball.rb = ball.pc:createRigidBody(cinfo)
 	--Custom attributes
 	ball.maxMoveSpeed = 280
-	ball.update = function (self,jump,deltaTime,input)
+	ball.jumping = false
+	
+	ball.jump =function()
+		jumping = true
+	end
+	
+	ball.update = function (self,deltaTime,input)
 	
 		local vel = self.rb:getLinearVelocity()
 		
 		-- add input to current velocity
 		vel = vel:add(Vec3(input.x,input.y,0):mulScalar(self.maxMoveSpeed * deltaTime))
 		
-		if(jump)then
+		if(jumping)then
 			vel.z = vel.z+150
+			jumping = false
 		end
 		
 		self.rb:setLinearVelocity(vel)
@@ -52,7 +60,9 @@ function createBall()
 			end
 		end
 		return steer
-	end	
+	end
+	
+	ball.rb:setUserData(ball) -- Always a good idea
 	
 	return ball
 end
