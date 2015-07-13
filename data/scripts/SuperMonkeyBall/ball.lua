@@ -1,8 +1,8 @@
 function createBall()
 	
 	local ball = GameObjectManager:createGameObject("ball")
-	--ball.rc = ball:createRenderComponent()
-	--ball.rc:setPath("data/models/monkey/monkey.FBX")
+	ball.rc = ball:createRenderComponent()
+	ball.rc:setPath("data/models/Sphere/Sphere.FBX")
 	ball.pc = ball:createPhysicsComponent()
 	local cinfo = RigidBodyCInfo()
 	cinfo.shape = PhysicsFactory:createSphere(11.181)
@@ -14,28 +14,42 @@ function createBall()
 	cinfo.linearDamping = 1.0
 	cinfo.angularDamping = 1.0
 	cinfo.friction = 1.0
-	cinfo.gravityFactor = 20.0
+	cinfo.gravityFactor = 30.0
 	cinfo.rollingFrictionMultiplier = 1.0
 	cinfo.collisionFilterInfo = 0x1
 	ball.rb = ball.pc:createRigidBody(cinfo)
 	--Custom attributes
 	ball.maxMoveSpeed = 280
+	ball.maxJumpCount = 1
 	ball.jumping = false
-	
+	ball.jumpCount = 1
+	ball.pc:getContactPointEvent():registerListener(function(event)
+		--logMessage("COLLISION")
+		local other = event:getBody(CollisionArgsCallbackSource.B)
+		local self = event:getBody(CollisionArgsCallbackSource.A)
+		if other:getUserData():getGuid() == "box" then
+			ball.jumpCount = ball.maxJumpCount
+		end
+		--logMessage(tostring(other:getUserData():getGuid()) .. " on Collision")
+	end)
 	ball.jump =function()
-		jumping = true
-	end
+	logMessage(" jumpCount ".. ball.jumpCount )
+		if 0<ball.jumpCount then
+			ball.jumping = true
+			ball.jumpCount = ball.jumpCount -1 
+		end		
+	end	
 	
 	ball.update = function (self,deltaTime,input)
-	
+		
 		local vel = self.rb:getLinearVelocity()
 		
 		-- add input to current velocity
 		vel = vel:add(Vec3(input.x,input.y,0):mulScalar(self.maxMoveSpeed * deltaTime))
 		
-		if(jumping)then
-			vel.z = vel.z+150
-			jumping = false
+		if(self.jumping)then
+			vel.z = vel.z+180
+			self.jumping = false
 		end
 		
 		self.rb:setLinearVelocity(vel)

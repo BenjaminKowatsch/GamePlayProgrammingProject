@@ -56,6 +56,12 @@ namespace gep
         };
     };
 
+    struct HashInfoFileData
+    {
+        char path[ 256 ];
+        unsigned int hash;
+    };
+
     class ModelLoader
     {
     public:
@@ -117,6 +123,7 @@ namespace gep
             ArrayPtr<vec2> texcoords[4];
             ArrayPtr<BoneInfo> boneInfos;
             BoneNode* rootBone; // TODO: We need an array of all bones which influence this mesh
+            uint32 PerVertexFlags;
         };
 
         struct NodeData
@@ -231,6 +238,8 @@ namespace gep
 
         void loadThModel(const char* pFileName, uint32 loadWhat);
         void loadAssimpCompatibleModel(const char* pFileName, uint32 loadWhat);
+
+        void writeThModel( const char* file );
 
     public:
 

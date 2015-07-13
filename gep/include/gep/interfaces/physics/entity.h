@@ -90,6 +90,28 @@ namespace gep
         GEP_DISALLOW_CONSTRUCTION(MotionType);
     };
 
+    /// \brief Purely static struct that serves as an enum.
+    struct QualityType
+    {
+        enum Enum
+        {
+            Invalid = -1,
+            Fixed = 0,
+            Keyframed,
+            Debris,
+            DebrisSimpleToi,
+            Moving,
+            Critical,
+            Bullet,
+            User,
+            Character,
+            KeyframedReporting,
+            MaxId
+        };
+
+        GEP_DISALLOW_CONSTRUCTION( QualityType );
+    };
+
     struct RigidBodyCInfo
     {
         uint32 collisionFilterInfo;
@@ -115,7 +137,7 @@ namespace gep
         // ??? localFrame;
         // ??? collisionResponse;
         uint16 contactPointCallbackDelay;
-        // ??? qualityType;
+        QualityType::Enum qualityType;
         int8 autoRemoveLevel;
         uint8 responseModifierFlags;
         int8 numShapeKeysInContactPointProperties;
@@ -157,6 +179,7 @@ namespace gep
             enableDeactivation(true),
             timeFactor(1.0f),
             contactPointCallbackDelay(0xffff),
+            qualityType(QualityType::Invalid),
             autoRemoveLevel(0),
             responseModifierFlags(0),
             numShapeKeysInContactPointProperties(0),
@@ -185,6 +208,7 @@ namespace gep
             LUA_BIND_MEMBER(enableDeactivation)
             LUA_BIND_MEMBER(timeFactor)
             LUA_BIND_MEMBER(contactPointCallbackDelay)
+            LUA_BIND_MEMBER(qualityType)
             LUA_BIND_MEMBER(autoRemoveLevel)
             LUA_BIND_MEMBER(responseModifierFlags)
             LUA_BIND_MEMBER(numShapeKeysInContactPointProperties)

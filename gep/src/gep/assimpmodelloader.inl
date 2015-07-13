@@ -521,11 +521,16 @@ inline void gep::ModelLoader::loadAssimpCompatibleModel(const char* pFilename, u
 
                 copyVec3Array( gepMesh.vertices, assimpMesh->mVertices );
 
+                gepMesh.PerVertexFlags = 0;
+                gepMesh.PerVertexFlags |= PerVertexData::Position;
+
                 if (loadWhat & Load::Normals && assimpMesh->HasNormals())
                 {
                     memstat.vertexData += allocationSize<vec3>( numVertices );
                     gepMesh.normals = GEP_NEW_ARRAY( m_pModelDataAllocator, vec3, numVertices );
                     copyVec3Array( gepMesh.normals, assimpMesh->mNormals);
+                    gepMesh.PerVertexFlags |= PerVertexData::Normal;
+
                 }
 
                 if (loadWhat & Load::Tangents && assimpMesh->HasTangentsAndBitangents())
@@ -533,6 +538,8 @@ inline void gep::ModelLoader::loadAssimpCompatibleModel(const char* pFilename, u
                     memstat.vertexData += allocationSize<vec3>( numVertices );
                     gepMesh.tangents = GEP_NEW_ARRAY( m_pModelDataAllocator, vec3, numVertices );
                     copyVec3Array( gepMesh.tangents, assimpMesh->mTangents );
+                    gepMesh.PerVertexFlags |= PerVertexData::Tangent;
+
                 }
 
                 if( loadWhat & Load::Bitangents && assimpMesh->HasTangentsAndBitangents() )
@@ -540,11 +547,27 @@ inline void gep::ModelLoader::loadAssimpCompatibleModel(const char* pFilename, u
                     memstat.vertexData += allocationSize<vec3>( numVertices );
                     gepMesh.bitangents = GEP_NEW_ARRAY( m_pModelDataAllocator, vec3, numVertices );
                     copyVec3Array( gepMesh.bitangents, assimpMesh->mBitangents );
+                    gepMesh.PerVertexFlags |= PerVertexData::Bitangent;
                 }
 
                 if( loadWhat & ( Load::TexCoords0 | Load::TexCoords1 | Load::TexCoords2 | Load::TexCoords3 ) )
                 {
                     uint32 numTexCoords = assimpMesh->GetNumUVChannels();
+                    switch( numTexCoords )
+                    {
+                    case 4:
+                        gepMesh.PerVertexFlags |= PerVertexData::TexCoord3;
+                        // no break!
+                    case 3:
+                        gepMesh.PerVertexFlags |= PerVertexData::TexCoord2;
+                        // no break!
+                    case 2:
+                        gepMesh.PerVertexFlags |= PerVertexData::TexCoord1;
+                        // no break!
+                    case 1:
+                        gepMesh.PerVertexFlags |= PerVertexData::TexCoord0;
+                        break;
+                    }
                     for( uint32 texCoordIdx = 0; texCoordIdx < numTexCoords; texCoordIdx++ )
                     {
                         uint32 numUVComponents = assimpMesh->mNumUVComponents[ texCoordIdx ];
@@ -933,3 +956,4 @@ inline void gep::ModelLoader::loadAssimpCompatibleModel(const char* pFilename, u
     m_modelData.hasData = true;
 
 }
+

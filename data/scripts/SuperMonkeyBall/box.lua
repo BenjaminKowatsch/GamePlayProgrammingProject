@@ -17,7 +17,10 @@ function createBox()
 	cinfo.collisionFilterInfo = 0x1
 	box.rb = box.pc:createRigidBody(cinfo)
 	box.sc = box:createScriptComponent()
-	box.rb:setUserData(box) 
+	--box.onCollision = function(other)
+	--	logMessage(" OnCollision ")
+	--end
+	box.rb:setUserData(box)
 	--Custom Attributes
 	box.maxAngle = 10
 	

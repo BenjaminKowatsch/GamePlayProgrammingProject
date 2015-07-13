@@ -40,6 +40,8 @@ inline void gep::ModelLoader::loadThModel(const char* pFilename, uint32 loadWhat
                                   Load::TexCoords2,
                                   Load::TexCoords3};
 
+    std::vector<uint32> vertexFlags;
+
     uint32 texturePathMemory = 0;
     uint32 materialNameMemory = 0;
     uint32 numNodes = 0;
@@ -129,7 +131,7 @@ inline void gep::ModelLoader::loadThModel(const char* pFilename, uint32 loadWhat
             uint32 numVertices = 0, PerVertexFlags = 0, numComponents = 0, numTexcoords = 0;
             file.read(numVertices);
             file.read(PerVertexFlags);
-
+            vertexFlags.push_back( PerVertexFlags );
             if (PerVertexFlags & PerVertexData::Position)
                 numComponents++;
             if ((PerVertexFlags & PerVertexData::Normal) && (loadWhat & Load::Normals))
@@ -393,9 +395,10 @@ inline void gep::ModelLoader::loadThModel(const char* pFilename, uint32 loadWhat
             file.read(numMeshes);
             memstat.meshDataArray += allocationSize<MeshData>(numMeshes);
             m_modelData.meshes = GEP_NEW_ARRAY(m_pModelDataAllocator, MeshData, numMeshes);
-
+            uint32 meshIdx = 0;
             for (auto& mesh : m_modelData.meshes)
             {
+                mesh.PerVertexFlags = vertexFlags[ meshIdx ];
                 file.startReadChunk();
                 if (file.getCurrentChunkName() != "mesh")
                 {
@@ -608,7 +611,9 @@ inline void gep::ModelLoader::loadThModel(const char* pFilename, uint32 loadWhat
                         throw LoadingError(msg.str());
                     }
                     file.endReadChunk();
+
                 }
+                meshIdx++;
 
                 file.endReadChunk();
             }

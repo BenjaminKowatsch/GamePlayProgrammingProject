@@ -188,4 +188,10 @@ namespace gep
 
     /// \brief checks if the given file exists
     GEP_API bool fileExists(const char* pathToFile);
+
+    /// \brief checks if the given directory exists
+    GEP_API bool directoryExists( const char* pathOfDir );
+    /// \brief creates a directory if it does not exist
+    /// \note Only creates the leaf directory, fails if any previous part of the path is missing
+    GEP_API void createDirectory( const char* pathOfDir );
 }

@@ -148,13 +148,12 @@ function defaultUpdate(updateData)
 	if(move:length() > 0) then
 		local offsetAngle = angleBetweenVec2(Vec2(-camOffset.x,-camOffset.y),Vec2(ballVel.x,ballVel.y))
 		local q = Quaternion(Vec3(0.0, 0.0, 1.0), offsetAngle)
-		camOffset = q:toMat3():mulVec3(camOffset)
-		local ballPos = ball:getPosition()
-		newCamPos = ballPos+camOffset		
-		
+		camOffset = q:toMat3():mulVec3(camOffset)		
 		--DebugRenderer:drawArrow(ball:getPosition(), ball:getPosition() + Vec3(ballVel.x,ballVel.y,0):mulScalar(6), Color(0, 1, 0, 1))
 		--DebugRenderer:drawArrow(ball:getPosition(), ball:getPosition() + ballVel:mulScalar(10), Color(0, 0, 1, 1))
-	end	
+	end
+	local ballPos = ball:getPosition()
+		newCamPos = ballPos+camOffset
 	local camMoveDir = (newCamPos-cam.pc.rb:getPosition()):mulScalar(elapsedTime*800)
 	ball:update(elapsedTime,Vec2(moveVector3Rot.x,moveVector3Rot.y))
 	

@@ -98,8 +98,7 @@ struct aiImporterDesc
 	/** Implementation comments, i.e. unimplemented features*/
 	const char* mComments;
 
-	/** Any combination of the #aiLoaderFlags enumerated values.
-	    These flags indicate some characteristics common to many
+	/** These flags indicate some characteristics common to many
 		importers. */
 	unsigned int mFlags;
 
@@ -139,6 +138,6 @@ Will return a NULL-pointer if no assigned importer desc. was found for the given
     \param  extension   [in] The extension to look for
     \return A pointer showing to the ImporterDesc, \see aiImporterDesc.
 */
-ASSIMP_API C_STRUCT const aiImporterDesc* aiGetImporterDesc( const char *extension );
+ASSIMP_API const C_STRUCT aiImporterDesc* aiGetImporterDesc( const char *extension );
 
 #endif 

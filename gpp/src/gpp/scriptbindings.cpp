@@ -230,6 +230,20 @@ void gpp::Game::bindEnums()
         "Character",      gep::MotionType::Character,
         0);
 
+    scripting->bindEnum( "QualityType",
+        "Invalid",            gep::QualityType::Invalid,
+        "Fixed",              gep::QualityType::Fixed,
+        "Keyframed",          gep::QualityType::Keyframed,
+        "Debris",             gep::QualityType::Debris,
+        "DebrisSimpleToi",    gep::QualityType::DebrisSimpleToi,
+        "Moving",             gep::QualityType::Moving,
+        "Critical",           gep::QualityType::Critical,
+        "Bullet",             gep::QualityType::Bullet,
+        "User",               gep::QualityType::User,
+        "Character",          gep::QualityType::Character,
+        "KeyframedReporting", gep::QualityType::KeyframedReporting,
+        0 );
+
     scripting->bindEnum("ScriptLoadOptions",
         "Default",           gep::IScriptingManager::LoadOptions::Default,
         "PathIsRelative",    gep::IScriptingManager::LoadOptions::PathIsRelative,

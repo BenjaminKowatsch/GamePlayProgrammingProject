@@ -75,6 +75,11 @@ gep::HavokRigidBody::HavokRigidBody(const RigidBodyCInfo& cinfo) :
     hkcinfo.m_autoRemoveLevel = cinfo.autoRemoveLevel;
     hkcinfo.m_responseModifierFlags = cinfo.responseModifierFlags;
     hkcinfo.m_numShapeKeysInContactPointProperties = cinfo.numShapeKeysInContactPointProperties;
+    if( cinfo.qualityType != QualityType::Invalid )
+    {
+        hkcinfo.m_qualityType = static_cast< hkpCollidableQualityType >( cinfo.qualityType );
+
+    }
 
     m_entity.setHkpEntity(new hkpRigidBody(hkcinfo));
 
@@ -168,7 +173,7 @@ gep::Event<gep::ITriggerEventArgs*>* gep::HavokRigidBody::getTriggerEvent()
         g_globalManager.getLogging()->logWarning("Attempt to get trigger event for non-trigger-volume rigid body.");
         return nullptr;
     }
-    
+
     return m_pTriggerVolume->getTriggerEvent();
 }
 
