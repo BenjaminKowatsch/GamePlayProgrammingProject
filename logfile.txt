@@ -87,6 +87,7 @@ Warning: Lua: [id:6] Found empty event listener list 'update' for /game/mainmenu
 Loading and executing script: data/scripts/SuperMonkeyBall/Pickup.lua
 Lua: === Finished initialize.lua =================
 Loading cached file for data/models/map1/Map1.FBX (.modelCache/1135693372.thModel)
+Reusing already loaded resource 'data/models/map1/Map1.FBX'
 Loading cached file for data/models/Sphere/Sphere.FBX (.modelCache/2597853922.thModel)
 Warning: [857386286] Collide\TriggerVolume\hkpTriggerVolume.cpp(94): The hkpBoxBoxAgent agent does not handle deep collisions well, so avoid using it with the hkpTriggerVolume. We recommend either unregistering the box-box agent, or replacing any boxes in the hkpTriggerVolume by equivalent hkpConvexVerticesShapes.
 === Finished Initialization Phase ===
@@ -99,53 +100,19 @@ Warning: [857386286] Collide\TriggerVolume\hkpTriggerVolume.cpp(94): The hkpBoxB
 +++ Finalizing model.
 +++ Finalizing model.
 +++ Finalizing model.
++++ Finalizing model.
 << /game/mainmenu
 >> /game/default
 Lua:  jumpCount 1
-Lua:  jumpCount 1
-Lua:  jumpCount 0
-Lua:  jumpCount 0
-Lua:  jumpCount 1
-Lua:  jumpCount 0
-Lua:  jumpCount 0
-Lua:  jumpCount 0
-Lua:  jumpCount 1
-Lua:  jumpCount 1
-Lua:  jumpCount 1
-Lua:  jumpCount 0
-Lua:  jumpCount 1
-Lua:  jumpCount 0
-Lua:  jumpCount 0
-Lua:  jumpCount 1
 Lua:  jumpCount 0
 Lua: ball left the trigger.
-Lua:  jumpCount 1
-Lua:  jumpCount 0
-Lua:  jumpCount 0
-Lua:  jumpCount 0
-Lua:  jumpCount 2
-Lua:  jumpCount 1
-Lua:  jumpCount 0
-Lua:  jumpCount 2
-Lua:  jumpCount 1
-Lua:  jumpCount 0
-Lua:  jumpCount 2
-Lua:  jumpCount 1
-Lua:  jumpCount 0
 Lua:  jumpCount 2
 Lua:  jumpCount 1
 Lua:  jumpCount 2
 Lua:  jumpCount 1
-Lua:  jumpCount 2
-Lua:  jumpCount 1
-Lua:  jumpCount 0
 Lua:  jumpCount 2
 Lua: ball left the trigger.
-Lua:  jumpCount 1
 Lua:  jumpCount 2
-Lua:  jumpCount 1
-Lua:  jumpCount 2
-Lua:  jumpCount 1
 << /game/default
 << /game
 Destroying in game thread.

@@ -27,7 +27,7 @@ function createBall()
 		--logMessage("COLLISION")
 		local other = event:getBody(CollisionArgsCallbackSource.B)
 		local self = event:getBody(CollisionArgsCallbackSource.A)
-		if other:getUserData():getGuid() == "box" then
+		if other:getUserData():getGuid() == "box" or other:getUserData():getGuid() == "box1" then
 			ball.jumpCount = ball.maxJumpCount
 		end
 		--logMessage(tostring(other:getUserData():getGuid()) .. " on Collision")
@@ -48,16 +48,10 @@ function createBall()
 		vel = vel:add(Vec3(input.x,input.y,0):mulScalar(self.maxMoveSpeed * deltaTime))
 		
 		if(self.jumping)then
-			vel.z = vel.z+180
+			vel.z = vel.z+180*-gravityFactor
 			self.jumping = false
 		end
-		
 		self.rb:setLinearVelocity(vel)
-		
-		local pos = self.rb:getPosition()
-		if(pos.z < -8) then
-			self.rb:setPosition(Vec3(0,0,5))
-		end
 	end
 	
 	ball.calcSteering = function(self, moveVector)

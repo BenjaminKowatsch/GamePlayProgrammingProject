@@ -1,5 +1,5 @@
-function createBox()
-	local box = GameObjectManager:createGameObject("box")
+function createBox(position,guid)
+	local box = GameObjectManager:createGameObject(guid)
 	box.rc = box:createRenderComponent()
 	box.rc:setPath("data/models/map1/Map1.FBX")
 	--box.rc:setPath("data/models/terrain/terrain.FBX")
@@ -13,7 +13,7 @@ function createBox()
 	cinfo.shape = PhysicsFactory:createBox(Vec3(398.425,396.85,3.937))
 	cinfo.motionType = MotionType.Keyframed
 	cinfo.mass = 10
-	cinfo.position = Vec3(0,0,-4)
+	cinfo.position = position
 	cinfo.collisionFilterInfo = 0x1
 	box.rb = box.pc:createRigidBody(cinfo)
 	box.sc = box:createScriptComponent()

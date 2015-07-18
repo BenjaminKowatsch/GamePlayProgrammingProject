@@ -1,15 +1,9 @@
 		-- https://github.com/pampersrocker/risky-epsilon/blob/master/Game/data/scripts/Camera/IsometricCamera.lua
--- Dependencies
-include("SuperMonkeyBall/ball.lua")
-include("SuperMonkeyBall/box.lua")
-include("SuperMonkeyBall/mainmenu.lua")
-include("SuperMonkeyBall/Pickup.lua")
---include("SuperMonkeyBall/banana.lua")
-
 -- physics world
+gravityFactor = -1
 do
 	local cinfo = WorldCInfo()
-	cinfo.gravity = Vec3(0,0,-9.8)
+	cinfo.gravity = Vec3(0,0,9.8*gravityFactor)
 	cinfo.worldSize = 2000
 	local world = PhysicsFactory:createWorld(cinfo)
 	world:setCollisionFilter(PhysicsFactory:createCollisionFilter_Simple())
@@ -17,25 +11,21 @@ do
 	PhysicsSystem:setDebugDrawingEnabled(true)
 end
 
+-- Dependencies
+include("SuperMonkeyBall/ball.lua")
+include("SuperMonkeyBall/box.lua")
+include("SuperMonkeyBall/mainmenu.lua")
+include("SuperMonkeyBall/Pickup.lua")
+--include("SuperMonkeyBall/banana.lua")
+
 ball = createBall()
 --ball.moveSpeed = 40
 --banana = createBanana()
 pickup = createPickup(ball)
 
---local myTrigger = GameObjectManager:createGameObject("myTrigger")
---myTrigger.physics = myTrigger:createPhysicsComponent()
---local cinfo = RigidBodyCInfo()
---	cinfo.collisionFilterInfo = 0x1
---    cinfo.motionType      = MotionType.Fixed
---	cinfo.position=Vec3(30,0,0)
---    cinfo.shape           = PhysicsFactory:createSphere(20) -- 1 meter
---    cinfo.isTriggerVolume = true -- Don't forget this! ;)
---myTrigger.rigidBody = myTrigger.physics:createRigidBody(cinfo)
---myTrigger.rigidBody:getTriggerEvent():registerListener(function(args)
---    ball.rb:setLinearVelocity(ball.rb:getLinearVelocity():add(Vec3(0,0,40)))
---end)
+box = createBox(Vec3(0,0,-4),"box")
 
-box = createBox()
+box2 = createBox(Vec3(0,0,120),"box1")
 
 function createCollisionCapsule(guid, startPos, endPos, radius)
 	local capsule = GameObjectManager:createGameObject(guid)
@@ -48,7 +38,7 @@ function createCollisionCapsule(guid, startPos, endPos, radius)
 	return capsule
 end
 
-local capsule = createCollisionCapsule("capsule",Vec3(0,0,0),Vec3(0,0,100),40)
+local capsule = createCollisionCapsule("capsule",Vec3(0,0,-250),Vec3(0,0,500),20)
 capsule:setPosition(ball:getPosition())
 --box.maxAngle = 10
 --box.rotationSpeed = 30
@@ -58,7 +48,7 @@ local maxCounter = 25
 local tiltSpeed = 60
 
 local cAngle = 0
-local camOffset = Vec3(0,-50,40)
+local camOffset = Vec3(0,-40,30)
 local minLength = camOffset:length()
 cam = GameObjectManager:createGameObject("cam")
 cam.cc = cam:createCameraComponent()
@@ -102,9 +92,15 @@ function defaultUpdate(updateData)
 	local mouseDelta = InputHandler:getMouseDelta()
 	
 	--DebugRenderer:printText(Vec2(-0.2,0.7),"MouseDelta: " .. mouseDelta.x .." " .. mouseDelta.y .. " " .. mouseDelta.z.."\nBoxPosition ".. box:getWorldPosition().x.." ".. box:getWorldPosition().y.." ".. box:getWorldPosition().z .. "\nBallPosition "..ball:getWorldPosition().x.." ".. ball:getWorldPosition().y.." ".. ball:getWorldPosition().z)
-	
+	if InputHandler:wasTriggered(Key.G) then
+		gravityFactor = -gravityFactor
+		PhysicsSystem:getWorld():setGravity(Vec3(0,0,9.8*gravityFactor))
+		camOffset.z = -camOffset.z
+		cam.cc:tilt(180)
+	end
 	move = move + leftStick
-	if(InputHandler:wasTriggered(Key.Space) or bit32.btest(InputHandler:gamepad(0):buttonsTriggered(), Button.A)) then
+	move.x = move.x * -gravityFactor
+	if(InputHandler:wasTriggered(Key.Space) or bit32.btest(gamepad:buttonsTriggered(), Button.A)) then
 		ball.jump()
 	end
 	
@@ -112,12 +108,12 @@ function defaultUpdate(updateData)
 	local zoom = mouseDelta.z + rightStick.y
 	
 	-- set zoom
-	--if(zoom~=0) then
-	--	local newoffset = camOffset:add(camOffset:normalized():mulScalar(-zoom*30))
-	--	if(minLength<=newoffset:length()) then
-	--		camOffset = newoffset
-	--	end
-	--end
+	if(zoom~=0) then
+		local newoffset = camOffset:add(camOffset:normalized():mulScalar(-zoom*30))
+		if(minLength<=newoffset:length()) then
+			camOffset = newoffset
+		end
+	end
 
 	-- tilt camera
 	if (move.x~=0) then
