@@ -15,11 +15,5 @@ function DoubleJumpPickup:_init(guid,position,cfi,w,h,d)
 end
 
 function DoubleJumpPickup:onBeginOverlap(go)
-	--PickupBase.onBeginOverlap(go)
 	go.jumpCount = 2
 end
-
---function DoubleJumpPickup:onEndOverlap(go)
---	--PickupBase.onEndOverlap(go)
---	--logMessage("EndOverlap Child")
---end

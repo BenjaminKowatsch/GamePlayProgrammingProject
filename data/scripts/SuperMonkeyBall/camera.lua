@@ -26,9 +26,10 @@ function createCamera(guid,viewtarget,camOffset)
 		cam.tiltAngle = 0
 		cam.maxTiltAngle = 30
 		cam.newCamPos = cam.rb:getPosition()
-		cam.moveSpeed = 600
+		cam.moveSpeed = 1000
 		cam.zOffset = 0
-		cam.yaw = 0
+		cam.pitchSpeed = 20
+		cam.maxPitchAngle = 5
 		
 		cam.update = function (self,elapsedTime,move,zoom)
 			-- set zoom
@@ -39,6 +40,7 @@ function createCamera(guid,viewtarget,camOffset)
 				end
 			end
 			-- tilt camera
+			--	relative to x input
 			if (move.x~=0) then
 				if(move.x>0 and (self.tiltAngle + self.tiltSpeed*move.x*elapsedTime) < self.maxTiltAngle or 
 					move.x<0 and (self.tiltAngle + self.tiltSpeed*move.x*elapsedTime) > -self.maxTiltAngle)  then
@@ -54,37 +56,28 @@ function createCamera(guid,viewtarget,camOffset)
 					self.cc:tilt(self.tiltSpeed*0.6*elapsedTime)
 				end
 			end
-			
-			--if(InputHandler:isPressed(Key.Up) or InputHandler:isPressed(Key.Down)) then
-			--	if(InputHandler:isPressed(Key.Up) and (self.zOffset + 1*elapsedTime)< 10 ) then
-			--		self.zOffset = self.zOffset + 1*elapsedTime
-			--		elseif (InputHandler:isPressed(Key.Down) and -10<(self.zOffset - 1*elapsedTime) ) then
-			--		self.zOffset = self.zOffset - 1*elapsedTime
-			--	end
-			--else
-			--	self.zOffset = self.zOffset - self.zOffset*elapsedTime
-			--end
-			--cam.camOffset = cam.camOffset+Vec3(0,0,self.zOffset)
-			
-			if(InputHandler:isPressed(Key.Up) or InputHandler:isPressed(Key.Down)) then
-				if(InputHandler:isPressed(Key.Up)) then
-					self.zOffset = self.zOffset-150*elapsedTime
-					cam.camOffset.z = cam.camOffset.z +50*elapsedTime
-				elseif (InputHandler:isPressed(Key.Down))then
-					self.zOffset = self.zOffset+150*elapsedTime
-					cam.camOffset.z = cam.camOffset.z -50*elapsedTime
+			--	relative to y input
+			if(move.y~=0) then
+				if(move.y>0 and (self.zOffset-self.pitchSpeed*elapsedTime)>-self.maxPitchAngle) then
+					self.zOffset = self.zOffset-self.pitchSpeed*elapsedTime		
+					cam.camOffset.z = cam.camOffset.z -self.pitchSpeed*1.2*elapsedTime*-gravityFactor
+				elseif (move.y<0 and (self.zOffset+self.pitchSpeed*elapsedTime)<self.maxPitchAngle)then
+					self.zOffset = self.zOffset+self.pitchSpeed*elapsedTime
+					cam.camOffset.z = cam.camOffset.z +self.pitchSpeed*1.2*elapsedTime*-gravityFactor
 				end
 			else
-				--if(self.zOffset<-0.2) then
-				--	self.zOffset = self.zOffset+60*elapsedTime
-				--elseif (self.zOffset>0.2) then
-				--	self.zOffset = self.zOffset-60*elapsedTime
-				--end
+				if(self.zOffset<-0.4) then
+					self.zOffset = self.zOffset+self.pitchSpeed*elapsedTime
+					cam.camOffset.z = cam.camOffset.z +self.pitchSpeed*1.2*elapsedTime*-gravityFactor
+				elseif (self.zOffset>0.4) then
+					self.zOffset = self.zOffset-self.pitchSpeed*elapsedTime
+					cam.camOffset.z = cam.camOffset.z -self.pitchSpeed*1.2*elapsedTime*-gravityFactor
+				end
 			end
-			local q = Quaternion(cam.cc:getRightDirection(), self.zOffset)
+			local q = Quaternion(cam.cc:getRightDirection(), 10-self.zOffset*-gravityFactor)
 			cam.cc:setViewDirection(q:toMat3():mulVec3(cam.cc:getViewDirection()))
 			
-			-- calculate cameraimpulse and relative controls
+			-- calculate camera impulse and relative controls
 			local camViewTargetDiff = cam.viewTarget:getPosition()-cam.rb:getPosition()
 			local relativeControlsAngle = -angleBetweenVec2(Vec2(camViewTargetDiff.x,camViewTargetDiff.y),Vec2(0,1))
 			local z = Quaternion(Vec3(0.0, 0.0, 1.0), relativeControlsAngle)
@@ -99,7 +92,7 @@ function createCamera(guid,viewtarget,camOffset)
 			end
 			
 			self.newCamPos = cam.viewTarget:getPosition()+self.camOffset
-			self.rb:applyLinearImpulse((self.newCamPos-cam.rb:getPosition()):mulScalar(elapsedTime*self.moveSpeed*(1+move:length())))
+			self.rb:applyLinearImpulse((self.newCamPos-cam.rb:getPosition()):mulScalar(elapsedTime*self.moveSpeed))
 			--self.cc:setViewTarget(cam.viewTarget)
 			return moveVector3Rot
 		end
