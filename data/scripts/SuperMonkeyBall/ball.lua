@@ -13,13 +13,13 @@ function createBall()
 	cinfo.restitution = 0.0 --no bounciness
 	cinfo.linearDamping = 1.0
 	cinfo.angularDamping = 1.0
-	cinfo.friction = 1.0
+	cinfo.friction = 0.8
 	cinfo.gravityFactor = 30.0
-	cinfo.rollingFrictionMultiplier = 1.0
+	cinfo.rollingFrictionMultiplier = 0.8
 	cinfo.collisionFilterInfo = 0x1
 	ball.rb = ball.pc:createRigidBody(cinfo)
 	--Custom attributes
-	ball.maxMoveSpeed = 280
+	ball.maxMoveSpeed = 380
 	ball.maxJumpCount = 1
 	ball.jumping = false
 	ball.jumpCount = 1

@@ -80,14 +80,18 @@ Loading and executing script: data/base/setup.lua
 Loading and executing script: data/base/initialize.lua
 Lua: === Executing initialize.lua ================
 Loading and executing script: data/scripts//SuperMonkeyBall/main.lua
+Loading and executing script: data/scripts/SuperMonkeyBall/helper.lua
 Loading and executing script: data/scripts/SuperMonkeyBall/ball.lua
+Loading and executing script: data/scripts/SuperMonkeyBall/camera.lua
 Loading and executing script: data/scripts/SuperMonkeyBall/box.lua
 Loading and executing script: data/scripts/SuperMonkeyBall/mainmenu.lua
 Warning: Lua: [id:6] Found empty event listener list 'update' for /game/mainmenu
-Loading and executing script: data/scripts/SuperMonkeyBall/Pickup.lua
+Loading and executing script: data/scripts/SuperMonkeyBall/PickupBase.lua
+Loading and executing script: data/scripts/SuperMonkeyBall/DoubleJumpPickup.lua
 Lua: === Finished initialize.lua =================
 Loading cached file for data/models/map1/Map1.FBX (.modelCache/1135693372.thModel)
 Reusing already loaded resource 'data/models/map1/Map1.FBX'
+Warning: [857386286] Collide\TriggerVolume\hkpTriggerVolume.cpp(94): The hkpBoxBoxAgent agent does not handle deep collisions well, so avoid using it with the hkpTriggerVolume. We recommend either unregistering the box-box agent, or replacing any boxes in the hkpTriggerVolume by equivalent hkpConvexVerticesShapes.
 Loading cached file for data/models/Sphere/Sphere.FBX (.modelCache/2597853922.thModel)
 Warning: [857386286] Collide\TriggerVolume\hkpTriggerVolume.cpp(94): The hkpBoxBoxAgent agent does not handle deep collisions well, so avoid using it with the hkpTriggerVolume. We recommend either unregistering the box-box agent, or replacing any boxes in the hkpTriggerVolume by equivalent hkpConvexVerticesShapes.
 === Finished Initialization Phase ===
@@ -101,18 +105,9 @@ Warning: [857386286] Collide\TriggerVolume\hkpTriggerVolume.cpp(94): The hkpBoxB
 +++ Finalizing model.
 +++ Finalizing model.
 +++ Finalizing model.
++++ Finalizing model.
 << /game/mainmenu
 >> /game/default
-Lua:  jumpCount 1
-Lua:  jumpCount 0
-Lua: ball left the trigger.
-Lua:  jumpCount 2
-Lua:  jumpCount 1
-Lua:  jumpCount 2
-Lua:  jumpCount 1
-Lua:  jumpCount 2
-Lua: ball left the trigger.
-Lua:  jumpCount 2
 << /game/default
 << /game
 Destroying in game thread.
