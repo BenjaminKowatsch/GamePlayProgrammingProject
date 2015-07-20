@@ -20,20 +20,23 @@ include("SuperMonkeyBall/mainmenu.lua")
 include("SuperMonkeyBall/PickupBase.lua")
 include("SuperMonkeyBall/DoubleJumpPickup.lua")
 --include("SuperMonkeyBall/banana.lua")
-
 pickupbase = PickupBase("PickupBase",Vec3(-50,50,0),0x1,15,15,15)
 
-ball = createBall()
-local capsule = createCollisionCapsule("capsule",Vec3(0,0,-250),Vec3(0,0,500),40)
-capsule:setPosition(ball:getPosition())
+	ball = createBall()
+	local capsule = createCollisionCapsule("capsule",Vec3(0,0,-250),Vec3(0,0,500),40)
+	capsule:setPosition(ball:getPosition())
 
-pickup = DoubleJumpPickup("DoubleJumpPickup",Vec3(30,0,0),0x1,15,15,15)
+	pickup = DoubleJumpPickup("DoubleJumpPickup",Vec3(30,0,0),0x1,15,15,15)
 
-box = createBox(Vec3(0,0,-4),"box")
+	box = createBox(Vec3(0,0,-4),"box")
 
-box2 = createBox(Vec3(0,0,120),"box1")
+	box2 = createBox(Vec3(0,0,120),"box1")
 
-cam = createCamera("camera",ball,Vec3(0,-45,30))
+	cam = createCamera("camera",ball,Vec3(0,-45,30))
+function mainmenuEnter(enterData)
+	
+end
+
 
 function defaultUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
@@ -79,39 +82,78 @@ function defaultUpdate(updateData)
 	return EventResult.Handled
 end
 
-
-
---Events.PostInitialization:registerListener(function()
---local cinfo = {
---    type = ConstraintType.BallAndSocket, -- The constraint type
---    A = box.rb,                   -- Take care not to use the game object but its rigid body!
---    B = nil,                -- If you omit this one (or set it to nil), the physics world itself is used as B
---    constraintSpace = "world", -- Wether the given pivot or pivots are in world or in local (body) space
---    -- Only required if constraintSpace == "world"
---    pivot = box:getWorldPosition(), -- Global coordinates
---}
---local constraint = PhysicsFactory:createConstraint(cinfo)
---PhysicsSystem:getWorld():addConstraint(constraint) -- 'world' must have been created earlier at some point, of course
---end)
-
 -- global state machine
-State{
-	name = "default",
+StateMachine{
+	name = "pjStateMachine",
 	parent = "/game",
-	eventListeners = {
-		update = { defaultUpdate }
+	states =
+	{
+		{
+			name = "mainmenu",
+			eventListeners = {
+				enter  = { mainmenuEnter },
+				update = { defaultUpdate },
+				leave  = { mainmenuLeave }
+			}
+		},
+		{
+			name = "level1",
+			eventListeners = {
+				enter  = { level1Enter },
+				update = { level1Update },
+				leave  = { level1Leave }
+			}
+		},
+		{
+			name = "level2",
+			eventListeners = {
+				enter  = { level2Enter },
+				update = { level2Update },
+				leave  = { level2Leave }
+			}
+		},
+		{
+			name = "level3",
+			eventListeners = {
+				enter  = { level3Enter },
+				update = { level3Update },
+				leave  = { level3Leave }
+			}
+		},
+		{
+			name = "level4",
+			eventListeners = {
+				enter  = { level4Enter },
+				update = { level4Update },
+				leave  = { level4Leave }
+			}
+		},
+		{
+			name = "level5",
+			eventListeners = {
+				enter  = { level5Enter },
+				update = { level5Update },
+				leave  = { level5Leave }
+			}
+		}
+	},
+	transitions =
+	{
+		{ from = "__enter", to = "mainmenu" },
+		{ from = "mainmenu", to = "level1", condition = function() return InputHandler:wasTriggered(Key.F1) end },
+		{ from = "mainmenu", to = "level2", condition = function() return InputHandler:wasTriggered(Key.F2) end },
+		{ from = "mainmenu", to = "level3", condition = function() return InputHandler:wasTriggered(Key.F3) end },
+		{ from = "mainmenu", to = "level4", condition = function() return InputHandler:wasTriggered(Key.F4) end },
+		{ from = "mainmenu", to = "level5", condition = function() return InputHandler:wasTriggered(Key.F5) end }
+	},
+	eventListeners =
+	{
+		enter = { pjStateMachineEnter }
 	}
 }
-StateTransitions{
-	parent = "/game",
-	{ from = "__enter", to = "mainmenu" }
-}
 
 StateTransitions{
 	parent = "/game",
-	{ from = "mainmenu", to = "default", condition = function() return InputHandler:wasTriggered(Key.F1) end}
-}
-StateTransitions{
-	parent = "/game",
-	{ from = "default", to = "__leave", condition = function() return InputHandler:wasTriggered(Key.Escape) or bit32.btest(InputHandler:gamepad(0):buttonsTriggered(), Button.Back) end }
+	{ from = "__enter", to = "pjStateMachine" },
+	{ from = "pjStateMachine", to = "__leave", condition = function() return InputHandler:wasTriggered(Key.Escape) or bit32.btest(InputHandler:gamepad(0):buttonsTriggered(), Button.Back) end }
 }
