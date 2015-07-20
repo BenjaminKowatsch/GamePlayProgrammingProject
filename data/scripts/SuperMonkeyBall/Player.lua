@@ -5,9 +5,9 @@ include("SuperMonkeyBall/camera.lua")
 function createPlayer()
 	local player = {}
 	player.ball = createBall()
-	player.capsule = createCollisionCapsule("capsule",Vec3(0,0,-250),Vec3(0,0,500),40)
+	player.capsule = createCollisionCapsule("capsule",Vec3(0,0,-250),Vec3(0,0,500),65)
 	player.capsule:setPosition(player.ball:getPosition())
-	player.cam = createCamera("camera",player.ball,Vec3(0,-50,20))
+	player.cam = createCamera("camera",player.ball,Vec3(0,-70,25))
 	
 	player.update= function(self,elapsedTime)
 		-- keyboard player input

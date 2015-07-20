@@ -90,6 +90,7 @@ Warning: Lua: [id:6] Found empty event listener list 'update' for /game/mainmenu
 Loading and executing script: data/scripts/SuperMonkeyBall/PickupBase.lua
 Loading and executing script: data/scripts/SuperMonkeyBall/DoubleJumpPickup.lua
 Loading and executing script: data/scripts/SuperMonkeyBall/GravityPickup.lua
+Loading and executing script: data/scripts/SuperMonkeyBall/SpeedPickup.lua
 Warning: Lua: [id:6] Found empty event listener list 'enter' for /game/pjStateMachine
 Warning: Lua: [id:6] Found empty event listener list 'leave' for /game/pjStateMachine/mainmenu
 Warning: Lua: [id:6] Found empty event listener list 'enter' for /game/pjStateMachine/level1
@@ -112,6 +113,8 @@ Loading cached file for data/models/map3/Map3.FBX (.modelCache/2659513189.thMode
 Reusing already loaded resource 'data/models/map3/Map3.FBX'
 Warning: [857386286] Collide\TriggerVolume\hkpTriggerVolume.cpp(94): The hkpBoxBoxAgent agent does not handle deep collisions well, so avoid using it with the hkpTriggerVolume. We recommend either unregistering the box-box agent, or replacing any boxes in the hkpTriggerVolume by equivalent hkpConvexVerticesShapes.
 Warning: [857386286] Collide\TriggerVolume\hkpTriggerVolume.cpp(94): The hkpBoxBoxAgent agent does not handle deep collisions well, so avoid using it with the hkpTriggerVolume. We recommend either unregistering the box-box agent, or replacing any boxes in the hkpTriggerVolume by equivalent hkpConvexVerticesShapes.
+Loading cached file for data/models/Background/Background.FBX (.modelCache/1510261134.thModel)
+Warning: [857386286] Collide\TriggerVolume\hkpTriggerVolume.cpp(94): The hkpBoxBoxAgent agent does not handle deep collisions well, so avoid using it with the hkpTriggerVolume. We recommend either unregistering the box-box agent, or replacing any boxes in the hkpTriggerVolume by equivalent hkpConvexVerticesShapes.
 Warning: [857386286] Collide\TriggerVolume\hkpTriggerVolume.cpp(94): The hkpBoxBoxAgent agent does not handle deep collisions well, so avoid using it with the hkpTriggerVolume. We recommend either unregistering the box-box agent, or replacing any boxes in the hkpTriggerVolume by equivalent hkpConvexVerticesShapes.
 Loading cached file for data/models/Sphere/Sphere.FBX (.modelCache/2597853922.thModel)
 Warning: [857386286] Collide\TriggerVolume\hkpTriggerVolume.cpp(94): The hkpBoxBoxAgent agent does not handle deep collisions well, so avoid using it with the hkpTriggerVolume. We recommend either unregistering the box-box agent, or replacing any boxes in the hkpTriggerVolume by equivalent hkpConvexVerticesShapes.
@@ -130,8 +133,16 @@ Warning: [857386286] Collide\TriggerVolume\hkpTriggerVolume.cpp(94): The hkpBoxB
 +++ Finalizing model.
 +++ Finalizing model.
 +++ Finalizing model.
-<< /game/pjStateMachine/mainmenu
->> /game/pjStateMachine/level1
++++ Finalizing model.
++++ Finalizing model.
++++ Finalizing model.
+Warning: [-265005969] Entity\hkpRigidBody.cpp(777): You are calling hkpRigidBody::setTransform of a RigidBody, which tries to deactivate. This keeps the RigidBody alive at some extra performance cost. Try to avoid calling unnecessary setTransform() or disable deactivation for this body
+Warning: [-265005969] Entity\hkpRigidBody.cpp(777): You are calling hkpRigidBody::setTransform of a RigidBody, which tries to deactivate. This keeps the RigidBody alive at some extra performance cost. Try to avoid calling unnecessary setTransform() or disable deactivation for this body
+Warning: [-265005969] Entity\hkpRigidBody.cpp(777): You are calling hkpRigidBody::setTransform of a RigidBody, which tries to deactivate. This keeps the RigidBody alive at some extra performance cost. Try to avoid calling unnecessary setTransform() or disable deactivation for this body
+Warning: [-265005969] Entity\hkpRigidBody.cpp(777): You are calling hkpRigidBody::setTransform of a RigidBody, which tries to deactivate. This keeps the RigidBody alive at some extra performance cost. Try to avoid calling unnecessary setTransform() or disable deactivation for this body
+Warning: [-265005969] Entity\hkpRigidBody.cpp(777): You are calling hkpRigidBody::setTransform of a RigidBody, which tries to deactivate. This keeps the RigidBody alive at some extra performance cost. Try to avoid calling unnecessary setTransform() or disable deactivation for this body
+Warning: [-265005969] Entity\hkpRigidBody.cpp(777): You are calling hkpRigidBody::setTransform of a RigidBody, which tries to deactivate. This keeps the RigidBody alive at some extra performance cost. Try to avoid calling unnecessary setTransform() or disable deactivation for this body
+Warning: [-265005969] Entity\hkpRigidBody.cpp(777): You are calling hkpRigidBody::setTransform of a RigidBody, which tries to deactivate. This keeps the RigidBody alive at some extra performance cost. Try to avoid calling unnecessary setTransform() or disable deactivation for this body
 << /game/pjStateMachine
 << /game
 Destroying in game thread.

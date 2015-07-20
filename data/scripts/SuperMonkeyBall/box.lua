@@ -16,7 +16,7 @@ function createBox(position,guid)
 	cinfo.position = position
 	cinfo.collisionFilterInfo = 0x1
 	box.rb = box.pc:createRigidBody(cinfo)
-	box.sc = box:createScriptComponent()
+	--box.sc = box:createScriptComponent()
 	--box.onCollision = function(other)
 	--	logMessage(" OnCollision ")
 	--end

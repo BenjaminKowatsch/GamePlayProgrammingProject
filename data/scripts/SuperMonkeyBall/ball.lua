@@ -19,7 +19,7 @@ function createBall()
 	cinfo.collisionFilterInfo = 0x1
 	ball.rb = ball.pc:createRigidBody(cinfo)
 	--Custom attributes
-	ball.maxMoveSpeed = 380
+	ball.maxMoveSpeed = 480
 	ball.maxJumpCount = 1
 	ball.jumping = false
 	ball.jumpCount = 1
@@ -52,24 +52,7 @@ function createBall()
 			self.jumping = false
 		end
 		self.rb:setLinearVelocity(vel)
-	end
-	
-	ball.calcSteering = function(self, moveVector)
-	
-		-- calculate the steering direction and amount
-		local rightVec = self:getRightDirection()
-		local steer = rightVec:dot(moveVector)
-		local crossRightMove = rightVec:cross(moveVector)
-		if (crossRightMove.z < 0) then
-			if (steer < 0) then
-				steer = -1
-			else
-				steer = 1
-			end
-		end
-		return steer
-	end
-	
+	end	
 	ball.rb:setUserData(ball) -- Always a good idea
 	
 	return ball

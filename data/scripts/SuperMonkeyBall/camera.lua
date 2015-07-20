@@ -26,10 +26,11 @@ function createCamera(guid,viewtarget,camOffset)
 		cam.tiltAngle = 0
 		cam.maxTiltAngle = 30
 		cam.newCamPos = cam.rb:getPosition()
-		cam.moveSpeed = 1000
+		cam.moveSpeed = 900
 		cam.zOffset = 0
-		cam.pitchSpeed = 20
-		cam.maxPitchAngle = 5
+		cam.zOffsetSpeed = 50
+		cam.pitchSpeed = 25
+		cam.maxPitchAngle = 8
 		
 		cam.update = function (self,elapsedTime,move,zoom)
 			-- set zoom
@@ -59,23 +60,28 @@ function createCamera(guid,viewtarget,camOffset)
 			--	relative to y input
 			if(move.y~=0) then
 				if(move.y>0 and (self.zOffset-self.pitchSpeed*elapsedTime)>-self.maxPitchAngle) then
-					self.zOffset = self.zOffset-self.pitchSpeed*elapsedTime		
-					cam.camOffset.z = cam.camOffset.z -self.pitchSpeed*1.2*elapsedTime*-gravityFactor
+					self.zOffset = self.zOffset-self.pitchSpeed*elapsedTime
+					cam.camOffset.z = cam.camOffset.z -self.zOffsetSpeed*elapsedTime*-gravityFactor
 				elseif (move.y<0 and (self.zOffset+self.pitchSpeed*elapsedTime)<self.maxPitchAngle)then
 					self.zOffset = self.zOffset+self.pitchSpeed*elapsedTime
-					cam.camOffset.z = cam.camOffset.z +self.pitchSpeed*1.2*elapsedTime*-gravityFactor
+					cam.camOffset.z = cam.camOffset.z +self.zOffsetSpeed*elapsedTime*-gravityFactor
 				end
 			else
 				if(self.zOffset<-0.4) then
 					self.zOffset = self.zOffset+self.pitchSpeed*elapsedTime
-					cam.camOffset.z = cam.camOffset.z +self.pitchSpeed*1.2*elapsedTime*-gravityFactor
+					cam.camOffset.z = cam.camOffset.z +self.zOffsetSpeed*elapsedTime*-gravityFactor
 				elseif (self.zOffset>0.4) then
 					self.zOffset = self.zOffset-self.pitchSpeed*elapsedTime
-					cam.camOffset.z = cam.camOffset.z -self.pitchSpeed*1.2*elapsedTime*-gravityFactor
+					cam.camOffset.z = cam.camOffset.z -self.zOffsetSpeed*elapsedTime*-gravityFactor
 				end
 			end
-			local q = Quaternion(cam.cc:getRightDirection(), 10-self.zOffset*-gravityFactor)
+			
+			local q = Quaternion(cam.cc:getRightDirection(), (10-self.zOffset)*-gravityFactor)
 			cam.cc:setViewDirection(q:toMat3():mulVec3(cam.cc:getViewDirection()))
+			
+			-- tilt Background
+			local z = Quaternion(cam.cc:getRightDirection(), -self.zOffset*2*-gravityFactor)
+			background.rb:setRotation(Quaternion(cam.cc:getViewDirection(),-cam.tiltAngle) * z)
 			
 			-- calculate camera impulse and relative controls
 			local camViewTargetDiff = cam.viewTarget:getPosition()-cam.rb:getPosition()
@@ -93,6 +99,8 @@ function createCamera(guid,viewtarget,camOffset)
 			
 			self.newCamPos = cam.viewTarget:getPosition()+self.camOffset
 			self.rb:applyLinearImpulse((self.newCamPos-cam.rb:getPosition()):mulScalar(elapsedTime*self.moveSpeed))
+			--self.rb:setLinearVelocity((self.newCamPos-cam.rb:getPosition()):mulScalar(elapsedTime*self.moveSpeed))
+			
 			--self.cc:setViewTarget(cam.viewTarget)
 			return moveVector3Rot
 		end

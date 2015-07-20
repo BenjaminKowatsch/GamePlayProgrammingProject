@@ -21,12 +21,24 @@ include("SuperMonkeyBall/mainmenu.lua")
 include("SuperMonkeyBall/PickupBase.lua")
 include("SuperMonkeyBall/DoubleJumpPickup.lua")
 include("SuperMonkeyBall/GravityPickup.lua")
+include("SuperMonkeyBall/SpeedPickup.lua")
 --include("SuperMonkeyBall/banana.lua")
 
 pickupbase = PickupBase("PickupBase",Vec3(-50,50,0),0x1,15,15,15)
 
 pickup = DoubleJumpPickup("DoubleJumpPickup",Vec3(30,0,0),0x1,15,15,15)
 
+background = GameObjectManager:createGameObject("background")
+background.rc = background:createRenderComponent()
+background.rc:setPath("data/models/Background/Background.FBX")
+background.pc = background:createPhysicsComponent()
+local cinfo = RigidBodyCInfo()
+cinfo.motionType = MotionType.Keyframed
+cinfo.shape = PhysicsFactory:createSphere(500)
+cinfo.mass = 10
+cinfo.collisionFilterInfo = 0x4
+cinfo.position = Vec3(0,0,0)
+background.rb = background.pc:createRigidBody(cinfo)
 
 box = createBox(Vec3(0,0,-4),"box")
 
@@ -34,17 +46,17 @@ gravityPickup = GravityPickup("GravityPickup",Vec3(30,30,0),0x1,15,15,15)
 
 gravityPickup2 = GravityPickup("GravityPickup2",Vec3(30,-30,181),0x1,15,15,15)
 
+speedPickup = SpeedPickup("SpeedPickup",Vec3(-100,60,0),0x1,15,15,15)
+
 box2 = createBox(Vec3(0,0,200),"box1")
 
 player = createPlayer()
-
---cam = createCamera("camera",ball,Vec3(0,-50,20))
 
 function mainmenuEnter(enterData)
 	
 end
 
-
+local angle = 0
 function defaultUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
 	player:update(elapsedTime)
