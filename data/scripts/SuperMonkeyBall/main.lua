@@ -21,29 +21,40 @@ include("SuperMonkeyBall/mainmenu.lua")
 include("SuperMonkeyBall/PickupBase.lua")
 include("SuperMonkeyBall/DoubleJumpPickup.lua")
 include("SuperMonkeyBall/GravityPickup.lua")
+include("SuperMonkeyBall/level1.lua")
 --include("SuperMonkeyBall/banana.lua")
 
-pickupbase = PickupBase("PickupBase",Vec3(-50,50,0),0x1,15,15,15)
+--pickupbase = PickupBase("PickupBase",Vec3(-50,50,0),0x1,15,15,15)
 
-pickup = DoubleJumpPickup("DoubleJumpPickup",Vec3(30,0,0),0x1,15,15,15)
+--pickup = DoubleJumpPickup("DoubleJumpPickup",Vec3(30,0,0),0x1,15,15,15)
 
 
-box = createBox(Vec3(0,0,-4),"box")
+--box = createBox(Vec3(0,0,-4),"box")
 
-gravityPickup = GravityPickup("GravityPickup",Vec3(30,30,0),0x1,15,15,15)
+--gravityPickup = GravityPickup("GravityPickup",Vec3(30,30,0),0x1,15,15,15)
 
-gravityPickup2 = GravityPickup("GravityPickup2",Vec3(30,-30,181),0x1,15,15,15)
+--gravityPickup2 = GravityPickup("GravityPickup2",Vec3(30,-30,181),0x1,15,15,15)
 
-box2 = createBox(Vec3(0,0,200),"box1")
+--box2 = createBox(Vec3(0,0,200),"box1")
 
 player = createPlayer()
 
 --cam = createCamera("camera",ball,Vec3(0,-50,20))
+level1 = createLevel1(Vec3(0,0,-4), "level1")
+level1:setComponentStates(ComponentState.Inactive)
+level2 = createLevel1(Vec3(0,0,-4), "level2")
+level2:setComponentStates(ComponentState.Inactive)
+level3 = createLevel1(Vec3(0,0,-4), "level3")
+level3:setComponentStates(ComponentState.Inactive)
+level4 = createLevel1(Vec3(0,0,-4), "level4")
+level4:setComponentStates(ComponentState.Inactive)
 
-function mainmenuEnter(enterData)
-	
+function mainmenuEnter()
+level1:setComponentStates(ComponentState.Active)
 end
-
+function mainmenuLeave()
+level1:setComponentStates(ComponentState.Inactive)
+end
 
 function defaultUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
@@ -104,7 +115,7 @@ StateMachine{
 			name = "level1",
 			eventListeners = {
 				enter  = { level1Enter },
-				update = { level1Update },
+				update = { defaultUpdate },
 				leave  = { level1Leave }
 			}
 		},
@@ -145,6 +156,7 @@ StateMachine{
 	{
 		{ from = "__enter", to = "mainmenu" },
 		{ from = "mainmenu", to = "level1", condition = function() return InputHandler:wasTriggered(Key.F1) end },
+		{ from = "level1", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F6) end },
 		{ from = "mainmenu", to = "level2", condition = function() return InputHandler:wasTriggered(Key.F2) end },
 		{ from = "mainmenu", to = "level3", condition = function() return InputHandler:wasTriggered(Key.F3) end },
 		{ from = "mainmenu", to = "level4", condition = function() return InputHandler:wasTriggered(Key.F4) end },

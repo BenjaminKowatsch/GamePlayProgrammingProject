@@ -8,7 +8,6 @@ function createPlayer()
 	player.capsule = createCollisionCapsule("capsule",Vec3(0,0,-250),Vec3(0,0,500),40)
 	player.capsule:setPosition(player.ball:getPosition())
 	player.cam = createCamera("camera",player.ball,Vec3(0,-50,20))
-	
 	player.update= function(self,elapsedTime)
 		-- keyboard player input
 		local move = Vec2(0, 0)
