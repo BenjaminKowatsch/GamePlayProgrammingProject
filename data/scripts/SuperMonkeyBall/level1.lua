@@ -13,10 +13,7 @@ function createLevel1(position,guid)
 	cinfo.collisionFilterInfo = 0x1
 	
 	level.rb = level.pc:createRigidBody(cinfo)
-	level.sc = level:createScriptComponent()
-		--level.onCollision = function(other)
-		--	logMessage(" OnCollision ")
-		--end
+
 	level.rb:setUserData(level)
 	
 	return level

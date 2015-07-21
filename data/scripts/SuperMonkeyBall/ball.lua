@@ -19,7 +19,7 @@ function createBall()
 	cinfo.collisionFilterInfo = 0x1
 	ball.rb = ball.pc:createRigidBody(cinfo)
 	--Custom attributes
-	ball.maxMoveSpeed = 480
+	ball.maxMoveSpeed = 400
 	ball.maxJumpCount = 1
 	ball.jumping = false
 	ball.jumpCount = 1

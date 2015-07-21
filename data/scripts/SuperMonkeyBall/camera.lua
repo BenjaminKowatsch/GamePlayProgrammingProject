@@ -26,7 +26,7 @@ function createCamera(guid,viewtarget,camOffset)
 		cam.tiltAngle = 0
 		cam.maxTiltAngle = 30
 		cam.newCamPos = cam.rb:getPosition()
-		cam.moveSpeed = 900
+		cam.moveSpeed = 600
 		cam.zOffset = 0
 		cam.zOffsetSpeed = 50
 		cam.pitchSpeed = 25

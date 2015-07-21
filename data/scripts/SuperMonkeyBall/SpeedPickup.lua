@@ -10,10 +10,28 @@ setmetatable(SpeedPickup, {
 	end,
 })
 
-function SpeedPickup:_init(guid,position,cfi,w,h,d)
+function SpeedPickup:_init(guid,position,cfi,w,h,d,maxTime)
 	PickupBase._init(self,guid,position,cfi,w,h,d) -- super constructor call 
+	self.maxTime = maxTime
+end
+
+function SpeedPickup:update(elapsedTime)
+	if(self.startTimer) then
+		self.timeCount = self.timeCount + elapsedTime
+		if( self.timeCount>self.maxTime) then
+			self.startTimer = false
+			self.speedGO.maxMoveSpeed = self.oldMaxMoveSpeed
+		end
+	end
 end
 
 function SpeedPickup:onBeginOverlap(go)
-	go.maxMoveSpeed = 500
+	self.oldMaxMoveSpeed = go.maxMoveSpeed
+	go.maxMoveSpeed = 800
+	self.speedGO = go
+end
+
+function SpeedPickup:onEndOverlap(go)
+	self.timeCount = 0
+	self.startTimer = true
 end

@@ -43,11 +43,11 @@ background.rb = background.pc:createRigidBody(cinfo)
 
 --box = createBox(Vec3(0,0,-4),"box")
 
---gravityPickup = GravityPickup("GravityPickup",Vec3(30,30,0),0x1,15,15,15)
+gravityPickup = GravityPickup("GravityPickup",Vec3(30,30,0),0x1,15,15,15)
 
---gravityPickup2 = GravityPickup("GravityPickup2",Vec3(30,-30,181),0x1,15,15,15)
+gravityPickup2 = GravityPickup("GravityPickup2",Vec3(30,-30,181),0x1,15,15,15)
 
-speedPickup = SpeedPickup("SpeedPickup",Vec3(-100,60,0),0x1,15,15,15)
+speedPickup = SpeedPickup("SpeedPickup",Vec3(-100,60,0),0x1,15,15,15,4)
 
 box2 = createBox(Vec3(0,0,200),"box1")
 
@@ -75,6 +75,7 @@ end
 function defaultUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
 	player:update(elapsedTime)
+	speedPickup:update(elapsedTime)
 	---- keyboard player input
 	--local move = Vec2(0, 0)
 	--if (InputHandler:isPressed(Key.A)) then move.x = - 1 end
