@@ -104,7 +104,7 @@ void gep::Renderer::initialize()
     g_globalManager.getResourceManager()->registerResourceType("Font");
 
     // load engine resources
-    m_pDefaultFont = g_globalManager.getResourceManager()->loadResource<Font>(FontFileLoader("data/base/dejavusans.ttf", 11), LoadAsync::No);
+    m_pDefaultFont = g_globalManager.getResourceManager()->loadResource<Font>(FontFileLoader("data/base/dejavusans.ttf", 17), LoadAsync::No);
     m_pFontShader = g_globalManager.getResourceManager()->loadResource<Shader>(ShaderFileLoader("data/base/font.fx"), LoadAsync::No);
 
     g_globalManager.getResourceManager()->finalizeResourcesWithFlags(ResourceFinalize::FromRenderer);
