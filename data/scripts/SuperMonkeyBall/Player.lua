@@ -2,6 +2,7 @@ include("SuperMonkeyBall/helper.lua")
 include("SuperMonkeyBall/ball.lua")
 include("SuperMonkeyBall/camera.lua")
 
+
 function createPlayer()
 	local player = {}
 	player.ball = createBall()

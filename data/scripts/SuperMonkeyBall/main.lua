@@ -66,12 +66,20 @@ level4 = createLevel1(Vec3(0,0,-4), "level4")
 level4:setComponentStates(ComponentState.Inactive)
 
 function mainmenuEnter()
-level1:setComponentStates(ComponentState.Active)
+	level1:setComponentStates(ComponentState.Active)
 end
 function mainmenuLeave()
-level1:setComponentStates(ComponentState.Inactive)
+	level1:setComponentStates(ComponentState.Inactive)
 end
 
+function level2Enter()
+	level2:setComponentStates(ComponentState.Active)
+	player.ball:setPosition(Vec3(0,0,14))
+	player.capsule:setPosition(player.ball:getPosition())
+end
+function level2Leave()
+	level2:setComponentStates(ComponentState.Inactive)
+end
 function defaultUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
 	player:update(elapsedTime)
@@ -140,7 +148,7 @@ StateMachine{
 			name = "level2",
 			eventListeners = {
 				enter  = { level2Enter },
-				update = { level2Update },
+				update = { defaultUpdate },
 				leave  = { level2Leave }
 			}
 		},
