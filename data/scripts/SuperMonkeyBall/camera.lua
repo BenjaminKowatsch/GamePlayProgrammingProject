@@ -83,7 +83,7 @@ function createCamera(guid,viewtarget,camOffset)
 			
 			-- tilt Background
 			local z = Quaternion(cam.cc:getRightDirection(), -self.zOffset*2*-gravityFactor)
-			--background.rb:setRotation(Quaternion(cam.cc:getViewDirection(),-cam.tiltAngle) * z)
+			background.rb:setRotation(Quaternion(cam.cc:getViewDirection(),-cam.tiltAngle) * z)
 			
 			-- calculate camera impulse and relative controls
 			local camViewTargetDiff = cam.viewTarget:getPosition()-cam.rb:getPosition()
@@ -100,6 +100,7 @@ function createCamera(guid,viewtarget,camOffset)
 			end
 			
 			self.newCamPos = cam.viewTarget:getPosition()+self.camOffset
+
 			-- use impulse when camera will turn around to avoid camera bug
 			--if(move.y<0 and move.x <0.2 and move.x >-0.2) then
 			--	self.rb:applyLinearImpulse((self.newCamPos-cam.rb:getPosition()):mulScalar(elapsedTime*self.moveSpeed))
@@ -111,6 +112,9 @@ function createCamera(guid,viewtarget,camOffset)
 			--self.rb:applyLinearImpulse((self.newCamPos-cam.rb:getPosition()):mulScalar(elapsedTime*self.moveSpeed))
 			--self.rb:setLinearVelocity((self.newCamPos-cam.rb:getPosition()):mulScalar(elapsedTime*self.viewTarget.maxMoveSpeed))
 			---self.rb:setLinearVelocity(self.viewTarget.rb:getLinearVelocity())
+
+			--self.rb:applyLinearImpulse((self.newCamPos-cam.rb:getPosition()):mulScalar(elapsedTime*self.moveSpeed))
+			--self.rb:setLinearVelocity((self.newCamPos-cam.rb:getPosition()):mulScalar(elapsedTime*self.moveSpeed))
 			--self.cc:setViewTarget(cam.viewTarget)
 			return moveVector3Rot
 		end

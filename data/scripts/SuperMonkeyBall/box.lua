@@ -14,9 +14,7 @@ function createBox(position,guid)
 	cinfo.motionType = MotionType.Keyframed
 	cinfo.mass = 10
 	cinfo.position = position
-	------------------------------------
-	--cinfo.collisionFilterInfo = 0x1
-	------------------------------------
+	cinfo.collisionFilterInfo = 0x1
 	box.rb = box.pc:createRigidBody(cinfo)
 	
 	box.rb:setUserData(box)

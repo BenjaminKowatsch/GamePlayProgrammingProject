@@ -1,21 +1,23 @@
-function createLevel1(position,guid)
-	local level = GameObjectManager:createGameObject(guid)
-	level.rc = level:createRenderComponent()
-	level.rc:setPath("data/models/Map_1.FBX")
-	level.pc = level:createPhysicsComponent()
-	
-	local cinfo = RigidBodyCInfo()
-	cinfo.motionType = MotionType.Fixed
-	--cinfo.shape = PhysicsFactory:loadCollisionMesh("data/collision/map1.hkx")
-	cinfo.shape = PhysicsFactory:createBox(Vec3(398.425,396.85,3.937))
-	cinfo.mass = 10
-	cinfo.position = position
-	cinfo.collisionFilterInfo = 0x1
-	
-	level.rb = level.pc:createRigidBody(cinfo)
+Level1 = {}
+Level1.__index = Level1
 
-	level.rb:setUserData(level)
-	
-	return level
+setmetatable(Level1, {
+	__index = Level,
+	__call = function(cls,...)
+		local self = setmetatable({},cls)
+		self:_init(...) -- call constructor
+		return self
+	end,
+})
+
+function Level1:setComponentStates(state)
+
+	self.map:setComponentStates(state)
+	self.goal1.go:setComponentStates(state)
 end
 
+function Level1:_init()
+	Level._init(self, "level1", Vec3(0,0,-4), "data/models/map3/Map3.FBX", "data/collision/map3.hkx")
+	self.goal1 = Goal("goal1", Vec3(100,100,0),0x1,20,20,20,10)
+	
+end

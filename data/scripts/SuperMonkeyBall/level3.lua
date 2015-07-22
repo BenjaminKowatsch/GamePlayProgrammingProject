@@ -1,41 +1,25 @@
-PickupBase = {}
-PickupBase.__index = PickupBase
+Level3 = {}
+Level3.__index = Level3
 
-setmetatable(PickupBase,{
-	__call = function(cls, ...)
-	local self = setmetatable({}, cls)
-	self:_init(...) -- call constructor
-	return self
+setmetatable(Level3, {
+	__index = Level,
+	__call = function(cls,...)
+		local self = setmetatable({},cls)
+		self:_init(...) -- call constructor
+		return self
 	end,
 })
--- define constructor
-function PickupBase:_init(guid,position,cfi,w,h,d)
-	local go = GameObjectManager:createGameObject(guid)
-	go.physics = go:createPhysicsComponent()
-	local cinfo = RigidBodyCInfo()
-		cinfo.collisionFilterInfo = cfi
-		cinfo.motionType = MotionType.Fixed
-		cinfo.position=position
-		cinfo.shape = PhysicsFactory:createBox(w,h,d)
-		cinfo.isTriggerVolume = true
-	go.rigidBody = go.physics:createRigidBody(cinfo)
-	go.rigidBody:getTriggerEvent():registerListener(function(args)
-		local go = args:getRigidBody():getUserData()
-		if args:getEventType() == TriggerEventType.Entered then
-			self:onBeginOverlap(go)
-		elseif args:getEventType() == TriggerEventType.Left then
-			self:onEndOverlap(go)
-		end
-	end)
-	go.rigidBody:setUserData(go)
-	self.go = go
+
+function Level3:setComponentStates(state)
+
+	self.map:setComponentStates(state)
+	
+	
+
 end
 
-function PickupBase:onBeginOverlap(go)
-	--logMessage("BeginOverlap Base")
+function Level3:_init()
+	Level._init(self, "level3", Vec3(0,0,-4), "data/models/map3/Map3.FBX", "data/collision/map1.hkx")
+	
+	
 end
-
-function PickupBase:onEndOverlap(go)
-	--logMessage("EndOverlap Base")
-end
-

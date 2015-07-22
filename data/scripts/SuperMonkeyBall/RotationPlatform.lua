@@ -27,9 +27,9 @@ function RotationPlatform:update(elapsedTime)
 	--self.angle = self.angle + self.rotSpeed*elapsedTime	
 	--local z = Quaternion(Vec3(0.0, 0.0, 1.0), self.angle)
 	--self.go.rb:setRotation(z)
-	logMessage("Rotation: ".. angleBetweenVec2(Vec2(1,0),Vec2(m.m00,m.m10))
+	--logMessage("Rotation: ".. angleBetweenVec2(Vec2(1,0),Vec2(m.m00,m.m10))
 			--m.m00.." ".. m.m01.." ".. m.m02.." ".. m.m10.." ".. m.m11.." ".. m.m12.." ".. m.m20.." ".. m.m21.." ".. m.m22.." "
-		)
+	--	)
 	--self.go.rb:setAngularVelocity(Vec3(0.0, 0.0, ((self.rotSpeed*math.pi)/180)*elapsedTime*self.rotSpeedFactor)) 
 	self.go.rb:setAngularVelocity(Vec3(0.0, 0.0,self.rotSpeed*elapsedTime)) 
 
