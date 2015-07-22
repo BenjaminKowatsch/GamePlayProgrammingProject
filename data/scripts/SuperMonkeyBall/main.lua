@@ -61,7 +61,44 @@ background.rb = background.pc:createRigidBody(cinfo)
 
 --gravityPickup2 = GravityPickup("GravityPickup2",Vec3(40,-40,181),0x1,15,15,15)
 
-speedPickup = SpeedPickup("SpeedPickup",Vec3(-100,60,0),0x1,15,15,15,2)
+local BaseClass = {}
+BaseClass.__index = BaseClass
+
+setmetatable(BaseClass, {
+  __call = function (cls, ...)
+    local self = setmetatable({}, cls)
+    return self
+  end,
+})
+
+function BaseClass:create(test)
+	logMessage("base function ".. test)
+	self.go = GameObjectManager:createGameObjectUninitialized(test)
+	self.go:initialize()
+end
+---
+
+local DerivedClass = {}
+DerivedClass.__index = DerivedClass
+
+setmetatable(DerivedClass, {
+  __index = BaseClass, -- this is what makes the inheritance work
+  __call = function (cls, ...)
+    local self = setmetatable({}, cls)
+    return self
+  end,
+})
+
+function DerivedClass:create(test)
+	BaseClass.create(self,test)
+	logMessage("child function ".. test)
+end
+
+local i = DerivedClass()
+
+
+
+speedPickup = SpeedPickup("SpeedPickup",Vec3(-100,60,40),0x1,15,15,15,2)
 
 
 coinPickup = CoinPickup("CoinPickup", Vec3(100,30,0),0x1,5,5,5,4)
@@ -87,6 +124,7 @@ level3:setComponentStates(ComponentState.Inactive)
 --level4:setComponentStates(ComponentState.Inactive)
 local activeLevel
 function mainmenuEnter()
+	i:create("bla function")
 	level1:setComponentStates(ComponentState.Active)
 	activeLevel = "mainmenu"
 	level2.goal2.goal = false
@@ -103,7 +141,7 @@ function level2Enter()
 	level1.goal1.goal = false
 	activeLevel = "level2"
 	player.ball:setPosition(Vec3(0,0,14))
-	player.capsule:setPosition(player.ball:getPosition())
+	--player.capsule:setPosition(player.ball:getPosition())
 end
 function level2Leave()
 	level2:setComponentStates(ComponentState.Inactive)

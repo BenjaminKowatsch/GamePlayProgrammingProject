@@ -14,16 +14,17 @@ function PickupBase:_init(guid,position,cfi,w,h,d)
 	go.pc = go:createPhysicsComponent()
 	local cinfo = RigidBodyCInfo()
 		cinfo.collisionFilterInfo = cfi
-		cinfo.motionType = MotionType.Fixed
+		cinfo.motionType = MotionType.Dynamic
 		cinfo.position=position
+		cinfo.mass = 10
 		cinfo.shape = PhysicsFactory:createBox(w,h,d)
 		cinfo.isTriggerVolume = true
 	go.rb = go.pc:createRigidBody(cinfo)
 	go.rb:getTriggerEvent():registerListener(function(args)
 		local go = args:getRigidBody():getUserData()
-		if args:getEventType() == TriggerEventType.Entered then
+		if args:getEventType() == TriggerEventType.Entered and go:getGuid() == "ball" then
 			self:onBeginOverlap(go)
-		elseif args:getEventType() == TriggerEventType.Left then
+		elseif args:getEventType() == TriggerEventType.Left and go:getGuid() == "ball" then
 			self:onEndOverlap(go)
 		end
 	end)

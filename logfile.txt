@@ -134,6 +134,8 @@ Loading cached file for data/models/Sphere/Sphere.FBX (.modelCache/2597853922.th
 >> /game
 >> /game/pjStateMachine
 >> /game/pjStateMachine/mainmenu
+Lua: base function bla function
+Lua: child function bla function
 Warning: [857386286] Collide\TriggerVolume\hkpTriggerVolume.cpp(94): The hkpBoxBoxAgent agent does not handle deep collisions well, so avoid using it with the hkpTriggerVolume. We recommend either unregistering the box-box agent, or replacing any boxes in the hkpTriggerVolume by equivalent hkpConvexVerticesShapes.
 +++ Finalizing model.
 +++ Finalizing model.
@@ -155,32 +157,10 @@ Lua: COLLISION
 +++ Finalizing model.
 Lua: COLLISION
 Lua: COLLISION
-Warning: [-265005969] Entity\hkpRigidBody.cpp(777): You are calling hkpRigidBody::setTransform of a RigidBody, which tries to deactivate. This keeps the RigidBody alive at some extra performance cost. Try to avoid calling unnecessary setTransform() or disable deactivation for this body
-Warning: [-265005969] Entity\hkpRigidBody.cpp(777): You are calling hkpRigidBody::setTransform of a RigidBody, which tries to deactivate. This keeps the RigidBody alive at some extra performance cost. Try to avoid calling unnecessary setTransform() or disable deactivation for this body
-Warning: [-265005969] Entity\hkpRigidBody.cpp(777): You are calling hkpRigidBody::setTransform of a RigidBody, which tries to deactivate. This keeps the RigidBody alive at some extra performance cost. Try to avoid calling unnecessary setTransform() or disable deactivation for this body
-Lua: COLLISION
 Lua: COLLISION
 Lua: COLLISION
 Warning: [-265005969] Entity\hkpRigidBody.cpp(777): You are calling hkpRigidBody::setTransform of a RigidBody, which tries to deactivate. This keeps the RigidBody alive at some extra performance cost. Try to avoid calling unnecessary setTransform() or disable deactivation for this body
 Warning: [-265005969] Entity\hkpRigidBody.cpp(777): You are calling hkpRigidBody::setTransform of a RigidBody, which tries to deactivate. This keeps the RigidBody alive at some extra performance cost. Try to avoid calling unnecessary setTransform() or disable deactivation for this body
-Lua: COLLISION
-Lua: COLLISION
-Lua: COLLISION
-Lua: COLLISION
-Lua: COLLISION
-Lua: COLLISION
-Lua: COLLISION
-Warning: [-265005969] Entity\hkpRigidBody.cpp(777): You are calling hkpRigidBody::setTransform of a RigidBody, which tries to deactivate. This keeps the RigidBody alive at some extra performance cost. Try to avoid calling unnecessary setTransform() or disable deactivation for this body
-Lua: COLLISION
-Lua: COLLISION
-Lua: COLLISION
-Warning: [-265005969] Entity\hkpRigidBody.cpp(777): You are calling hkpRigidBody::setTransform of a RigidBody, which tries to deactivate. This keeps the RigidBody alive at some extra performance cost. Try to avoid calling unnecessary setTransform() or disable deactivation for this body
-Lua: COLLISION
-Lua: COLLISION
-Lua: COLLISION
-Warning: [-265005969] Entity\hkpRigidBody.cpp(777): You are calling hkpRigidBody::setTransform of a RigidBody, which tries to deactivate. This keeps the RigidBody alive at some extra performance cost. Try to avoid calling unnecessary setTransform() or disable deactivation for this body
-Lua: COLLISION
-Lua: COLLISION
 Lua: COLLISION
 Lua: COLLISION
 Lua: COLLISION
@@ -196,64 +176,13 @@ Warning: [-265005969] Entity\hkpRigidBody.cpp(777): You are calling hkpRigidBody
 Warning: [-265005969] Entity\hkpRigidBody.cpp(777): You are calling hkpRigidBody::setTransform of a RigidBody, which tries to deactivate. This keeps the RigidBody alive at some extra performance cost. Try to avoid calling unnecessary setTransform() or disable deactivation for this body
 Warning: [-265005969] Entity\hkpRigidBody.cpp(777): You are calling hkpRigidBody::setTransform of a RigidBody, which tries to deactivate. This keeps the RigidBody alive at some extra performance cost. Try to avoid calling unnecessary setTransform() or disable deactivation for this body
 Warning: [-265005969] Entity\hkpRigidBody.cpp(777): You are calling hkpRigidBody::setTransform of a RigidBody, which tries to deactivate. This keeps the RigidBody alive at some extra performance cost. Try to avoid calling unnecessary setTransform() or disable deactivation for this body
-<< /game/pjStateMachine
-<< /game
-Destroying in game thread.
-destroying animation system
-camera animation destroyed
-destroying camera system
-camera system destroyed
-destroying physics system
-hkVisualDebugger.cpp(93): Server deleted.
-physics system destroyed
-destroying resource manager
-resource manager destroyed
-
-==================================================
-
-==================================================
-destroying update framework
-update framework destroyed
-
-==================================================
-destroying input handler
-input handler destroyed
-
-==================================================
-destroying timer
-timer destroyed
-
-==================================================
-destroying resource manager
-resource manager destroyed
-
-==================================================
-destroying sound system
-sound system destroyed
-
-==================================================
-destroying renderer
-renderer destroyed
-
-==================================================
-destroying renderer extractor
-renderer extractor destroyed
-
-==================================================
-destroying memory manager
-memory manager destroyed
-
-==================================================
-destroying task queue
-task queue destroyed
-
-==================================================
-destroying scripting system
-scripting system destroyed
-
-==================================================
-destroying settings
-settings destroyed
-
-==================================================
-destroying log system
+Warning: [-265005969] Entity\hkpRigidBody.cpp(777): You are calling hkpRigidBody::setTransform of a RigidBody, which tries to deactivate. This keeps the RigidBody alive at some extra performance cost. Try to avoid calling unnecessary setTransform() or disable deactivation for this body
+Warning: [-265005969] Entity\hkpRigidBody.cpp(777): You are calling hkpRigidBody::setTransform of a RigidBody, which tries to deactivate. This keeps the RigidBody alive at some extra performance cost. Try to avoid calling unnecessary setTransform() or disable deactivation for this body
+Warning: [707583633] World\Simulation\hkpSimulation.cpp(232): Simulation may become unstable, the time step has decreased by more than a factor of 4.000000 from the previous step
+Warning: [-265005969] Entity\hkpRigidBody.cpp(777): You are calling hkpRigidBody::setTransform of a RigidBody, which tries to deactivate. This keeps the RigidBody alive at some extra performance cost. Try to avoid calling unnecessary setTransform() or disable deactivation for this body
+Warning: [-265005969] Entity\hkpRigidBody.cpp(777): You are calling hkpRigidBody::setTransform of a RigidBody, which tries to deactivate. This keeps the RigidBody alive at some extra performance cost. Try to avoid calling unnecessary setTransform() or disable deactivation for this body
+Warning: [-265005969] Entity\hkpRigidBody.cpp(777): You are calling hkpRigidBody::setTransform of a RigidBody, which tries to deactivate. This keeps the RigidBody alive at some extra performance cost. Try to avoid calling unnecessary setTransform() or disable deactivation for this body
+Warning: [-265005969] Entity\hkpRigidBody.cpp(777): You are calling hkpRigidBody::setTransform of a RigidBody, which tries to deactivate. This keeps the RigidBody alive at some extra performance cost. Try to avoid calling unnecessary setTransform() or disable deactivation for this body
+Warning: [-265005969] Entity\hkpRigidBody.cpp(777): You are calling hkpRigidBody::setTransform of a RigidBody, which tries to deactivate. This keeps the RigidBody alive at some extra performance cost. Try to avoid calling unnecessary setTransform() or disable deactivation for this body
+Warning: [-265005969] Entity\hkpRigidBody.cpp(777): You are calling hkpRigidBody::setTransform of a RigidBody, which tries to deactivate. This keeps the RigidBody alive at some extra performance cost. Try to avoid calling unnecessary setTransform() or disable deactivation for this body
+Warning: [-265005969] Entity\hkpRigidBody.cpp(777): You are calling hkpRigidBody::setTransform of a RigidBody, which tries to deactivate. This keeps the RigidBody alive at some extra performance cost. Try to avoid calling unnecessary setTransform() or disable deactivation for this body
