@@ -11,15 +11,15 @@ setmetatable(PickupBase,{
 -- define constructor
 function PickupBase:_init(guid,position,cfi,w,h,d)
 	local go = GameObjectManager:createGameObject(guid)
-	go.physics = go:createPhysicsComponent()
+	go.pc = go:createPhysicsComponent()
 	local cinfo = RigidBodyCInfo()
 		cinfo.collisionFilterInfo = cfi
 		cinfo.motionType = MotionType.Fixed
 		cinfo.position=position
 		cinfo.shape = PhysicsFactory:createBox(w,h,d)
 		cinfo.isTriggerVolume = true
-	go.rigidBody = go.physics:createRigidBody(cinfo)
-	go.rigidBody:getTriggerEvent():registerListener(function(args)
+	go.rb = go.pc:createRigidBody(cinfo)
+	go.rb:getTriggerEvent():registerListener(function(args)
 		local go = args:getRigidBody():getUserData()
 		if args:getEventType() == TriggerEventType.Entered then
 			self:onBeginOverlap(go)
@@ -27,7 +27,7 @@ function PickupBase:_init(guid,position,cfi,w,h,d)
 			self:onEndOverlap(go)
 		end
 	end)
-	go.rigidBody:setUserData(go)
+	go.rb:setUserData(go)
 	self.go = go
 end
 

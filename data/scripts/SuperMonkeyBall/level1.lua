@@ -1,7 +1,7 @@
 function createLevel1(position,guid)
 	local level = GameObjectManager:createGameObject(guid)
 	level.rc = level:createRenderComponent()
-	level.rc:setPath("data/models/map3/Map3.FBX")
+	level.rc:setPath("data/models/Map_1.FBX")
 	level.pc = level:createPhysicsComponent()
 	
 	local cinfo = RigidBodyCInfo()

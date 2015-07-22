@@ -21,6 +21,7 @@ function SpeedPickup:update(elapsedTime)
 		if( self.timeCount>self.maxTime) then
 			self.startTimer = false
 			self.speedGO.maxMoveSpeed = self.oldMaxMoveSpeed
+			logMessage("Ball speed reset")
 		end
 	end
 end

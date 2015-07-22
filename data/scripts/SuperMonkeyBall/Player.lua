@@ -6,8 +6,8 @@ include("SuperMonkeyBall/camera.lua")
 function createPlayer()
 	local player = {}
 	player.ball = createBall()
-	player.capsule = createCollisionCapsule("capsule",Vec3(0,0,-250),Vec3(0,0,500),65)
-	player.capsule:setPosition(player.ball:getPosition())
+	--player.capsule = createCollisionCapsule("capsule",Vec3(0,0,-250),Vec3(0,0,500),65)
+	--player.capsule:setPosition(player.ball:getPosition())
 	player.cam = createCamera("camera",player.ball,Vec3(0,-70,25))
 	
 	player.update= function(self,elapsedTime)
@@ -35,7 +35,7 @@ function createPlayer()
 		local moveVector3Rot = self.cam:update(elapsedTime,move,zoom)
 		
 		self.ball:update(elapsedTime,Vec2(moveVector3Rot.x,moveVector3Rot.y))
-		self.capsule:update((self.ball:getPosition()-self.capsule.rb:getPosition()),elapsedTime)
+		--self.capsule:update((self.ball:getPosition()-self.capsule.rb:getPosition()),elapsedTime)
 	end
 	
 	return player

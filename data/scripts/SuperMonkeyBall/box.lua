@@ -1,7 +1,7 @@
 function createBox(position,guid)
 	local box = GameObjectManager:createGameObject(guid)
 	box.rc = box:createRenderComponent()
-	box.rc:setPath("data/models/map3/Map3.FBX")
+	box.rc:setPath("data/models/map1/Map1.FBX")
 	--box.rc:setPath("data/models/terrain/terrain.FBX")
 	box.pc = box:createPhysicsComponent()
 	local cinfo = RigidBodyCInfo()
@@ -14,7 +14,9 @@ function createBox(position,guid)
 	cinfo.motionType = MotionType.Keyframed
 	cinfo.mass = 10
 	cinfo.position = position
-	cinfo.collisionFilterInfo = 0x1
+	------------------------------------
+	--cinfo.collisionFilterInfo = 0x1
+	------------------------------------
 	box.rb = box.pc:createRigidBody(cinfo)
 	
 	box.rb:setUserData(box)

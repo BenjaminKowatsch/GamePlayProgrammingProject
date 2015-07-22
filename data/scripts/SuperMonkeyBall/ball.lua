@@ -16,22 +16,24 @@ function createBall()
 	cinfo.friction = 0.8
 	cinfo.gravityFactor = 30.0
 	cinfo.rollingFrictionMultiplier = 0.8
-	cinfo.collisionFilterInfo = 0x1
+	------------------------------------
+	--cinfo.collisionFilterInfo = 0x1
+	------------------------------------
 	ball.rb = ball.pc:createRigidBody(cinfo)
 	--Custom attributes
 	ball.maxMoveSpeed = 400
 	ball.maxJumpCount = 1
 	ball.jumping = false
 	ball.jumpCount = 1
-	ball.pc:getContactPointEvent():registerListener(function(event)
-		--logMessage("COLLISION")
-		local other = event:getBody(CollisionArgsCallbackSource.B)
-		local self = event:getBody(CollisionArgsCallbackSource.A)
-		if other:getUserData():getGuid() == "box" or other:getUserData():getGuid() == "box1" then
-			ball.jumpCount = ball.maxJumpCount
-		end
-		--logMessage(tostring(other:getUserData():getGuid()) .. " on Collision")
-	end)
+	--ball.pc:getContactPointEvent():registerListener(function(event)
+	--	logMessage("COLLISION")
+	--	local other = event:getBody(CollisionArgsCallbackSource.B)
+	--	local self = event:getBody(CollisionArgsCallbackSource.A)
+	--	if other:getUserData():getGuid() == "level1" or other:getUserData():getGuid() == "box1" then
+	--		ball.jumpCount = ball.maxJumpCount
+	--	end
+	--	--logMessage(tostring(other:getUserData():getGuid()) .. " on Collision")
+	--end)
 	ball.jump =function()
 	logMessage(" jumpCount ".. ball.jumpCount )
 		if 0<ball.jumpCount then
