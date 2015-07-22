@@ -60,11 +60,7 @@ background.rb = background.pc:createRigidBody(cinfo)
 
 
 
-coinPickup = CoinPickup("CoinPickup", Vec3(100,30,0),0x1,5,5,5,4)
-coinPickup2 = CoinPickup("CoinPickup2", Vec3(100,40,0),0x1,5,5,5,4)
-coinPickup3 = CoinPickup("CoinPickup3", Vec3(100,50,0),0x1,5,5,5,4)
-coinPickup4 = CoinPickup("CoinPickup4", Vec3(100,60,0),0x1,5,5,5,4)
-coinPickup5 = CoinPickup("CoinPickup5", Vec3(100,70,0),0x1,5,5,5,4)
+
 
 --box2 = createBox(Vec3(0,0,200),"box1")
 
@@ -81,10 +77,9 @@ level3 = Level3()
 level3:setComponentStates(ComponentState.Inactive)
 --level4 = Level4()
 --level4:setComponentStates(ComponentState.Inactive)
-local activeLevel
 function mainmenuEnter()
+	player.ball:setComponentStates(ComponentState.Active)
 	level1:setComponentStates(ComponentState.Active)
-	activeLevel = "mainmenu"
 	level2.goal2.goal = false
 
 	player.ball:setPosition(Vec3(0,0,14))
@@ -107,10 +102,24 @@ end
 function defaultUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
 	DebugRenderer:printText(Vec2(-0.9,0.7), "Goal: "..tostring(level2.goal2.goal))
-	DebugRenderer:printText(Vec2(-0.9,0.6), "Level: "..tostring(activeLevel))
+	DebugRenderer:printText(Vec2(-0.9,0.5), "Score: "..tostring(player.ball.coinCount))
 	player:update(elapsedTime)
 	--speedPickup:update(elapsedTime)
 	return EventResult.Handled
+end
+
+function ScoreUpdate(updateData)
+	local elapsedTime = updateData:getElapsedTime()
+	DebugRenderer:printText(Vec2(0,0), "Score: "..tostring(player.ball.coinCount))
+	player:update(elapsedTime)
+	--speedPickup:update(elapsedTime)
+	return EventResult.Handled
+end
+function scoreEnter()
+	player.ball:setComponentStates(ComponentState.Inactive)
+end
+function scoreLeave()
+	player.ball.coinCount = 0
 end
 
 -- global state machine
@@ -171,7 +180,7 @@ StateMachine{
 			name = "score",
 			eventListeners = {
 				enter  = { scoreEnter },
-				update = { defaultUpdate },
+				update = { ScoreUpdate },
 				leave  = { scoreLeave }
 			}
 		}
@@ -180,7 +189,7 @@ StateMachine{
 	transitions =
 	{
 		{ from = "__enter", to = "mainmenu" },
-		{ from = "mainmenu", to = "level1", condition = function() return InputHandler:wasTriggered(Key.F1) end },
+		{ from = "mainmenu", to = "level1", condition = function() return InputHandler:wasTriggered(Key.F10) end },
 		{ from = "mainmenu", to = "level2", condition = function() return level1.goal1.goal end },
 		{ from = "mainmenu", to = "level3", condition = function() return InputHandler:wasTriggered(Key.F3) end },
 		{ from = "mainmenu", to = "level4", condition = function() return InputHandler:wasTriggered(Key.F4) end },
@@ -191,10 +200,12 @@ StateMachine{
 		{ from = "level4", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F6) end },
 		{ from = "level5", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F6) end },
 		{ from = "level1", to = "score", condition = function() return InputHandler:wasTriggered(Key.F5) end },
-		{ from = "level2", to = "score", condition = function() return InputHandler:wasTriggered(Key.F2) end },
+		{ from = "level2", to = "score", condition = function() return level2.goal2.goal end },
 		{ from = "level3", to = "score", condition = function() return InputHandler:wasTriggered(Key.F3) end },
 		{ from = "level4", to = "score", condition = function() return InputHandler:wasTriggered(Key.F4) end },
-		{ from = "level5", to = "score", condition = function() return InputHandler:wasTriggered(Key.F5) end }
+		{ from = "level5", to = "score", condition = function() return InputHandler:wasTriggered(Key.F5) end },
+		{ from = "score", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F1) end }
+
 	},
 	eventListeners =
 	{
