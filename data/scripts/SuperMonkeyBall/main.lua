@@ -73,7 +73,7 @@ end
 
 function level2Enter()
 	level2:create()
-	player.ball:setPosition(Vec3(0,0,14))
+	player.ball:setPosition(Vec3(0,536.776,14))
 
 end
 function level2Leave()

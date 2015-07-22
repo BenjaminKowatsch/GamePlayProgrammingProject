@@ -16,7 +16,7 @@ function LevelBase:create(guid, position, mpath, cpath)
 	go.rc:setPath(mpath)
 	go.pc = go:createPhysicsComponent()
 	local cinfo = RigidBodyCInfo()
-	cinfo.motionType = MotionType.Fixed
+	cinfo.motionType = MotionType.Keyframed
 	cinfo.shape = PhysicsFactory:loadCollisionMesh(cpath)
 	--cinfo.shape = PhysicsFactory:createBox(Vec3(398.425,396.85,3.937))
 	cinfo.mass = 10
