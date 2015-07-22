@@ -7,6 +7,7 @@ setmetatable(PlatformBase,{
 	return self
 	end,
 })
+
 -- define constructor
 function PlatformBase:create(guid,position,cfi,w,h,d)
 	local go = GameObjectManager:createGameObjectUninitialized(guid)
@@ -18,6 +19,6 @@ function PlatformBase:create(guid,position,cfi,w,h,d)
 		cinfo.shape = PhysicsFactory:createBox(w,h,d)
 	go.rb = go.pc:createRigidBody(cinfo)
 	go.rb:setUserData(go)
-	go.initialize()
+	go:initialize()
 	self.go = go
 end

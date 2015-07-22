@@ -10,7 +10,7 @@ function createBall()
 	cinfo.mass = 20
 	cinfo.position = Vec3(0,0,18)
 	cinfo.maxLinearVelocity = 280
-	cinfo.restitution = 0.0 --no bounciness
+	cinfo.restitution = 0.5
 	cinfo.linearDamping = 1.0
 	cinfo.angularDamping = 1.0
 	cinfo.friction = 0.8
@@ -24,6 +24,7 @@ function createBall()
 	ball.maxJumpCount = 1
 	ball.jumping = false
 	ball.jumpCount = 1
+	
 	ball.pc:getContactPointEvent():registerListener(function(event)
 		logMessage("COLLISION")
 		local other = event:getBody(CollisionArgsCallbackSource.B)
@@ -31,6 +32,11 @@ function createBall()
 		if other:getUserData():getGuid() == "level1" or other:getUserData():getGuid() == "box1" then
 			ball.jumpCount = ball.maxJumpCount
 		end
+		
+		if other:getUserData():getGuid() == "SpeedPickup" then
+			GameObjectManager:destroyGameObject(other:getUserData())
+		end
+		
 		--logMessage(tostring(other:getUserData():getGuid()) .. " on Collision")
 	end)
 	ball.jump =function()

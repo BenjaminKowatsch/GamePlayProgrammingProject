@@ -32,7 +32,7 @@ function createCamera(guid,viewtarget,camOffset)
 		cam.zOffsetSpeed = 40
 		cam.pitchSpeed = 25
 		cam.maxPitchAngle = 8
-		cam.offsetAngleFactor = 0.05
+		cam.offsetAngleFactor = 2.5
 		
 		cam.update = function (self,elapsedTime,move,zoom)
 			-- set zoom
@@ -95,7 +95,7 @@ function createCamera(guid,viewtarget,camOffset)
 			
 			if(move:length() > 0) then
 				local offsetAngle = angleBetweenVec2(Vec2(-self.camOffset.x,-self.camOffset.y),Vec2(viewTargetVel.x,viewTargetVel.y))
-				local q = Quaternion(Vec3(0.0, 0.0, 1.0), offsetAngle*self.offsetAngleFactor)
+				local q = Quaternion(Vec3(0.0, 0.0, 1.0), offsetAngle*elapsedTime*self.offsetAngleFactor)
 				self.camOffset = q:toMat3():mulVec3(self.camOffset)		
 			end
 			
