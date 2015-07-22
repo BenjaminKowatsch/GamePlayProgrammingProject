@@ -24,6 +24,7 @@ function createBall()
 	ball.maxJumpCount = 1
 	ball.jumping = false
 	ball.jumpCount = 1
+	
 	ball.pc:getContactPointEvent():registerListener(function(event)
 		logMessage("COLLISION")
 		local other = event:getBody(CollisionArgsCallbackSource.B)
@@ -31,6 +32,11 @@ function createBall()
 		if other:getUserData():getGuid() == "level1" or other:getUserData():getGuid() == "box1" then
 			ball.jumpCount = ball.maxJumpCount
 		end
+		
+		if other:getUserData():getGuid() == "SpeedPickup" then
+			GameObjectManager:destroyGameObject(other:getUserData())
+		end
+		
 		--logMessage(tostring(other:getUserData():getGuid()) .. " on Collision")
 	end)
 	ball.jump =function()

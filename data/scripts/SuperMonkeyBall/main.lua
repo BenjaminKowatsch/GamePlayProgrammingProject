@@ -33,8 +33,6 @@ include("SuperMonkeyBall/Level3.lua")
 --include("SuperMonkeyBall/Level4.lua")
 
 rotplatform = RotationPlatform()
-
-
 movplatform = MovingPlatform()
 
 background = GameObjectManager:createGameObject("background")
@@ -59,9 +57,9 @@ level2 = Level2()
 level3 = Level3()
 
 function mainmenuEnter()
-	--movplatform:create("movplatform",Vec3(60,80,-4),0x1,30,30,5,1600,Vec3(60,120,30))
-	--rotplatform:create("rotplatform",Vec3(60,-60,20),0x1,60,60,5,40,40)
-	speedPickup:create("SpeedPickup",Vec3(-100,60,0),0x1,15,15,15,2)
+	movplatform:create("movplatform",Vec3(60,80,5),0x1,30,30,5,2000,Vec3(160,80,5))
+	rotplatform:create("rotplatform",Vec3(60,-60,20),0x1,60,60,5,40,40)
+	speedPickup:create("SpeedPickup",Vec3(60,80,20),0x1,15,15,15,2)
 	--player.ball:setComponentStates(ComponentState.Active)
 	level1:create()
 	player.ball:setPosition(Vec3(0,0,14))
@@ -83,9 +81,9 @@ function defaultUpdate(updateData)
 	DebugRenderer:printText(Vec2(-0.9,0.5), "Score: "..tostring(player.ball.coinCount))
 	player:update(elapsedTime)
 	speedPickup:update(elapsedTime)
-	--movplatform:update(elapsedTime)
+	movplatform:update(elapsedTime)
 	DebugRenderer:printText3D(Vec3(-100,60,16), "Text3D colored!", Color(0,0,1,1))
-	--rotplatform:update(elapsedTime)
+	rotplatform:update(elapsedTime)
 
 	return EventResult.Handled
 end
