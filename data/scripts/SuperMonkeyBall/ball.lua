@@ -24,20 +24,23 @@ function createBall()
 	ball.maxJumpCount = 1
 	ball.jumping = false
 	ball.jumpCount = 1
-	
+	-- Speed Pickup
+	ball.speedTimer = false
+	ball.speedPickupSpeed = 800
+	ball.timerCount = 0
+	ball.maxTime = 0
 	ball.pc:getContactPointEvent():registerListener(function(event)
-		logMessage("COLLISION")
 		local other = event:getBody(CollisionArgsCallbackSource.B)
 		local self = event:getBody(CollisionArgsCallbackSource.A)
-		if other:getUserData():getGuid() == "level1" or other:getUserData():getGuid() == "box1" then
+		--if other:getUserData().go.objectType == "Pickup" then
+		--	other:getUserData():onBeginOverlap(self:getUserData())
+		--elseif other:getUserData().go.objectType == "Ground" then
+		--	ball.jumpCount = ball.maxJumpCount
+		--end
+		if other:getUserData().go.objectType == "Ground" then
 			ball.jumpCount = ball.maxJumpCount
 		end
 		
-		if other:getUserData():getGuid() == "SpeedPickup" then
-			GameObjectManager:destroyGameObject(other:getUserData())
-		end
-		
-		--logMessage(tostring(other:getUserData():getGuid()) .. " on Collision")
 	end)
 	ball.jump =function()
 	logMessage(" jumpCount ".. ball.jumpCount )
@@ -45,20 +48,32 @@ function createBall()
 			ball.jumping = true
 			ball.jumpCount = ball.jumpCount -1 
 		end		
-	end	
+	end		
 	
-	ball.update = function (self,deltaTime,input)
+	ball.update = function (self,elapsedTime,input)
 		local vel = self.rb:getLinearVelocity()
 		
 		-- add input to current velocity
-		vel = vel:add(Vec3(input.x,input.y,0):mulScalar(self.maxMoveSpeed * deltaTime))
+		vel = vel:add(Vec3(input.x,input.y,0):mulScalar(self.maxMoveSpeed * elapsedTime))
+		
+		if(self.speedTimer) then
+			self.timerCount = self.timerCount + elapsedTime
+			if( self.timerCount>self.maxTime) then
+				self.speedTimer = false
+				local c = self.maxMoveSpeed
+				self.maxMoveSpeed = self.speedPickupSpeed
+				self.speedPickupSpeed = c
+				logMessage("Ball speed reset")
+			end
+		end
 		
 		if(self.jumping)then
 			vel.z = vel.z+180*-gravityFactor
 			self.jumping = false
 		end
 		self.rb:setLinearVelocity(vel)
-	end	
+	end
+	
 	ball.rb:setUserData(ball) -- Always a good idea
 	
 	return ball

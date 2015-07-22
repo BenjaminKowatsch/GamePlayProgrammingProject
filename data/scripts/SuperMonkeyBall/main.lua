@@ -38,19 +38,19 @@ rotplatform = RotationPlatform()
 movplatform = MovingPlatform()
 
 
-background = GameObjectManager:createGameObject("background")
-background.rc = background:createRenderComponent()
-background.rc:setPath("data/models/Background/Background.FBX")
-background.pc = background:createPhysicsComponent()
-local cinfo = RigidBodyCInfo()
-cinfo.motionType = MotionType.Keyframed
-cinfo.shape = PhysicsFactory:createSphere(500)
-cinfo.mass = 10
-cinfo.collisionFilterInfo = 0x4
-cinfo.position = Vec3(0,0,0)
-background.rb = background.pc:createRigidBody(cinfo)
+--background = GameObjectManager:createGameObject("background")
+--background.rc = background:createRenderComponent()
+--background.rc:setPath("data/models/Background/Background.FBX")
+--background.pc = background:createPhysicsComponent()
+--local cinfo = RigidBodyCInfo()
+--cinfo.motionType = MotionType.Keyframed
+--cinfo.shape = PhysicsFactory:createSphere(500)
+--cinfo.mass = 10
+--cinfo.collisionFilterInfo = 0x4
+--cinfo.position = Vec3(0,0,0)
+--background.rb = background.pc:createRigidBody(cinfo)
 
-speedPickup = SpeedPickup()
+--speedPickup = SpeedPickup()
 
 
 player = createPlayer()
@@ -62,7 +62,7 @@ level3 = Level3()
 function mainmenuEnter()
 	--movplatform:create("movplatform",Vec3(60,80,-4),0x1,30,30,5,1600,Vec3(60,120,30))
 	--rotplatform:create("rotplatform",Vec3(60,-60,20),0x1,60,60,5,40,40)
-	--speedPickup:create("SpeedPickup",Vec3(-100,60,0),0x1,15,15,15,2)
+	--speedPickup:create("SpeedPickup",Vec3(-60,80,0),0x1,15,15,15,level1,2)
 	--player.ball:setComponentStates(ComponentState.Active)
 	level1:create()
 	player.ball:setPosition(Vec3(0,0,14))
@@ -81,10 +81,11 @@ function level2Leave()
 end
 function defaultUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
+	level1:update(elapsedTime)
 	--DebugRenderer:printText(Vec2(-0.9,0.7), "Goal: "..tostring(level2.goal2.goal))
 	DebugRenderer:printText(Vec2(-0.9,0.5), "Score: "..tostring(player.ball.coinCount))
 	player:update(elapsedTime)
-	speedPickup:update(elapsedTime)
+	--speedPickup:update(elapsedTime)
 	--movplatform:update(elapsedTime)
 	DebugRenderer:printText3D(Vec3(-100,60,16), "Text3D colored!", Color(0,0,1,1))
 	--rotplatform:update(elapsedTime)

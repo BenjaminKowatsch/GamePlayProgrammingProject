@@ -18,7 +18,11 @@ function PlatformBase:create(guid,position,cfi,w,h,d)
 		cinfo.position=position
 		cinfo.shape = PhysicsFactory:createBox(w,h,d)
 	go.rb = go.pc:createRigidBody(cinfo)
-	go.rb:setUserData(go)
+	go.objectType = "Ground"
+	go.rb:setUserData(self)
 	go:initialize()
 	self.go = go
+end
+
+function PlatformBase:update(elapsedTime)
 end

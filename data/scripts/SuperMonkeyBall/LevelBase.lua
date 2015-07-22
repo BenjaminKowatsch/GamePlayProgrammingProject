@@ -23,15 +23,24 @@ function LevelBase:create(guid, position, mpath, cpath)
 	cinfo.position = position
 	cinfo.collisionFilterInfo = 0x1
 	go.rb = go.pc:createRigidBody(cinfo)
-
-	go.rb:setUserData(go)
+	go.objectType = "Ground"
+	go.rb:setUserData(self)
 	go:initialize()
 	self.goal = false
-	self.map = go
+	self.go = go
+	self.gameObjects = {}
+end
+
+function LevelBase:update(elapsedTime)
+
+	self.go.rb:setRotation(Quaternion(Vec3(1,0,0),90))
+	for _, go in pairs(self.gameObjects) do
+		go:update(elapsedTime)
+	end
 end
 
 function LevelBase:destroy()
-	GameObjectManager:destroyGameObject(self.map)
+	GameObjectManager:destroyGameObject(self.go)
 end
 
 
