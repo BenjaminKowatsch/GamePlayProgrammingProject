@@ -9,7 +9,7 @@ setmetatable(GravityPickup, {
 	end,
 })
 
-function GravityPickup:create(guid,position,cfi,w,h,d)
+function GravityPickup:create(guid,position,cfi,w,h,d,level)
 	PickupBase.create(self, guid, position, cfi, w, h, d)
 end
 
@@ -18,4 +18,6 @@ function GravityPickup:onBeginOverlap(go)
 	PhysicsSystem:getWorld():setGravity(Vec3(0,0,9.8*gravityFactor))
 	player.cam.camOffset.z = -player.cam.camOffset.z
 	player.cam.cc:tilt(180)
+	self.level:manageList(self.guid)
+	GameObjectManager:destroyGameObject(self.go)
 end

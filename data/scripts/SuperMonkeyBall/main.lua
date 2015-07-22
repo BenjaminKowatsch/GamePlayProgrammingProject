@@ -62,22 +62,22 @@ level3 = Level3()
 function mainmenuEnter()
 	--movplatform:create("movplatform",Vec3(60,80,-4),0x1,30,30,5,1600,Vec3(60,120,30))
 	--rotplatform:create("rotplatform",Vec3(60,-60,20),0x1,60,60,5,40,40)
-	speedPickup:create("SpeedPickup",Vec3(-100,60,0),0x1,15,15,15,2)
+	--speedPickup:create("SpeedPickup",Vec3(-100,60,0),0x1,15,15,15,2)
 	--player.ball:setComponentStates(ComponentState.Active)
 	level1:create()
 	player.ball:setPosition(Vec3(0,0,14))
 end
 function mainmenuLeave()
-	--level1:setComponentStates(ComponentState.Inactive)
+	level1:destroy()
 end
 
 function level2Enter()
-	--level2:setComponentStates(ComponentState.Active)
+	level2:create()
 	player.ball:setPosition(Vec3(0,0,14))
 
 end
 function level2Leave()
-	level2:setComponentStates(ComponentState.Inactive)
+	level2:destroy()
 end
 function defaultUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
@@ -184,7 +184,7 @@ StateMachine{
 		{ from = "level4", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F6) end },
 		{ from = "level5", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F6) end },
 		{ from = "level1", to = "score", condition = function() return InputHandler:wasTriggered(Key.F5) end },
-		{ from = "level2", to = "score", condition = function() return level2.goal2.goal end },
+		{ from = "level2", to = "score", condition = function() return InputHandler:wasTriggered(Key.F5) end },
 		{ from = "level3", to = "score", condition = function() return InputHandler:wasTriggered(Key.F3) end },
 		{ from = "level4", to = "score", condition = function() return InputHandler:wasTriggered(Key.F4) end },
 		{ from = "level5", to = "score", condition = function() return InputHandler:wasTriggered(Key.F5) end },

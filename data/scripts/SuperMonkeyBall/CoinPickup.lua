@@ -9,12 +9,16 @@ setmetatable(CoinPickup, {
 	end,
 })
 
-function CoinPickup:create(guid,position,cfi,w,h,d)
+function CoinPickup:create(guid,position,cfi,w,h,d,level)
 	PickupBase.create(self, guid, position, cfi, w, h, d)
 	self.guid = guid
+	self.level = level
 	
 end
 
 function CoinPickup:onBeginOverlap(go)
 	go.coinCount = go.coinCount+1;
+	
+	self.level:manageList(self.guid)
+	GameObjectManager:destroyGameObject(self.go)
 end

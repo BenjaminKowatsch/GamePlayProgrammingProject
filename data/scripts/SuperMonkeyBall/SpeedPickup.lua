@@ -9,7 +9,7 @@ setmetatable(SpeedPickup, {
 	end,
 })
 
-function SpeedPickup:create(guid,position,cfi,w,h,d,maxTime)
+function SpeedPickup:create(guid,position,cfi,w,h,d,level,maxTime)
 	PickupBase.create(self, guid, position, cfi, w, h, d)
 	self.maxTime = maxTime
 end
@@ -29,6 +29,8 @@ function SpeedPickup:onBeginOverlap(go)
 	self.oldMaxMoveSpeed = go.maxMoveSpeed
 	go.maxMoveSpeed = 800
 	self.speedGO = go
+	self.level:manageList(self.guid)
+	GameObjectManager:destroyGameObject(self.go)
 end
 
 function SpeedPickup:onEndOverlap(go)

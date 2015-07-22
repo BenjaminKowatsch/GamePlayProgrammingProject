@@ -18,4 +18,6 @@ end
 
 function Goal:onBeginOverlap(go)
 	self.goal = true
+	self.level:manageList(self.guid)
+	GameObjectManager:destroyGameObject(self.go)
 end

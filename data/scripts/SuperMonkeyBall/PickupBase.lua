@@ -8,7 +8,7 @@ setmetatable(PickupBase,{
 	end,
 })
 -- define constructor
-function PickupBase:create(guid,position,cfi,w,h,d)
+function PickupBase:create(guid,position,cfi,w,h,d,level)
 	local go = GameObjectManager:createGameObjectUninitialized(guid)
 	go.pc = go:createPhysicsComponent()
 	local cinfo = RigidBodyCInfo()

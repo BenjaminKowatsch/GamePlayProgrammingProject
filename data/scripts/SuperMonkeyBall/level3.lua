@@ -9,7 +9,8 @@ setmetatable(Level3, {
 	end,
 })
 
-function Level3:setComponentStates(state)
+function Level3:destroy()
+	GameObjectManager:destroyGameObject(self.map)
 end
 
 function Level3:create()

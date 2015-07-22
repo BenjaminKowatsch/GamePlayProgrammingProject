@@ -9,9 +9,10 @@ setmetatable(Level2, {
 	end,
 })
 
-function Level2:setComponentStates(state)
+function Level2:destroy()
+	GameObjectManager:destroyGameObject(self.map)
 end
 
 function Level2:create()
-	LevelBase.create(self, "level1", Vec3(0,0,-4), "data/models/map1/Map1.FBX", "data/collision/map1.hkx")
+	LevelBase.create(self, "level2", Vec3(0,0,-4), "data/models/map1/Map1.FBX", "data/collision/map1.hkx")
 end

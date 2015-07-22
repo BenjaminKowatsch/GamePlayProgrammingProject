@@ -30,8 +30,8 @@ function LevelBase:create(guid, position, mpath, cpath)
 	self.map = go
 end
 
-function LevelBase:setComponentStates(state)
-	self.map.setComponentStates(state)
+function LevelBase:destroy()
+	GameObjectManager:destroyGameObject(self.map)
 end
 
 
