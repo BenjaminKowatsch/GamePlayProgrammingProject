@@ -5,7 +5,9 @@ function createCollisionCapsule(guid, startPos, endPos, radius)
 	local cinfo = RigidBodyCInfo()
 	cinfo.shape = PhysicsFactory:createCapsule(startPos, endPos, radius)
 	cinfo.motionType = MotionType.Keyframed
-	cinfo.collisionFilterInfo = 0x2
+	------------------------------------
+	--cinfo.collisionFilterInfo = 0x2
+	------------------------------------
 	capsule.rb = capsule.pc:createRigidBody(cinfo)
 	capsule.moveSpeed = 700
 	capsule.update = function (self,velocity,elapsedTime)

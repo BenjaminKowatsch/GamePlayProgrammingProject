@@ -10,7 +10,6 @@ setmetatable(Level,{
 })
 
 
-
 -- define constructor
 function Level:_init(guid, position, mpath, cpath)
 	local go = GameObjectManager:createGameObject(guid)
@@ -19,8 +18,8 @@ function Level:_init(guid, position, mpath, cpath)
 	go.pc = go:createPhysicsComponent()
 	local cinfo = RigidBodyCInfo()
 	cinfo.motionType = MotionType.Fixed
-	--cinfo.shape = PhysicsFactory:loadCollisionMesh("cpath")
-	cinfo.shape = PhysicsFactory:createBox(Vec3(398.425,396.85,3.937))
+	cinfo.shape = PhysicsFactory:loadCollisionMesh(cpath)
+	--cinfo.shape = PhysicsFactory:createBox(Vec3(398.425,396.85,3.937))
 	cinfo.mass = 10
 	cinfo.position = position
 	cinfo.collisionFilterInfo = 0x1

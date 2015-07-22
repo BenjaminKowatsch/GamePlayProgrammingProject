@@ -7,30 +7,32 @@ function createCamera(guid,viewtarget,camOffset)
 		cam.cc:setState(ComponentState.Active)
 		cam.pc = cam:createPhysicsComponent()
 		local cinfo = RigidBodyCInfo()
-		cinfo.shape = PhysicsFactory:createSphere(2.5)
+		cinfo.shape = PhysicsFactory:createSphere(5)
 		cinfo.motionType = MotionType.Dynamic
 		cinfo.mass = 50.0
 		cinfo.gravityFactor = 0
 		cinfo.restitution = 0.0
 		cinfo.position = viewtarget:getWorldPosition():add(camOffset)
 		cinfo.friction = 0.0
-		cinfo.maxLinearVelocity = 3000
 		cinfo.linearDamping = 5
-		cinfo.collisionFilterInfo = 0x2
+		------------------------------------
+		--cinfo.collisionFilterInfo = 0x2
+		------------------------------------
 		cam.rb = cam.pc:createRigidBody(cinfo)
 		--custom attributes
 		cam.viewTarget = viewtarget
 		cam.camOffset = camOffset
 		cam.minLength = camOffset:length()
-		cam.tiltSpeed = 80
+		cam.tiltSpeed = 90
 		cam.tiltAngle = 0
 		cam.maxTiltAngle = 30
 		cam.newCamPos = cam.rb:getPosition()
-		cam.moveSpeed = 400
+		cam.moveSpeed = 500
 		cam.zOffset = 0
-		cam.zOffsetSpeed = 50
+		cam.zOffsetSpeed = 40
 		cam.pitchSpeed = 25
 		cam.maxPitchAngle = 8
+		cam.offsetAngleFactor = 0.05
 		
 		cam.update = function (self,elapsedTime,move,zoom)
 			-- set zoom
@@ -93,14 +95,26 @@ function createCamera(guid,viewtarget,camOffset)
 			
 			if(move:length() > 0) then
 				local offsetAngle = angleBetweenVec2(Vec2(-self.camOffset.x,-self.camOffset.y),Vec2(viewTargetVel.x,viewTargetVel.y))
-				local q = Quaternion(Vec3(0.0, 0.0, 1.0), offsetAngle)
+				local q = Quaternion(Vec3(0.0, 0.0, 1.0), offsetAngle*self.offsetAngleFactor)
 				self.camOffset = q:toMat3():mulVec3(self.camOffset)		
 			end
 			
 			self.newCamPos = cam.viewTarget:getPosition()+self.camOffset
+
+			-- use impulse when camera will turn around to avoid camera bug
+			--if(move.y<0 and move.x <0.2 and move.x >-0.2) then
+			--	self.rb:applyLinearImpulse((self.newCamPos-cam.rb:getPosition()):mulScalar(elapsedTime*self.moveSpeed))
+			--else
+			--logMessage("CammoveSpeed ".. self.viewTarget.maxMoveSpeed)
+			self.rb:setPosition(self.newCamPos)
+				--self.rb:setLinearVelocity((self.newCamPos-cam.rb:getPosition()):mulScalar(elapsedTime*6000))
+				--end
 			--self.rb:applyLinearImpulse((self.newCamPos-cam.rb:getPosition()):mulScalar(elapsedTime*self.moveSpeed))
-			self.rb:setLinearVelocity((self.newCamPos-cam.rb:getPosition()):mulScalar(elapsedTime*self.moveSpeed))
-			
+			--self.rb:setLinearVelocity((self.newCamPos-cam.rb:getPosition()):mulScalar(elapsedTime*self.viewTarget.maxMoveSpeed))
+			---self.rb:setLinearVelocity(self.viewTarget.rb:getLinearVelocity())
+
+			--self.rb:applyLinearImpulse((self.newCamPos-cam.rb:getPosition()):mulScalar(elapsedTime*self.moveSpeed))
+			--self.rb:setLinearVelocity((self.newCamPos-cam.rb:getPosition()):mulScalar(elapsedTime*self.moveSpeed))
 			--self.cc:setViewTarget(cam.viewTarget)
 			return moveVector3Rot
 		end

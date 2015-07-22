@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "gepimpl/subsystems/physics/havok/world.h"
 #include "gepimpl/subsystems/physics/havok/entity.h"
 #include "gepimpl/subsystems/physics/havok/conversion/vector.h"
@@ -27,7 +27,7 @@ hkBool gep::HavokCollisionFilter_Simple::isCollisionEnabled(const hkpCollisionIn
     // We need a corresponding filter info for 'a'. Whether we should get this from a parent/grandparent/etc... of 'a' in the case that
     // 'a' is part of a shape collection depends on how we decide to handle the 'collection vs collection' case.
     // Here we just assume that we do not have collections colliding against collections, and use the filter info of the root collidable of 'a'
-    return isCollisionEnabled(a.getRootCollidable()->getCollisionFilterInfo(), infoB);
+    return isCollisionEnabled(a.getRootCollidable()->getCollisionFilterInfo(), infoB | b.getRootCollidable()->getCollisionFilterInfo());
 }
 
 hkBool gep::HavokCollisionFilter_Simple::isCollisionEnabled(const hkpCollisionInput& input,

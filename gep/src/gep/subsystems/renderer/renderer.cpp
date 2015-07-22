@@ -104,7 +104,7 @@ void gep::Renderer::initialize()
     g_globalManager.getResourceManager()->registerResourceType("Font");
 
     // load engine resources
-    m_pDefaultFont = g_globalManager.getResourceManager()->loadResource<Font>(FontFileLoader("data/base/dejavusans.ttf", 11), LoadAsync::No);
+    m_pDefaultFont = g_globalManager.getResourceManager()->loadResource<Font>(FontFileLoader("data/base/dejavusans.ttf", 17), LoadAsync::No);
     m_pFontShader = g_globalManager.getResourceManager()->loadResource<Shader>(ShaderFileLoader("data/base/font.fx"), LoadAsync::No);
 
     g_globalManager.getResourceManager()->finalizeResourcesWithFlags(ResourceFinalize::FromRenderer);
@@ -128,9 +128,9 @@ void gep::Renderer::initialize()
                                        (float)m_settings.screenResolution.y));
     {
         auto aspectRatio = float(m_settings.screenResolution.x) / float(m_settings.screenResolution.y);
-        m_projection = mat4::projectionMatrix(60.0f, aspectRatio, 0.1f, 10000.0f);
+		m_projection = mat4::projectionMatrix(60.0f, aspectRatio, 0.1f, 10000.0f);
     }
-    m_view = mat4::lookAtMatrix(vec3(100, 0, 50), vec3(0, 0, 25), vec3(0,0,1));
+	m_view = mat4::lookAtMatrix(vec3(100, 0, 50), vec3(0, 0, 25), vec3(0, 0, 1));
 
     {
         Vertexbuffer::DataChannel dataChannels[] =

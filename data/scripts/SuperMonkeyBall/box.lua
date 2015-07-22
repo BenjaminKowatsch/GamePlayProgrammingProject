@@ -1,7 +1,7 @@
 function createBox(position,guid)
 	local box = GameObjectManager:createGameObject(guid)
 	box.rc = box:createRenderComponent()
-	box.rc:setPath("data/models/map3/Map3.FBX")
+	box.rc:setPath("data/models/map1/Map1.FBX")
 	--box.rc:setPath("data/models/terrain/terrain.FBX")
 	box.pc = box:createPhysicsComponent()
 	local cinfo = RigidBodyCInfo()
