@@ -5,13 +5,11 @@ setmetatable(RotationPlatform,{
 	__index = PlatformBase,
 	__call = function(cls, ...)
 	local self = setmetatable({}, cls)
-	self:_init(...) -- call constructor
 	return self
 	end,
 })
--- define constructor
-function RotationPlatform:_init(guid,position,cfi,w,h,d,rotSpeed,maxAngle)
-	PlatformBase._init(self,guid,position,cfi,w,h,d)
+function RotationPlatform:create(guid,position,cfi,w,h,d,rotSpeed,maxAngle)
+	PlatformBase.create(self,guid,position,cfi,w,h,d)
 	self.angle = 0
 	self.rotSpeed = rotSpeed
 	self.maxAngle = maxAngle

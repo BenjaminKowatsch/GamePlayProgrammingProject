@@ -5,15 +5,14 @@ setmetatable(Goal, {
 	__index = PickupBase,
 	__call = function(cls,...)
 		local self = setmetatable({},cls)
-		self:_init(...) -- call constructor
 		return self
 	end,
 })
 
 
 
-function Goal:_init(guid,position,cfi,w,h,d)
-	PickupBase._init(self,guid,position,cfi,w,h,d) -- super constructor call 
+function Goal:create(guid,position,cfi,w,h,d)
+	PickupBase.create(self, guid, position, cfi, w, h, d) 
 	self.goal = false
 end
 

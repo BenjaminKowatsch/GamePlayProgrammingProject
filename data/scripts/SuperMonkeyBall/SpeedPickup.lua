@@ -5,13 +5,12 @@ setmetatable(SpeedPickup, {
 	__index = PickupBase,
 	__call = function(cls,...)
 		local self = setmetatable({},cls)
-		self:_init(...) -- call constructor
 		return self
 	end,
 })
 
-function SpeedPickup:_init(guid,position,cfi,w,h,d,maxTime)
-	PickupBase._init(self,guid,position,cfi,w,h,d) -- super constructor call 
+function SpeedPickup:create(guid,position,cfi,w,h,d,maxTime)
+	PickupBase.create(self, guid, position, cfi, w, h, d)
 	self.maxTime = maxTime
 end
 

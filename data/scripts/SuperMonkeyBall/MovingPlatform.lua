@@ -5,13 +5,11 @@ setmetatable(MovingPlatform,{
 	__index = PlatformBase,
 	__call = function(cls, ...)
 		local self = setmetatable({}, cls)
-		self:_init(...) -- call constructor
 		return self
 	end,
 })
--- define constructor
-function MovingPlatform:_init(guid,position,cfi,w,h,d,moveSpeed,dest)
-	PlatformBase._init(self,guid,position,cfi,w,h,d)
+function MovingPlatform:create(guid,position,cfi,w,h,d,moveSpeed,dest)
+	PlatformBase.create(self,guid,position,cfi,w,h,d)
 	self.start = position
 	self.moveVec = (dest-position):normalized()
 	self.moveSpeed = moveSpeed
