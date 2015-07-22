@@ -22,7 +22,14 @@ include("SuperMonkeyBall/PickupBase.lua")
 include("SuperMonkeyBall/DoubleJumpPickup.lua")
 include("SuperMonkeyBall/GravityPickup.lua")
 include("SuperMonkeyBall/SpeedPickup.lua")
-include("SuperMonkeyBall/level1.lua")
+include("SuperMonkeyBall/CoinPickup.lua")
+include("SuperMonkeyBall/Goal.lua")
+include("SuperMonkeyBall/Level.lua")
+include("SuperMonkeyBall/Level1.lua")
+include("SuperMonkeyBall/Level2.lua")
+include("SuperMonkeyBall/Level3.lua")
+--include("SuperMonkeyBall/Level4.lua")
+
 --include("SuperMonkeyBall/banana.lua")
 
 --pickupbase = PickupBase("PickupBase",Vec3(-50,50,0),0x1,15,15,15)
@@ -43,30 +50,45 @@ background.rb = background.pc:createRigidBody(cinfo)
 
 --box = createBox(Vec3(0,0,-4),"box")
 
-gravityPickup = GravityPickup("GravityPickup",Vec3(30,30,0),0x1,15,15,15)
+--gravityPickup = GravityPickup("GravityPickup",Vec3(30,30,0),0x1,15,15,15)
 
-gravityPickup2 = GravityPickup("GravityPickup2",Vec3(30,-30,181),0x1,15,15,15)
+--gravityPickup2 = GravityPickup("GravityPickup2",Vec3(30,-30,181),0x1,15,15,15)
 
-speedPickup = SpeedPickup("SpeedPickup",Vec3(-100,60,0),0x1,15,15,15,4)
+--speedPickup = SpeedPickup("SpeedPickup",Vec3(-100,60,0),0x1,15,15,15,4)
 
-box2 = createBox(Vec3(0,0,200),"box1")
+
+
+
+
+coinPickup = CoinPickup("CoinPickup", Vec3(100,30,0),0x1,5,5,5,4)
+coinPickup2 = CoinPickup("CoinPickup2", Vec3(100,40,0),0x1,5,5,5,4)
+coinPickup3 = CoinPickup("CoinPickup3", Vec3(100,50,0),0x1,5,5,5,4)
+coinPickup4 = CoinPickup("CoinPickup4", Vec3(100,60,0),0x1,5,5,5,4)
+coinPickup5 = CoinPickup("CoinPickup5", Vec3(100,70,0),0x1,5,5,5,4)
+
+--box2 = createBox(Vec3(0,0,200),"box1")
 
 player = createPlayer()
 
 --box2 = createBox(Vec3(0,0,200),"box1")
 
 --cam = createCamera("camera",ball,Vec3(0,-50,20))
-level1 = createLevel1(Vec3(0,0,-4), "level1")
+level1 = Level1()
 level1:setComponentStates(ComponentState.Inactive)
-level2 = createLevel1(Vec3(0,0,-4), "level2")
+level2 = Level2()
 level2:setComponentStates(ComponentState.Inactive)
-level3 = createLevel1(Vec3(0,0,-4), "level3")
+level3 = Level3()
 level3:setComponentStates(ComponentState.Inactive)
-level4 = createLevel1(Vec3(0,0,-4), "level4")
-level4:setComponentStates(ComponentState.Inactive)
-
+--level4 = Level4()
+--level4:setComponentStates(ComponentState.Inactive)
+local activeLevel
 function mainmenuEnter()
 	level1:setComponentStates(ComponentState.Active)
+	activeLevel = "mainmenu"
+	level2.goal2.goal = false
+
+	player.ball:setPosition(Vec3(0,0,14))
+	player.capsule:setPosition(player.ball:getPosition())
 end
 function mainmenuLeave()
 	level1:setComponentStates(ComponentState.Inactive)
@@ -74,6 +96,8 @@ end
 
 function level2Enter()
 	level2:setComponentStates(ComponentState.Active)
+	level1.goal1.goal = false
+	activeLevel = "level2"
 	player.ball:setPosition(Vec3(0,0,14))
 	player.capsule:setPosition(player.ball:getPosition())
 end
@@ -82,43 +106,10 @@ function level2Leave()
 end
 function defaultUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
+	DebugRenderer:printText(Vec2(-0.9,0.7), "Goal: "..tostring(level2.goal2.goal))
+	DebugRenderer:printText(Vec2(-0.9,0.6), "Level: "..tostring(activeLevel))
 	player:update(elapsedTime)
-	speedPickup:update(elapsedTime)
-	---- keyboard player input
-	--local move = Vec2(0, 0)
-	--if (InputHandler:isPressed(Key.A)) then move.x = - 1 end
-	--if (InputHandler:isPressed(Key.D)) then move.x = 1 end
-	--if (InputHandler:isPressed(Key.W)) then move.y = 1 end
-	--if (InputHandler:isPressed(Key.S)) then move.y = -1 end
-	--move = move:normalized()
-	---- gamepad player input
-	--local gamepad = InputHandler:gamepad(0)
-	--local leftStick = gamepad:leftStick()
-	--local rightStick = gamepad:rightStick()
-	---- mouse player input
-	--local mouseDelta = InputHandler:getMouseDelta()
-	--
-	----DebugRenderer:printText(Vec2(-0.2,0.7),"MouseDelta: " .. mouseDelta.x .." " .. mouseDelta.y .. " " .. mouseDelta.z.."\nBoxPosition ".. box:getWorldPosition().x.." ".. box:getWorldPosition().y.." ".. box:getWorldPosition().z .. "\nBallPosition "..ball:getWorldPosition().x.." ".. ball:getWorldPosition().y.." ".. ball:getWorldPosition().z)
-	--if InputHandler:wasTriggered(Key.G) then
-	--	gravityFactor = -gravityFactor
-	--	PhysicsSystem:getWorld():setGravity(Vec3(0,0,9.8*gravityFactor))
-	--	player.cam.camOffset.z = -player.cam.camOffset.z
-	--	player.cam.cc:tilt(180)
-	--end
-	--move = move + leftStick
-	--move.x = move.x * -gravityFactor
-	--local zoom = mouseDelta.z + rightStick.y	
-	--
-	--if(InputHandler:wasTriggered(Key.Space) or bit32.btest(gamepad:buttonsTriggered(), Button.A)) then
-	--	player.ball.jump()
-	--end
-	--
-	--local moveVector3Rot = cam:update(elapsedTime,move,zoom)
-	--
-	--player.ball:update(elapsedTime,Vec2(moveVector3Rot.x,moveVector3Rot.y))
-	--capsule:update((ball:getPosition()-capsule.rb:getPosition()),elapsedTime)
-	
-	
+	--speedPickup:update(elapsedTime)
 	return EventResult.Handled
 end
 
@@ -175,17 +166,35 @@ StateMachine{
 				update = { level5Update },
 				leave  = { level5Leave }
 			}
+		},
+		{
+			name = "score",
+			eventListeners = {
+				enter  = { scoreEnter },
+				update = { defaultUpdate },
+				leave  = { scoreLeave }
+			}
 		}
+
 	},
 	transitions =
 	{
 		{ from = "__enter", to = "mainmenu" },
 		{ from = "mainmenu", to = "level1", condition = function() return InputHandler:wasTriggered(Key.F1) end },
-		{ from = "level1", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F6) end },
-		{ from = "mainmenu", to = "level2", condition = function() return InputHandler:wasTriggered(Key.F2) end },
+		{ from = "mainmenu", to = "level2", condition = function() return level1.goal1.goal end },
 		{ from = "mainmenu", to = "level3", condition = function() return InputHandler:wasTriggered(Key.F3) end },
 		{ from = "mainmenu", to = "level4", condition = function() return InputHandler:wasTriggered(Key.F4) end },
-		{ from = "mainmenu", to = "level5", condition = function() return InputHandler:wasTriggered(Key.F5) end }
+		{ from = "mainmenu", to = "level5", condition = function() return InputHandler:wasTriggered(Key.F5) end },
+		{ from = "level1", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F6) end },
+		{ from = "level2", to = "mainmenu", condition = function() return level2.goal2.goal end },
+		{ from = "level3", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F6) end },
+		{ from = "level4", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F6) end },
+		{ from = "level5", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F6) end },
+		{ from = "level1", to = "score", condition = function() return InputHandler:wasTriggered(Key.F5) end },
+		{ from = "level2", to = "score", condition = function() return InputHandler:wasTriggered(Key.F2) end },
+		{ from = "level3", to = "score", condition = function() return InputHandler:wasTriggered(Key.F3) end },
+		{ from = "level4", to = "score", condition = function() return InputHandler:wasTriggered(Key.F4) end },
+		{ from = "level5", to = "score", condition = function() return InputHandler:wasTriggered(Key.F5) end }
 	},
 	eventListeners =
 	{

@@ -26,7 +26,7 @@ function createCamera(guid,viewtarget,camOffset)
 		cam.tiltAngle = 0
 		cam.maxTiltAngle = 30
 		cam.newCamPos = cam.rb:getPosition()
-		cam.moveSpeed = 600
+		cam.moveSpeed = 400
 		cam.zOffset = 0
 		cam.zOffsetSpeed = 50
 		cam.pitchSpeed = 25
@@ -98,8 +98,8 @@ function createCamera(guid,viewtarget,camOffset)
 			end
 			
 			self.newCamPos = cam.viewTarget:getPosition()+self.camOffset
-			self.rb:applyLinearImpulse((self.newCamPos-cam.rb:getPosition()):mulScalar(elapsedTime*self.moveSpeed))
-			--self.rb:setLinearVelocity((self.newCamPos-cam.rb:getPosition()):mulScalar(elapsedTime*self.moveSpeed))
+			--self.rb:applyLinearImpulse((self.newCamPos-cam.rb:getPosition()):mulScalar(elapsedTime*self.moveSpeed))
+			self.rb:setLinearVelocity((self.newCamPos-cam.rb:getPosition()):mulScalar(elapsedTime*self.moveSpeed))
 			
 			--self.cc:setViewTarget(cam.viewTarget)
 			return moveVector3Rot
