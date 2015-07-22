@@ -4,13 +4,12 @@ PickupBase.__index = PickupBase
 setmetatable(PickupBase,{
 	__call = function(cls, ...)
 	local self = setmetatable({}, cls)
-	self:_init(...) -- call constructor
 	return self
 	end,
 })
 -- define constructor
-function PickupBase:_init(guid,position,cfi,w,h,d)
-	local go = GameObjectManager:createGameObject(guid)
+function PickupBase:create(guid,position,cfi,w,h,d)
+	local go = GameObjectManager:createGameObjectUninitialized(guid)
 	go.pc = go:createPhysicsComponent()
 	local cinfo = RigidBodyCInfo()
 		cinfo.collisionFilterInfo = cfi
@@ -29,6 +28,7 @@ function PickupBase:_init(guid,position,cfi,w,h,d)
 		end
 	end)
 	go.rb:setUserData(go)
+	go:initialize()
 	self.go = go
 end
 

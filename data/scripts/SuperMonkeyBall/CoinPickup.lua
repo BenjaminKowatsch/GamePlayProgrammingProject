@@ -5,18 +5,16 @@ setmetatable(CoinPickup, {
 	__index = PickupBase,
 	__call = function(cls,...)
 		local self = setmetatable({},cls)
-		self:_init(...) -- call constructor
 		return self
 	end,
 })
 
-function CoinPickup:_init(guid,position,cfi,w,h,d)
-	PickupBase._init(self,guid,position,cfi,w,h,d) -- super constructor call 
+function CoinPickup:create(guid,position,cfi,w,h,d)
+	PickupBase.create(self, guid, position, cfi, w, h, d)
 	self.guid = guid
 	
 end
 
 function CoinPickup:onBeginOverlap(go)
 	go.coinCount = go.coinCount+1;
-	GameObjectManager:destroyGameObject(self.go)
 end

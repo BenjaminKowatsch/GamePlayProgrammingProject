@@ -4,13 +4,12 @@ PlatformBase.__index = PlatformBase
 setmetatable(PlatformBase,{
 	__call = function(cls, ...)
 	local self = setmetatable({}, cls)
-	self:_init(...) -- call constructor
 	return self
 	end,
 })
 -- define constructor
-function PlatformBase:_init(guid,position,cfi,w,h,d)
-	local go = GameObjectManager:createGameObject(guid)
+function PlatformBase:create(guid,position,cfi,w,h,d)
+	local go = GameObjectManager:createGameObjectUninitialized(guid)
 	go.pc= go:createPhysicsComponent()
 	local cinfo = RigidBodyCInfo()
 		cinfo.collisionFilterInfo = cfi
@@ -19,5 +18,6 @@ function PlatformBase:_init(guid,position,cfi,w,h,d)
 		cinfo.shape = PhysicsFactory:createBox(w,h,d)
 	go.rb = go.pc:createRigidBody(cinfo)
 	go.rb:setUserData(go)
+	go.initialize()
 	self.go = go
 end

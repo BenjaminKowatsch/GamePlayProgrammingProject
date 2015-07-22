@@ -17,7 +17,6 @@ end
 --include("SuperMonkeyBall/camera.lua")
 include("SuperMonkeyBall/Player.lua")
 include("SuperMonkeyBall/box.lua")
-include("SuperMonkeyBall/mainmenu.lua")
 include("SuperMonkeyBall/PickupBase.lua")
 include("SuperMonkeyBall/DoubleJumpPickup.lua")
 include("SuperMonkeyBall/GravityPickup.lua")
@@ -27,21 +26,16 @@ include("SuperMonkeyBall/RotationPlatform.lua")
 include("SuperMonkeyBall/MovingPlatform.lua")
 include("SuperMonkeyBall/CoinPickup.lua")
 include("SuperMonkeyBall/Goal.lua")
-include("SuperMonkeyBall/Level.lua")
+include("SuperMonkeyBall/LevelBase.lua")
 include("SuperMonkeyBall/Level1.lua")
 include("SuperMonkeyBall/Level2.lua")
 include("SuperMonkeyBall/Level3.lua")
 --include("SuperMonkeyBall/Level4.lua")
 
---include("SuperMonkeyBall/banana.lua")
+rotplatform = RotationPlatform()
 
-rotplatform = RotationPlatform("rotplatform",Vec3(60,-60,20),0x1,60,60,5,40,40)
 
-movplatform = MovingPlatform("movplatform",Vec3(60,80,-4),0x1,30,30,5,1600,Vec3(60,120,30))
-
---pickupbase = PickupBase("PickupBase",Vec3(-50,50,0),0x1,15,15,15)
-
---pickup = DoubleJumpPickup("DoubleJumpPickup",Vec3(30,0,0),0x1,15,15,15)
+movplatform = MovingPlatform()
 
 background = GameObjectManager:createGameObject("background")
 background.rc = background:createRenderComponent()
@@ -55,108 +49,59 @@ cinfo.collisionFilterInfo = 0x4
 cinfo.position = Vec3(0,0,0)
 background.rb = background.pc:createRigidBody(cinfo)
 
---box = createBox(Vec3(0,0,-4),"box")
+speedPickup = SpeedPickup()
 
---gravityPickup = GravityPickup("GravityPickup",Vec3(40,40,0),0x1,15,15,15)
-
---gravityPickup2 = GravityPickup("GravityPickup2",Vec3(40,-40,181),0x1,15,15,15)
-
-local BaseClass = {}
-BaseClass.__index = BaseClass
-
-setmetatable(BaseClass, {
-  __call = function (cls, ...)
-    local self = setmetatable({}, cls)
-    return self
-  end,
-})
-
-function BaseClass:create(test)
-	logMessage("base function ".. test)
-	self.go = GameObjectManager:createGameObjectUninitialized(test)
-	self.go:initialize()
-end
----
-
-local DerivedClass = {}
-DerivedClass.__index = DerivedClass
-
-setmetatable(DerivedClass, {
-  __index = BaseClass, -- this is what makes the inheritance work
-  __call = function (cls, ...)
-    local self = setmetatable({}, cls)
-    return self
-  end,
-})
-
-function DerivedClass:create(test)
-	BaseClass.create(self,test)
-	logMessage("child function ".. test)
-end
-
-local i = DerivedClass()
-
-
-
-speedPickup = SpeedPickup("SpeedPickup",Vec3(-100,60,40),0x1,15,15,15,2)
-
-
-coinPickup = CoinPickup("CoinPickup", Vec3(100,30,0),0x1,5,5,5,4)
-coinPickup2 = CoinPickup("CoinPickup2", Vec3(100,40,0),0x1,5,5,5,4)
-coinPickup3 = CoinPickup("CoinPickup3", Vec3(100,50,0),0x1,5,5,5,4)
-coinPickup4 = CoinPickup("CoinPickup4", Vec3(100,60,0),0x1,5,5,5,4)
-coinPickup5 = CoinPickup("CoinPickup5", Vec3(100,70,0),0x1,5,5,5,4)
-
---box2 = createBox(Vec3(0,0,200),"box1")
 
 player = createPlayer()
 
---box2 = createBox(Vec3(0,0,200),"box1")
-
---cam = createCamera("camera",ball,Vec3(0,-50,20))
 level1 = Level1()
-level1:setComponentStates(ComponentState.Inactive)
 level2 = Level2()
-level2:setComponentStates(ComponentState.Inactive)
 level3 = Level3()
-level3:setComponentStates(ComponentState.Inactive)
---level4 = Level4()
---level4:setComponentStates(ComponentState.Inactive)
-local activeLevel
-function mainmenuEnter()
-	i:create("bla function")
-	level1:setComponentStates(ComponentState.Active)
-	activeLevel = "mainmenu"
-	level2.goal2.goal = false
 
+function mainmenuEnter()
+	--movplatform:create("movplatform",Vec3(60,80,-4),0x1,30,30,5,1600,Vec3(60,120,30))
+	--rotplatform:create("rotplatform",Vec3(60,-60,20),0x1,60,60,5,40,40)
+	speedPickup:create("SpeedPickup",Vec3(-100,60,0),0x1,15,15,15,2)
+	--player.ball:setComponentStates(ComponentState.Active)
+	level1:create()
 	player.ball:setPosition(Vec3(0,0,14))
-	--player.capsule:setPosition(player.ball:getPosition())
 end
 function mainmenuLeave()
-	level1:setComponentStates(ComponentState.Inactive)
+	--level1:setComponentStates(ComponentState.Inactive)
 end
 
 function level2Enter()
-	level2:setComponentStates(ComponentState.Active)
-	level1.goal1.goal = false
-	activeLevel = "level2"
+	--level2:setComponentStates(ComponentState.Active)
 	player.ball:setPosition(Vec3(0,0,14))
-	--player.capsule:setPosition(player.ball:getPosition())
 end
 function level2Leave()
 	level2:setComponentStates(ComponentState.Inactive)
 end
 function defaultUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
-	DebugRenderer:printText(Vec2(-0.9,0.7), "Goal: "..tostring(level2.goal2.goal))
-	DebugRenderer:printText(Vec2(-0.9,0.6), "Level: "..tostring(activeLevel))
+	--DebugRenderer:printText(Vec2(-0.9,0.7), "Goal: "..tostring(level2.goal2.goal))
+	DebugRenderer:printText(Vec2(-0.9,0.5), "Score: "..tostring(player.ball.coinCount))
 	player:update(elapsedTime)
 	speedPickup:update(elapsedTime)
-	movplatform:update(elapsedTime)
+	--movplatform:update(elapsedTime)
 	DebugRenderer:printText3D(Vec3(-100,60,16), "Text3D colored!", Color(0,0,1,1))
-	rotplatform:update(elapsedTime)
+	--rotplatform:update(elapsedTime)
 
 	return EventResult.Handled
+end
+
+function ScoreUpdate(updateData)
+	local elapsedTime = updateData:getElapsedTime()
+	DebugRenderer:printText(Vec2(0,0), "Score: "..tostring(player.ball.coinCount))
+	player:update(elapsedTime)
+	--speedPickup:update(elapsedTime)
+	return EventResult.Handled
+end
+function scoreEnter()
+	player.ball:setComponentStates(ComponentState.Inactive)
+end
+function scoreLeave()
+	player.ball.coinCount = 0
 end
 
 -- global state machine
@@ -217,7 +162,7 @@ StateMachine{
 			name = "score",
 			eventListeners = {
 				enter  = { scoreEnter },
-				update = { defaultUpdate },
+				update = { ScoreUpdate },
 				leave  = { scoreLeave }
 			}
 		}
@@ -226,21 +171,23 @@ StateMachine{
 	transitions =
 	{
 		{ from = "__enter", to = "mainmenu" },
-		{ from = "mainmenu", to = "level1", condition = function() return InputHandler:wasTriggered(Key.F1) end },
-		{ from = "mainmenu", to = "level2", condition = function() return level1.goal1.goal end },
+		{ from = "mainmenu", to = "level1", condition = function() return InputHandler:wasTriggered(Key.F10) end },
+		{ from = "mainmenu", to = "level2", condition = function() return InputHandler:wasTriggered(Key.F2) end },
 		{ from = "mainmenu", to = "level3", condition = function() return InputHandler:wasTriggered(Key.F3) end },
 		{ from = "mainmenu", to = "level4", condition = function() return InputHandler:wasTriggered(Key.F4) end },
 		{ from = "mainmenu", to = "level5", condition = function() return InputHandler:wasTriggered(Key.F5) end },
 		{ from = "level1", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F6) end },
-		{ from = "level2", to = "mainmenu", condition = function() return level2.goal2.goal end },
+		{ from = "level2", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F2) end },
 		{ from = "level3", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F6) end },
 		{ from = "level4", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F6) end },
 		{ from = "level5", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F6) end },
 		{ from = "level1", to = "score", condition = function() return InputHandler:wasTriggered(Key.F5) end },
-		{ from = "level2", to = "score", condition = function() return InputHandler:wasTriggered(Key.F2) end },
+		{ from = "level2", to = "score", condition = function() return level2.goal2.goal end },
 		{ from = "level3", to = "score", condition = function() return InputHandler:wasTriggered(Key.F3) end },
 		{ from = "level4", to = "score", condition = function() return InputHandler:wasTriggered(Key.F4) end },
-		{ from = "level5", to = "score", condition = function() return InputHandler:wasTriggered(Key.F5) end }
+		{ from = "level5", to = "score", condition = function() return InputHandler:wasTriggered(Key.F5) end },
+		{ from = "score", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F1) end }
+
 	},
 	eventListeners =
 	{

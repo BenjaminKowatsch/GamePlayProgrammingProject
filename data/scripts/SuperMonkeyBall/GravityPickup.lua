@@ -5,13 +5,12 @@ setmetatable(GravityPickup, {
 	__index = PickupBase,
 	__call = function(cls,...)
 		local self = setmetatable({},cls)
-		self:_init(...) -- call constructor
 		return self
 	end,
 })
 
-function GravityPickup:_init(guid,position,cfi,w,h,d)
-	PickupBase._init(self,guid,position,cfi,w,h,d) -- super constructor call 
+function GravityPickup:create(guid,position,cfi,w,h,d)
+	PickupBase.create(self, guid, position, cfi, w, h, d)
 end
 
 function GravityPickup:onBeginOverlap(go)

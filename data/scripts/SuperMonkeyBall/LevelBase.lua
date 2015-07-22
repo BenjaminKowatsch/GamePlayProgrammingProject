@@ -1,18 +1,17 @@
-Level = {}
-Level.__index = Level
+LevelBase = {}
+LevelBase.__index = LevelBase
 
-setmetatable(Level,{
+setmetatable(LevelBase,{
 	__call = function(cls, ...)
 	local self = setmetatable({}, cls)
-	self:_init(...) -- call constructor
 	return self
 	end,
 })
 
 
 -- define constructor
-function Level:_init(guid, position, mpath, cpath)
-	local go = GameObjectManager:createGameObject(guid)
+function LevelBase:create(guid, position, mpath, cpath)
+	local go = GameObjectManager:createGameObjectUninitialized(guid)
 	go.rc = go:createRenderComponent()
 	go.rc:setPath(mpath)
 	go.pc = go:createPhysicsComponent()
@@ -26,11 +25,12 @@ function Level:_init(guid, position, mpath, cpath)
 	go.rb = go.pc:createRigidBody(cinfo)
 
 	go.rb:setUserData(go)
+	go:initialize()
 	self.goal = false
 	self.map = go
 end
 
-function Level:setComponentStates(state)
+function LevelBase:setComponentStates(state)
 	self.map.setComponentStates(state)
 end
 

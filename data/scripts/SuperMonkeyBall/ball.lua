@@ -42,7 +42,6 @@ function createBall()
 	end	
 	
 	ball.update = function (self,deltaTime,input)
-		DebugRenderer:printText(Vec2(-0.9,0.8), "Coins: "..self.coinCount)
 		local vel = self.rb:getLinearVelocity()
 		
 		-- add input to current velocity
