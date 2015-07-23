@@ -71,9 +71,11 @@ function mainmenuEnter()
 	player.ball:setComponentStates(ComponentState.Active)
 	level0:create()
 	player.ball:setPosition(Vec3(0,0,14))
+	
 end
 function mainmenuLeave()
 	level0:destroy()
+	respawn.goal = false
 end
 function level1Enter()
 	level1:create()
@@ -81,6 +83,7 @@ function level1Enter()
 end
 function level1Leave()
 	level1:destroy()
+	respawn.goal = false
 end
 function level2Enter()
 	level2:create()
@@ -88,6 +91,7 @@ function level2Enter()
 end
 function level2Leave()
 	level2:destroy()
+	respawn.goal = false
 end
 function level3Enter()
 	level3:create()
@@ -95,6 +99,7 @@ function level3Enter()
 end
 function level3Leave()
 	level3:destroy()
+	respawn.goal = false
 end
 function level4Enter()
 	level4:create()
@@ -102,6 +107,7 @@ function level4Enter()
 end
 function level4Leave()
 	level4:destroy()
+	respawn.goal = false
 end
 function level5Enter()
 	level5:create()
@@ -109,13 +115,14 @@ function level5Enter()
 end
 function level5Leave()
 	level5:destroy()
+	respawn.goal = false
 end
 function scoreEnter()
 	player.ball:setComponentStates(ComponentState.Inactive)
 end
 function scoreUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
-	--DebugRenderer:printText(Vec2(0,0), "Score: "..tostring(player.ball.coinCount))
+	DebugRenderer:printText(Vec2(0,0), "Score: "..tostring(player.ball.coinCount))
 	player:update(elapsedTime)
 	--speedPickup:update(elapsedTime)
 	return EventResult.Handled
@@ -123,25 +130,17 @@ end
 
 function scoreLeave()
 	player.ball.coinCount = 0
+	respawn.goal = false
 end
 function defaultUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
-	
-	level0:update(elapsedTime)
-	if(InputHandler:wasTriggered(Key.F12)) then
-		level0:destroy()
-	end
-	if(InputHandler:wasTriggered(Key.F11)) then
-		level0:create()
-	end
+	--level0:update(elapsedTime)
 	--DebugRenderer:printText(Vec2(-0.9,0.7), "Speed: "..tostring(player.ball.maxSpeed))
 	DebugRenderer:printText(Vec2(-0.9,0.5), "Score: "..tostring(player.ball.coinCount))
 	player:update(elapsedTime)
 	--speedPickup:update(elapsedTime)
 	--movplatform:update(elapsedTime)
-	DebugRenderer:printText3D(Vec3(-100,60,16), "Text3D colored!", Color(0,0,1,1))
 	--rotplatform:update(elapsedTime)
-
 	return EventResult.Handled
 end
 

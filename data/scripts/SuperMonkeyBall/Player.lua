@@ -10,6 +10,10 @@ function createPlayer()
 	--player.capsule:setPosition(player.ball:getPosition())
 	player.cam = createCamera("camera",player.ball,Vec3(0,-70,25))
 	player.update= function(self,elapsedTime)
+		
+		if player.ball:getPosition().z < -1000 or player.ball:getPosition().z > 2000 then
+			player.ball:setPosition(Vec3(0,0,14))
+		end
 		-- keyboard player input
 
 
