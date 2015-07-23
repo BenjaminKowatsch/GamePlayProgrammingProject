@@ -14,11 +14,11 @@ function Level0:manageList(guid)
 end
 
 function Level0:destroy()
-	
+	LevelBase.destroy(self)
 	for _, go in pairs(self.gameObjects) do
 		GameObjectManager:destroyGameObject(go.go)
 	end
-	GameObjectManager:destroyGameObject(self.map)
+	
 end
 
 function Level0:create()
