@@ -24,10 +24,12 @@ include("SuperMonkeyBall/MovingPlatform.lua")
 include("SuperMonkeyBall/CoinPickup.lua")
 include("SuperMonkeyBall/Goal.lua")
 include("SuperMonkeyBall/LevelBase.lua")
+include("SuperMonkeyBall/Level0.lua")
 include("SuperMonkeyBall/Level1.lua")
 include("SuperMonkeyBall/Level2.lua")
 include("SuperMonkeyBall/Level3.lua")
 include("SuperMonkeyBall/Level4.lua")
+include("SuperMonkeyBall/Level5.lua")
 
 
 
@@ -37,6 +39,7 @@ movplatform = MovingPlatform()
 
 player = createPlayer()
 
+level0 = Level0()
 level1 = Level1()
 level2 = Level2()
 level3 = Level3()
@@ -57,13 +60,19 @@ background.rb = background.pc:createRigidBody(cinfo)
 --speedPickup = SpeedPickup()
 
 function mainmenuEnter()
-	level1:create()
+	level0:create()
 	player.ball:setPosition(Vec3(0,0,14))
 end
 function mainmenuLeave()
+	level0:destroy()
+end
+function Level1Enter()
+	level1:create()
+	player.ball:setPosition(Vec3(0,0,14))
+end
+function Level1Leave()
 	level1:destroy()
 end
-
 function level2Enter()
 	level2:create()
 	player.ball:setPosition(Vec3(0,536.776,14))
@@ -76,7 +85,7 @@ function scoreEnter()
 end
 function ScoreUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
-	DebugRenderer:printText(Vec2(0,0), "Score: "..tostring(player.ball.coinCount))
+	--DebugRenderer:printText(Vec2(0,0), "Score: "..tostring(player.ball.coinCount))
 	player:update(elapsedTime)
 	--speedPickup:update(elapsedTime)
 	return EventResult.Handled
@@ -87,10 +96,15 @@ function scoreLeave()
 end
 function defaultUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
-	level1:update(elapsedTime)
-	--DebugRenderer:printText(Vec2(-0.9,0.7), "Goal: "..tostring(level2.goal2.goal))
+	level0:update(elapsedTime)
+	if(InputHandler:wasTriggered(Key.F12)) then
+		level0:destroy()
+	end
+	if(InputHandler:wasTriggered(Key.F11)) then
+		level0:create()
+	end
+	--DebugRenderer:printText(Vec2(-0.9,0.7), "Speed: "..tostring(player.ball.maxSpeed))
 	DebugRenderer:printText(Vec2(-0.9,0.5), "Score: "..tostring(player.ball.coinCount))
-	DebugRenderer:printText(Vec2(-0.8,0.5), "Score: "..tostring(player.ball.jumpCount))
 	player:update(elapsedTime)
 	--speedPickup:update(elapsedTime)
 	--movplatform:update(elapsedTime)
@@ -169,7 +183,7 @@ StateMachine{
 	transitions =
 	{
 		{ from = "__enter", to = "mainmenu" },
-		{ from = "mainmenu", to = "level1", condition = function() return InputHandler:wasTriggered(Key.F1) end },
+		{ from = "mainmenu", to = "level1", condition = function() return level0.glevel1.goal end },
 		{ from = "mainmenu", to = "level2", condition = function() return InputHandler:wasTriggered(Key.F2) end },
 		{ from = "mainmenu", to = "level3", condition = function() return InputHandler:wasTriggered(Key.F3) end },
 		{ from = "mainmenu", to = "level4", condition = function() return InputHandler:wasTriggered(Key.F4) end },

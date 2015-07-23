@@ -10,8 +10,7 @@ setmetatable(GravityPickup, {
 })
 
 function GravityPickup:create(guid,position,cfi,w,h,d,level)
-	PickupBase.create(self, guid, position, cfi, w, h, d)
-	self.level = level
+	PickupBase.create(self, guid, position, cfi, w, h, d,level,"data/models/Pickups/GravityPickup.fbx",Vec3(2,2,2))
 end
 
 function GravityPickup:onBeginOverlap(go)

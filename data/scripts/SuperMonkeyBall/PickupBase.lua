@@ -8,10 +8,11 @@ setmetatable(PickupBase,{
 	end,
 })
 -- define constructor
-function PickupBase:create(guid,position,cfi,w,h,d,level,rcpath)
+function PickupBase:create(guid,position,cfi,w,h,d,level,rcpath,scale)
 	local go = GameObjectManager:createGameObjectUninitialized(guid)
 	go.rc = go:createRenderComponent()
 	go.rc:setPath(rcpath)
+	go.rc:setScale(scale)
 	go.pc = go:createPhysicsComponent()
 	local cinfo = RigidBodyCInfo()
 		cinfo.collisionFilterInfo = cfi
@@ -30,6 +31,7 @@ function PickupBase:create(guid,position,cfi,w,h,d,level,rcpath)
 	go.rb:setUserData(self)
 	go:initialize()
 	self.go = go
+	self.level = level
 end
 
 function PickupBase:update(elapsedTime)

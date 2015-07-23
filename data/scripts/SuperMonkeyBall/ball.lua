@@ -28,7 +28,7 @@ function createBall()
 	ball.jumpCount = 1
 	-- Speed Pickup
 	ball.speedTimer = false
-	ball.speedPickupSpeed = 800
+	ball.speedPickupSpeed = 500
 	ball.timerCount = 0
 	ball.maxTime = 0
 	ball.pc:getContactPointEvent():registerListener(function(event)

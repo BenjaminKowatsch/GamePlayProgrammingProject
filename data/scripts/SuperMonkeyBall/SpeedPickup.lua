@@ -10,9 +10,8 @@ setmetatable(SpeedPickup, {
 })
 
 function SpeedPickup:create(guid,position,cfi,w,h,d,level,maxTime)
-	PickupBase.create(self, guid, position, cfi, w, h, d)
+	PickupBase.create(self, guid, position, cfi, w, h, d, level,"data/models/Pickups/SpeedPickup.fbx",Vec3(0.6,0.6,0.6))
 	self.maxTime = maxTime
-	self.level = level
 end
 
 function SpeedPickup:onBeginOverlap(go)

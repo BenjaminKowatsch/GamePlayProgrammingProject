@@ -10,8 +10,7 @@ setmetatable(DoubleJumpPickup, {
 })
 
 function DoubleJumpPickup:create(guid,position,cfi,w,h,d,level)
-	PickupBase.create(self, guid, position, cfi, w, h, d)
-	self.level = level
+	PickupBase.create(self, guid, position, cfi, w, h, d,level,"data/models/Pickups/DoubleJump.fbx",Vec3(0.3,0.3,0.2))
 end
 
 function DoubleJumpPickup:onBeginOverlap(go)
