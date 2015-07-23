@@ -79,7 +79,8 @@ function createCamera(guid,viewtarget,camOffset)
 				end
 			end
 			
-			local q = Quaternion(cam.cc:getRightDirection(), (10-self.zOffset)*-gravityFactor)
+			--local q = Quaternion(cam.cc:getRightDirection(), (10-self.zOffset)*-gravityFactor)
+			local q = Quaternion(cam.cc:getRightDirection(), 10*-gravityFactor)
 			cam.cc:setViewDirection(q:toMat3():mulVec3(cam.cc:getViewDirection()))
 			
 			-- tilt Background
