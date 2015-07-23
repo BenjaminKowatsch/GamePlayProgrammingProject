@@ -11,10 +11,7 @@ do
 	PhysicsSystem:setDebugDrawingEnabled(true)
 end
 
--- Dependencies
---include("SuperMonkeyBall/helper.lua")
---include("SuperMonkeyBall/ball.lua")
---include("SuperMonkeyBall/camera.lua")
+--Dependencies
 include("SuperMonkeyBall/Player.lua")
 include("SuperMonkeyBall/box.lua")
 include("SuperMonkeyBall/PickupBase.lua")
@@ -30,13 +27,20 @@ include("SuperMonkeyBall/LevelBase.lua")
 include("SuperMonkeyBall/Level1.lua")
 include("SuperMonkeyBall/Level2.lua")
 include("SuperMonkeyBall/Level3.lua")
---include("SuperMonkeyBall/Level4.lua")
+include("SuperMonkeyBall/Level4.lua")
 
+
+
+--Initialization
 rotplatform = RotationPlatform()
-
-
 movplatform = MovingPlatform()
 
+player = createPlayer()
+
+level1 = Level1()
+level2 = Level2()
+level3 = Level3()
+level4 = Level4()
 
 --background = GameObjectManager:createGameObject("background")
 --background.rc = background:createRenderComponent()
@@ -49,21 +53,9 @@ movplatform = MovingPlatform()
 --cinfo.collisionFilterInfo = 0x4
 --cinfo.position = Vec3(0,0,0)
 --background.rb = background.pc:createRigidBody(cinfo)
-
 --speedPickup = SpeedPickup()
 
-
-player = createPlayer()
-
-level1 = Level1()
-level2 = Level2()
-level3 = Level3()
-
 function mainmenuEnter()
-	--movplatform:create("movplatform",Vec3(60,80,-4),0x1,30,30,5,1600,Vec3(60,120,30))
-	--rotplatform:create("rotplatform",Vec3(60,-60,20),0x1,60,60,5,40,40)
-	--speedPickup:create("SpeedPickup",Vec3(-60,80,0),0x1,15,15,15,level1,2)
-	--player.ball:setComponentStates(ComponentState.Active)
 	level1:create()
 	player.ball:setPosition(Vec3(0,0,14))
 end
@@ -74,16 +66,30 @@ end
 function level2Enter()
 	level2:create()
 	player.ball:setPosition(Vec3(0,536.776,14))
-
 end
 function level2Leave()
 	level2:destroy()
+end
+function scoreEnter()
+	player.ball:setComponentStates(ComponentState.Inactive)
+end
+function ScoreUpdate(updateData)
+	local elapsedTime = updateData:getElapsedTime()
+	DebugRenderer:printText(Vec2(0,0), "Score: "..tostring(player.ball.coinCount))
+	player:update(elapsedTime)
+	--speedPickup:update(elapsedTime)
+	return EventResult.Handled
+end
+
+function scoreLeave()
+	player.ball.coinCount = 0
 end
 function defaultUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
 	level1:update(elapsedTime)
 	--DebugRenderer:printText(Vec2(-0.9,0.7), "Goal: "..tostring(level2.goal2.goal))
 	DebugRenderer:printText(Vec2(-0.9,0.5), "Score: "..tostring(player.ball.coinCount))
+	DebugRenderer:printText(Vec2(-0.8,0.5), "Score: "..tostring(player.ball.jumpCount))
 	player:update(elapsedTime)
 	--speedPickup:update(elapsedTime)
 	--movplatform:update(elapsedTime)
@@ -93,19 +99,7 @@ function defaultUpdate(updateData)
 	return EventResult.Handled
 end
 
-function ScoreUpdate(updateData)
-	local elapsedTime = updateData:getElapsedTime()
-	DebugRenderer:printText(Vec2(0,0), "Score: "..tostring(player.ball.coinCount))
-	player:update(elapsedTime)
-	--speedPickup:update(elapsedTime)
-	return EventResult.Handled
-end
-function scoreEnter()
-	player.ball:setComponentStates(ComponentState.Inactive)
-end
-function scoreLeave()
-	player.ball.coinCount = 0
-end
+
 
 -- global state machine
 StateMachine{
@@ -174,7 +168,7 @@ StateMachine{
 	transitions =
 	{
 		{ from = "__enter", to = "mainmenu" },
-		{ from = "mainmenu", to = "level1", condition = function() return InputHandler:wasTriggered(Key.F10) end },
+		{ from = "mainmenu", to = "level1", condition = function() return InputHandler:wasTriggered(Key.F1) end },
 		{ from = "mainmenu", to = "level2", condition = function() return InputHandler:wasTriggered(Key.F2) end },
 		{ from = "mainmenu", to = "level3", condition = function() return InputHandler:wasTriggered(Key.F3) end },
 		{ from = "mainmenu", to = "level4", condition = function() return InputHandler:wasTriggered(Key.F4) end },

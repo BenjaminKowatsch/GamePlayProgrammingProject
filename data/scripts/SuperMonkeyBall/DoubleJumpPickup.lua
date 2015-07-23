@@ -11,10 +11,11 @@ setmetatable(DoubleJumpPickup, {
 
 function DoubleJumpPickup:create(guid,position,cfi,w,h,d,level)
 	PickupBase.create(self, guid, position, cfi, w, h, d)
+	self.level = level
 end
 
 function DoubleJumpPickup:onBeginOverlap(go)
-	go.jumpCount = 2
-	self.level:manageList(self.guid)
+	go.maxJumpCount = 2
+	self.level:manageList(self.go:getGuid())
 	GameObjectManager:destroyGameObject(self.go)
 end

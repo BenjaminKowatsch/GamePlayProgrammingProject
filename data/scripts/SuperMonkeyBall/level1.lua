@@ -21,10 +21,14 @@ function Level1:destroy()
 end
 
 function Level1:create()
-	LevelBase.create(self, "level1", Vec3(0,0,-4), "data/models/Levels/Level5.FBX", "data/collision/Level5.hkx")
-	self.speedPickup1 = SpeedPickup()
-	self.speedPickup1:create("SpeedPickup",Vec3(60,80,30),0x1,15,15,15,self,2)
-	self.gameObjects[self.speedPickup1.go:getGuid()]=self.speedPickup1
+	LevelBase.create(self, "level1", Vec3(0,0,-4), "data/models/Levels/Level2.FBX", "data/collision/Level2.hkx")
+	self.jump1 = DoubleJumpPickup()
+	self.jump1:create("jump1",Vec3(0,80,0),0x1,15,15,15,self)
+	self.gameObjects[self.jump1.go:getGuid()]=self.jump1
+
+	--self.speed1 = SpeedPickup()
+	--self.speed1:create("speed1",Vec3(0,120,30),0x1,15,15,15,self,20)
+	--self.gameObjects[self.speed1.go:getGuid()]=self.speed1
 	
 	--self.rotplatform = RotationPlatform()
 	--self.rotplatform:create("rotplatform",Vec3(60,-60,20),0x1,60,60,5,40,40)

@@ -1,11 +1,12 @@
 function createBall()
 	
 	local ball = GameObjectManager:createGameObject("ball")
-	ball.rc = ball:createRenderComponent()
-	ball.rc:setPath("data/models/Sphere/Sphere.FBX")
+	--ball.rc = ball:createRenderComponent()
+	--ball.rc:setPath("data/models/Sphere/Sphere.FBX")
 	ball.pc = ball:createPhysicsComponent()
 	local cinfo = RigidBodyCInfo()
-	cinfo.shape = PhysicsFactory:createSphere(11.181)
+	--cinfo.shape = PhysicsFactory:createSphere(11.181)
+	cinfo.shape = PhysicsFactory:createSphere(8.181)
 	cinfo.motionType = MotionType.Dynamic
 	cinfo.mass = 20
 	cinfo.position = Vec3(0,0,18)
@@ -20,7 +21,7 @@ function createBall()
 	ball.rb = ball.pc:createRigidBody(cinfo)
 	--Custom attributes
 	ball.coinCount = 0
-	ball.maxMoveSpeed = 400
+	ball.maxMoveSpeed = 180
 	ball.maxJumpCount = 1
 	ball.jumping = false
 	ball.jumpCount = 1
@@ -38,15 +39,20 @@ function createBall()
 		--	ball.jumpCount = ball.maxJumpCount
 		--end
 		if other:getUserData().go.objectType == "Ground" then
-			ball.jumpCount = ball.maxJumpCount
+			ball.jumpCount = 0
 		end
 		
 	end)
-	ball.jump =function()
+	ball.jump = function()
 	logMessage(" jumpCount ".. ball.jumpCount )
-		if 0<ball.jumpCount then
+
+		if ball.jumpCount<ball.maxJumpCount then
 			ball.jumping = true
-			ball.jumpCount = ball.jumpCount -1 
+			ball.jumpCount = ball.jumpCount +1
+
+			if ball.jumpCount == ball.maxJumpCount then
+				ball.maxJumpCount = 1
+			end
 		end		
 	end		
 	
@@ -68,7 +74,7 @@ function createBall()
 		end
 		
 		if(self.jumping)then
-			vel.z = vel.z+180*-gravityFactor
+			vel.z = vel.z+95*-gravityFactor
 			self.jumping = false
 		end
 		self.rb:setLinearVelocity(vel)
