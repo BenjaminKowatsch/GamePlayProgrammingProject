@@ -32,7 +32,7 @@ function createPlayer()
 		move = move + leftStick
 		move.x = move.x * -gravityFactor
 		local zoom = mouseDelta.z + rightStick.y	
-		local rotateCam = rightStick.x + -mouseDelta.x
+		local rotateCam = -rightStick.x + -mouseDelta.x
 		if(InputHandler:wasTriggered(Key.Space) or bit32.btest(gamepad:buttonsTriggered(), Button.A)) then
 			self.ball.jump()
 		end

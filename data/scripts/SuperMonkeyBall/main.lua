@@ -4,7 +4,7 @@ gravityFactor = -1
 do
 	local cinfo = WorldCInfo()
 	cinfo.gravity = Vec3(0,0,9.8*gravityFactor)
-	cinfo.worldSize = 2000
+	cinfo.worldSize = 4000
 	local world = PhysicsFactory:createWorld(cinfo)
 	world:setCollisionFilter(PhysicsFactory:createCollisionFilter_Simple())
 	PhysicsSystem:setWorld(world)
@@ -45,17 +45,18 @@ level2 = Level2()
 level3 = Level3()
 level4 = Level4()
 
---background = GameObjectManager:createGameObject("background")
---background.rc = background:createRenderComponent()
---background.rc:setPath("data/models/Background/Background.FBX")
---background.pc = background:createPhysicsComponent()
---local cinfo = RigidBodyCInfo()
---cinfo.motionType = MotionType.Keyframed
---cinfo.shape = PhysicsFactory:createSphere(500)
---cinfo.mass = 10
---cinfo.collisionFilterInfo = 0x4
---cinfo.position = Vec3(0,0,0)
---background.rb = background.pc:createRigidBody(cinfo)
+background = GameObjectManager:createGameObject("background")
+background.rc = background:createRenderComponent()
+background.rc:setPath("data/models/Background.FBX")
+background.pc = background:createPhysicsComponent()
+local cinfo = RigidBodyCInfo()
+cinfo.motionType = MotionType.Keyframed
+cinfo.shape = PhysicsFactory:createSphere(1000)
+cinfo.rotation = Quaternion(Vec3(0,0,1),180)
+cinfo.mass = 10
+cinfo.collisionFilterInfo = 0x4
+cinfo.position = Vec3(0,0,0)
+background.rb = background.pc:createRigidBody(cinfo)
 --speedPickup = SpeedPickup()
 
 function mainmenuEnter()

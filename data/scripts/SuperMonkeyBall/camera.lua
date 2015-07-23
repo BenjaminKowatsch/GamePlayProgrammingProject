@@ -85,7 +85,7 @@ function createCamera(guid,viewtarget,camOffset)
 			
 			-- tilt Background
 			local z = Quaternion(cam.cc:getRightDirection(), -self.zOffset*2*-gravityFactor)
-			--background.rb:setRotation(Quaternion(cam.cc:getViewDirection(),-cam.tiltAngle) * z)
+			background.rb:setRotation(Quaternion(cam.cc:getViewDirection(),-cam.tiltAngle) * z)
 			
 			-- calculate camera impulse and relative controls
 			local camViewTargetDiff = cam.viewTarget:getPosition()-cam.rb:getPosition()
