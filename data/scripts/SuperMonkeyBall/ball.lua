@@ -1,8 +1,9 @@
 function createBall()
 	
 	local ball = GameObjectManager:createGameObject("ball")
-	--ball.rc = ball:createRenderComponent()
-	--ball.rc:setPath("data/models/Sphere/Sphere.FBX")
+	ball.rc = ball:createRenderComponent()
+	ball.rc:setPath("data/models/monkey/monkey.FBX")
+	ball.rc:setScale(Vec3(0.8,0.8,0.8))
 	ball.pc = ball:createPhysicsComponent()
 	local cinfo = RigidBodyCInfo()
 	--cinfo.shape = PhysicsFactory:createSphere(11.181)
