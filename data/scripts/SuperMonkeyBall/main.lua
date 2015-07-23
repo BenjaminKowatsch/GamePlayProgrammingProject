@@ -13,6 +13,7 @@ end
 
 --Dependencies
 include("SuperMonkeyBall/Player.lua")
+include("SuperMonkeyBall/Respawn.lua")
 include("SuperMonkeyBall/box.lua")
 include("SuperMonkeyBall/PickupBase.lua")
 include("SuperMonkeyBall/DoubleJumpPickup.lua")
@@ -32,7 +33,7 @@ include("SuperMonkeyBall/Level4.lua")
 include("SuperMonkeyBall/Level5.lua")
 
 
-
+respawn = createRespawn()
 --Initialization
 rotplatform = RotationPlatform()
 movplatform = MovingPlatform()
@@ -44,6 +45,7 @@ level1 = Level1()
 level2 = Level2()
 level3 = Level3()
 level4 = Level4()
+level5 = Level5()
 
 background = GameObjectManager:createGameObject("background")
 background.rc = background:createRenderComponent()
@@ -211,16 +213,16 @@ StateMachine{
 	transitions =
 	{
 		{ from = "__enter", to = "mainmenu" },
-		{ from = "mainmenu", to = "mainmenu", condition = function() return level0.glevel1.goal end },
+		{ from = "mainmenu", to = "level1", condition = function() return level0.glevel1.goal end },
 		{ from = "mainmenu", to = "level2", condition = function() return level0.glevel2.goal end },
 		{ from = "mainmenu", to = "level3", condition = function() return level0.glevel3.goal end },
 		{ from = "mainmenu", to = "level4", condition = function() return level0.glevel4.goal end },
 		{ from = "mainmenu", to = "level5", condition = function() return level0.glevel5.goal end },
-		{ from = "level1", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F1) end },
-		{ from = "level2", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F1) end },
-		{ from = "level3", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F1) end },
-		{ from = "level4", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F1) end },
-		{ from = "level5", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F1) end },
+		{ from = "level1", to = "mainmenu", condition = function() return respawn.goal end },
+		{ from = "level2", to = "mainmenu", condition = function() return respawn.goal end },
+		{ from = "level3", to = "mainmenu", condition = function() return respawn.goal end },
+		{ from = "level4", to = "mainmenu", condition = function() return respawn.goal end },
+		{ from = "level5", to = "mainmenu", condition = function() return respawn.goal end },
 		{ from = "level1", to = "score", condition = function() return level1.goal.goal end },
 		{ from = "level2", to = "score", condition = function() return level2.goal.goal end },
 		{ from = "level3", to = "score", condition = function() return level3.goal.goal end },
