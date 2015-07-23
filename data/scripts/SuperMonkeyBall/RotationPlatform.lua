@@ -9,8 +9,8 @@ setmetatable(RotationPlatform,{
 	end,
 })
 
-function RotationPlatform:create(guid,position,cfi,w,h,d,rotSpeed,maxAngle)
-	PlatformBase.create(self,guid,position,cfi,w,h,d)
+function RotationPlatform:create(guid,position,cfi,size,rotSpeed,maxAngle,rcpath)
+	PlatformBase.create(self,guid,position,cfi,size,rcpath)
 	self.angle = 0
 	self.rotSpeed = rotSpeed
 	self.maxAngle = maxAngle
@@ -20,6 +20,7 @@ function RotationPlatform:update(elapsedTime)
 		local m = self.go.rb:getRotation():toMat3()
 		local angle = angleBetweenVec2(Vec2(1,0),Vec2(m.m00,m.m10))
 		if(angle>self.maxAngle or angle <-self.maxAngle) then
+			logMessage("Angle Changed")
 			self.rotSpeed = -self.rotSpeed
 		end
 		--self.angle = self.angle + self.rotSpeed*elapsedTime	

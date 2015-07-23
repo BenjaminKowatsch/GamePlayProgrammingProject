@@ -10,8 +10,8 @@ setmetatable(MovingPlatform,{
 })
 
 
-function MovingPlatform:create(guid,position,cfi,w,h,d,moveSpeed,dest)
-	PlatformBase.create(self,guid,position,cfi,w,h,d)
+function MovingPlatform:create(guid,position,cfi,size,moveSpeed,dest,rcpath)
+	PlatformBase.create(self,guid,position,cfi,size,rcpath)
 	self.start = position
 	self.moveVec = (dest-position):normalized()
 	self.moveSpeed = moveSpeed
@@ -22,6 +22,7 @@ function MovingPlatform:update(elapsedTime)
 		local a = self.go.rb:getPosition()-self.dest
 		local b = self.go.rb:getPosition()-self.start
 		if( (a.x*b.x+a.y*b.y+a.z*b.z)>0)  then
+			logMessage("Direction Changed")
 			self.moveVec = self.moveVec:mulScalar(-1)
 		end
 		--self.go.rb:applyLinearImpulse(self.moveVec:mulScalar(elapsedTime*500))
