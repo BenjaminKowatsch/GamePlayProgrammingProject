@@ -9,8 +9,6 @@ setmetatable(Goal, {
 	end,
 })
 
-
-
 function Goal:create(guid,position,cfi,w,h,d)
 	PickupBase.create(self, guid, position, cfi, w, h, d) 
 	self.goal = false
