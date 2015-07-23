@@ -23,6 +23,24 @@ end
 function Level3:create()
 	LevelBase.create(self, "level3", Vec3(0,0,-4), "data/models/Levels/Level3.FBX", "data/collision/Level3.hkx")
 	
+
+		--self.speed1 = SpeedPickup()
+	--self.speed1:create("speed1",Vec3(0,120,30),0x1,15,15,15,self,20)
+	--self.gameObjects[self.speed1.go:getGuid()]=self.speed1
+	
+	self.rotplatform = RotationPlatform()
+	self.rotplatform:create("rotplatform",Vec3(60,-60,20),0x1,Vec3(9.8,59,3.5),40,40,"data/models/Platforms/RotationPlatform_Small.FBX")
+	self.gameObjects[self.rotplatform.go:getGuid()]=self.rotplatform
+	
+	self.movplatform = MovingPlatform()
+	-- Moving platform_Small size = Vec3(19.5,19.5,3.5)
+	-- Moving platform_Big  size = Vec3(25.8,25.8,3.5)
+	-- RoationPlatform_Big size  = Vec3(12,78.5,3.5)
+	-- RoationPlatform_Small size = Vec3(9.8,59,3.5)
+	self.movplatform:create("movplatform",Vec3(60,80,-4),0x1,Vec3(9.8,59,3.5),1600,Vec3(60,80,40),"data/models/Platforms/RotationPlatform_Small.FBX")
+	self.gameObjects[self.movplatform.go:getGuid()]=self.movplatform
+
+	
 	--Goal
 	self.goal = Goal()
 	self.goal:create("goal", Vec3(83.118,370.913,9.776),0x1,15,15,1, self)

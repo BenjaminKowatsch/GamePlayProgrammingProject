@@ -21,7 +21,6 @@ function Level1:destroy()
 end
 
 function Level1:create()
-<<<<<<< HEAD
 	LevelBase.create(self, "level1", Vec3(0,0,-4), "data/models/Levels/Level1.FBX", "data/collision/Level1.hkx")
 	--Goal
 	self.goal = Goal()
@@ -36,29 +35,6 @@ function Level1:create()
 	self.speed:create("speed",Vec3(0,545,0),0x1,5,5,5,self, 10)
 	self.gameObjects[self.speed.go:getGuid()]=self.speed
 	--Coins
-=======
-	LevelBase.create(self, "level1", Vec3(0,0,-4), "data/models/Levels/Level0.FBX", "data/collision/Level0.hkx")
-	self.jump1 = DoubleJumpPickup()
-	self.jump1:create("jump1",Vec3(0,80,0),0x1,15,15,15,self)
-	self.gameObjects[self.jump1.go:getGuid()]=self.jump1
-
-	--self.speed1 = SpeedPickup()
-	--self.speed1:create("speed1",Vec3(0,120,30),0x1,15,15,15,self,20)
-	--self.gameObjects[self.speed1.go:getGuid()]=self.speed1
-	
-	self.rotplatform = RotationPlatform()
-	self.rotplatform:create("rotplatform",Vec3(60,-60,20),0x1,Vec3(9.8,59,3.5),40,40,"data/models/Platforms/RotationPlatform_Small.FBX")
-	self.gameObjects[self.rotplatform.go:getGuid()]=self.rotplatform
-	
-	self.movplatform = MovingPlatform()
-	-- Moving platform_Small size = Vec3(19.5,19.5,3.5)
-	-- Moving platform_Big  size = Vec3(25.8,25.8,3.5)
-	-- RoationPlatform_Big size  = Vec3(12,78.5,3.5)
-	-- RoationPlatform_Small size = Vec3(9.8,59,3.5)
-	self.movplatform:create("movplatform",Vec3(60,80,-4),0x1,Vec3(9.8,59,3.5),1600,Vec3(60,80,40),"data/models/Platforms/RotationPlatform_Small.FBX")
-	self.gameObjects[self.movplatform.go:getGuid()]=self.movplatform
-	
->>>>>>> 973e83560aea06a25b05b2e0edcf1b051ce6cbc3
 	self.coin1 = CoinPickup()
 	self.coin1:create("c1",Vec3(40,60,0),0x1,5,5,5,self)
 	self.gameObjects[self.coin1.go:getGuid()]=self.coin1
