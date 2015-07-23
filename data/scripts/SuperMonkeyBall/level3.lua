@@ -24,7 +24,7 @@ function Level3:create()
 	LevelBase.create(self, "level3", Vec3(0,0,-4), "data/models/Levels/Level3.FBX", "data/collision/Level3.hkx")
 	
 
-		--self.speed1 = SpeedPickup()
+	--self.speed1 = SpeedPickup()
 	--self.speed1:create("speed1",Vec3(0,120,30),0x1,15,15,15,self,20)
 	--self.gameObjects[self.speed1.go:getGuid()]=self.speed1
 	
@@ -56,6 +56,62 @@ function Level3:create()
 	self.jump = DoubleJumpPickup()
 	self.jump:create("jump",Vec3(83.118,519.367,74),0x1,5,5,5,self)
 	self.gameObjects[self.jump.go:getGuid()]=self.jump
+	--Moving Platforms
+	self.movplatform1 = MovingPlatform()
+	self.movplatform1:create("movplatform1",Vec3(-231.448,222.883,-79.175),0x1,Vec3(25.8,25.8,3.5),1800,Vec3(-300.448,222.883,-79.175),"data/models/Platforms/MovingPlatform_Big.FBX")
+	self.gameObjects[self.movplatform1.go:getGuid()]=self.movplatform1
+	
+	self.movplatform2 = MovingPlatform()
+	self.movplatform2:create("movplatform2",Vec3(-339.448,162.883,-79.175),0x1,Vec3(19.5,19.5,3.5),1700,Vec3(-339.448,282.883,-79.175),"data/models/Platforms/MovingPlatform_Small.FBX")
+	self.gameObjects[self.movplatform2.go:getGuid()]=self.movplatform2
+	
+	self.movplatform3 = MovingPlatform()
+	self.movplatform3:create("movplatform3",Vec3(-393.448,282.883,-79.175),0x1,Vec3(19.5,19.5,3.5),1700,Vec3(-393.448,162.883,-79.175),"data/models/Platforms/MovingPlatform_Small.FBX")
+	self.gameObjects[self.movplatform3.go:getGuid()]=self.movplatform3
+	
+	self.movplatform4 = MovingPlatform()
+	self.movplatform4:create("movplatform4",Vec3(-448.448,162.883,-79.175),0x1,Vec3(19.5,19.5,3.5),1700,Vec3(-448.448,282.883,-79.175),"data/models/Platforms/MovingPlatform_Small.FBX")
+	self.gameObjects[self.movplatform4.go:getGuid()]=self.movplatform4
+	
+	self.movplatform5 = MovingPlatform()
+	self.movplatform5:create("movplatform5",Vec3(-339.448,252.883,-79.175),0x1,Vec3(19.5,19.5,3.5),1700,Vec3(-339.448,372.883,-79.175),"data/models/Platforms/MovingPlatform_Small.FBX")
+	self.gameObjects[self.movplatform5.go:getGuid()]=self.movplatform5
+	
+	self.movplatform6 = MovingPlatform()
+	self.movplatform6:create("movplatform6",Vec3(-393.448,372.883,-79.175),0x1,Vec3(19.5,19.5,3.5),1700,Vec3(-393.448,252.883,-79.175),"data/models/Platforms/MovingPlatform_Small.FBX")
+	self.gameObjects[self.movplatform6.go:getGuid()]=self.movplatform6
+	
+	self.movplatform7 = MovingPlatform()
+	self.movplatform7:create("movplatform7",Vec3(-520.448,462.883,-79.175),0x1,Vec3(25.8,25.8,3.5),1800,Vec3(-520.448,552.883,-79.175),"data/models/Platforms/MovingPlatform_Big.FBX")
+	self.gameObjects[self.movplatform7.go:getGuid()]=self.movplatform7
+	
+	self.movplatform8 = MovingPlatform()
+	self.movplatform8:create("movplatform8",Vec3(-620.448,462.883,-79.175),0x1,Vec3(25.8,25.8,3.5),1800,Vec3(-620.448,552.883,-79.175),"data/models/Platforms/MovingPlatform_Big.FBX")
+	self.gameObjects[self.movplatform8.go:getGuid()]=self.movplatform8
+	
+	self.movplatform9 = MovingPlatform()
+	self.movplatform9:create("movplatform9",Vec3(-448.448,252.883,-79.175),0x1,Vec3(19.5,19.5,3.5),1700,Vec3(-448.448,372.883,-79.175),"data/models/Platforms/MovingPlatform_Small.FBX")
+	self.gameObjects[self.movplatform9.go:getGuid()]=self.movplatform9
+	
+	self.movplatform10 = MovingPlatform()
+	self.movplatform10:create("movplatform10",Vec3(-471.448,492.883,-79.175),0x1,Vec3(25.8,25.8,3.5),1800,Vec3(-231.448,492.883,-79.175),"data/models/Platforms/MovingPlatform_Big.FBX")
+	self.gameObjects[self.movplatform10.go:getGuid()]=self.movplatform10
+	
+	self.movplatform11 = MovingPlatform()
+	self.movplatform11:create("movplatform11",Vec3(-231.448,422.883,-79.175),0x1,Vec3(25.8,25.8,3.5),1800,Vec3(-471.448,422.883,-79.175),"data/models/Platforms/MovingPlatform_Big.FBX")
+	self.gameObjects[self.movplatform11.go:getGuid()]=self.movplatform11
+	
+	self.rotplatform1 = RotationPlatform()
+	self.rotplatform1:create("rotplatform1",Vec3(-530.448,162.883,-79.175),0x1,Vec3(9.8,59,3.5),20,40,"data/models/Platforms/RotationPlatform_Small.FBX",90)
+	self.gameObjects[self.rotplatform1.go:getGuid()]=self.rotplatform1
+	
+	self.rotplatform2 = RotationPlatform()
+	self.rotplatform2:create("rotplatform2",Vec3(-540.448,342.883,-79.175),0x1,Vec3(12,78.5,3.5),20,45,"data/models/Platforms/RotationPlatform_Big.FBX",0)
+	self.gameObjects[self.rotplatform2.go:getGuid()]=self.rotplatform2
+	
+	self.rotplatform3 = RotationPlatform()
+	self.rotplatform3:create("rotplatform3",Vec3(-550.448,242.883,-79.175),0x1,Vec3(12,78.5,3.5),20,20,"data/models/Platforms/RotationPlatform_Big.FBX",90)
+	self.gameObjects[self.rotplatform3.go:getGuid()]=self.rotplatform3
 	--Coins
 	self.coin1 = CoinPickup()
 	self.coin1:create("c1",Vec3(73,519,74),0x1,2,2,2,self)

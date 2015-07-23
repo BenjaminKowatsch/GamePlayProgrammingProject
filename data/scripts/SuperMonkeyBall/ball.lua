@@ -12,7 +12,7 @@ function createBall()
 	cinfo.mass = 20
 	cinfo.position = Vec3(0,0,18)
 	cinfo.maxLinearVelocity = 280
-	cinfo.restitution = 0.5
+	cinfo.restitution = 0.7
 	cinfo.linearDamping = 1.0
 	cinfo.angularDamping = 1.0
 	cinfo.friction = 0.8

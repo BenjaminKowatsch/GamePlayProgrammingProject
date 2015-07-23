@@ -34,9 +34,6 @@ include("SuperMonkeyBall/Level5.lua")
 
 
 --Initialization
-rotplatform = RotationPlatform()
-movplatform = MovingPlatform()
-
 player = createPlayer()
 
 level0 = Level0()
@@ -122,22 +119,16 @@ end
 function scoreLeave()
 	player.ball.coinCount = 0
 end
+
 function defaultUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
-	
 	level0:update(elapsedTime)
-	if(InputHandler:wasTriggered(Key.F12)) then
-		level0:destroy()
-	end
-	if(InputHandler:wasTriggered(Key.F11)) then
-		level0:create()
-	end
 	--DebugRenderer:printText(Vec2(-0.9,0.7), "Speed: "..tostring(player.ball.maxSpeed))
-	DebugRenderer:printText(Vec2(-0.9,0.5), "Score: "..tostring(player.ball.coinCount))
+	--DebugRenderer:printText(Vec2(-0.9,0.5), "Score: "..tostring(player.ball.coinCount))
 	player:update(elapsedTime)
 	--speedPickup:update(elapsedTime)
 	--movplatform:update(elapsedTime)
-	DebugRenderer:printText3D(Vec3(-100,60,16), "Text3D colored!", Color(0,0,1,1))
+	--DebugRenderer:printText3D(Vec3(-100,60,16), "Text3D colored!", Color(0,0,1,1))
 	--rotplatform:update(elapsedTime)
 
 	return EventResult.Handled
