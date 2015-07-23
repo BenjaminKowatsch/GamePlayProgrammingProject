@@ -24,10 +24,12 @@ include("SuperMonkeyBall/MovingPlatform.lua")
 include("SuperMonkeyBall/CoinPickup.lua")
 include("SuperMonkeyBall/Goal.lua")
 include("SuperMonkeyBall/LevelBase.lua")
+include("SuperMonkeyBall/Level0.lua")
 include("SuperMonkeyBall/Level1.lua")
 include("SuperMonkeyBall/Level2.lua")
 include("SuperMonkeyBall/Level3.lua")
 include("SuperMonkeyBall/Level4.lua")
+include("SuperMonkeyBall/Level5.lua")
 
 
 
@@ -37,6 +39,7 @@ movplatform = MovingPlatform()
 
 player = createPlayer()
 
+level0 = Level0()
 level1 = Level1()
 level2 = Level2()
 level3 = Level3()
@@ -56,11 +59,11 @@ level4 = Level4()
 --speedPickup = SpeedPickup()
 
 function mainmenuEnter()
-	level1:create()
+	level3:create()
 	player.ball:setPosition(Vec3(0,0,14))
 end
 function mainmenuLeave()
-	level1:destroy()
+	level3:destroy()
 end
 
 function level2Enter()
@@ -86,10 +89,9 @@ function scoreLeave()
 end
 function defaultUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
-	level1:update(elapsedTime)
-	--DebugRenderer:printText(Vec2(-0.9,0.7), "Goal: "..tostring(level2.goal2.goal))
+	level3:update(elapsedTime)
+	--DebugRenderer:printText(Vec2(-0.9,0.7), "Speed: "..tostring(player.ball.maxSpeed))
 	DebugRenderer:printText(Vec2(-0.9,0.5), "Score: "..tostring(player.ball.coinCount))
-	DebugRenderer:printText(Vec2(-0.8,0.5), "Score: "..tostring(player.ball.jumpCount))
 	player:update(elapsedTime)
 	--speedPickup:update(elapsedTime)
 	--movplatform:update(elapsedTime)

@@ -22,8 +22,22 @@ end
 
 function Level0:create()
 	LevelBase.create(self, "level0", Vec3(0,0,-4), "data/models/Levels/Level1.FBX", "data/collision/Level1.hkx")
-	
-	self.coin1 = CoinPickup()
-	self.coin1:create("c1",Vec3(40,60,0),0x1,5,5,5,self)
-	self.gameObjects[self.coin1.go:getGuid()]=self.coin1
+	self.glevel1 = Goal()
+	self.glevel1:create("glevel1", Vec3(0,100,1),0x1,15,15,1, self)
+	self.gameObjects[self.glevel1.go:getGuid()]=self.glevel1
+	self.glevel2 = Goal()
+	self.glevel2:create("glevel2", Vec3(-30,100,1),0x1,15,15,1, self)
+	self.gameObjects[self.glevel2.go:getGuid()]=self.glevel2
+	self.glevel3 = Goal()
+	self.glevel3:create("glevel3", Vec3(-60,100,1),0x1,15,15,1, self)
+	self.gameObjects[self.glevel3.go:getGuid()]=self.glevel3
+	self.glevel4 = Goal()
+	self.glevel4:create("glevel4", Vec3(30,100,1),0x1,15,15,1, self)
+	self.gameObjects[self.glevel4.go:getGuid()]=self.glevel4
+	self.glevel5 = Goal()
+	self.glevel5:create("glevel5", Vec3(60,100,1),0x1,15,15,1, self)
+	self.gameObjects[self.glevel5.go:getGuid()]=self.glevel5
+	--self.coin1 = CoinPickup()
+	--self.coin1:create("c1",Vec3(100,10,14),0x1,10,50,2,self)
+	--self.gameObjects[self.coin1.go:getGuid()]=self.coin1
 end

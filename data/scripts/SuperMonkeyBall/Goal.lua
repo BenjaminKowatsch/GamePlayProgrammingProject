@@ -11,13 +11,14 @@ setmetatable(Goal, {
 
 
 
-function Goal:create(guid,position,cfi,w,h,d)
+function Goal:create(guid,position,cfi,w,h,d, level)
 	PickupBase.create(self, guid, position, cfi, w, h, d) 
 	self.goal = false
+	self.level = level
 end
 
 function Goal:onBeginOverlap(go)
 	self.goal = true
-	self.level:manageList(self.guid)
+	self.level:manageList(self.go:getGuid())
 	GameObjectManager:destroyGameObject(self.go)
 end
