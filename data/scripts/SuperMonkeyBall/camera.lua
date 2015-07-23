@@ -20,6 +20,7 @@ function createCamera(guid,viewtarget,camOffset)
 		------------------------------------
 		cam.rb = cam.pc:createRigidBody(cinfo)
 		--custom attributes
+		cam.camRotationSpeed = 40
 		cam.viewTarget = viewtarget
 		cam.camOffset = camOffset
 		cam.minLength = camOffset:length()
@@ -34,7 +35,7 @@ function createCamera(guid,viewtarget,camOffset)
 		cam.maxPitchAngle = 8
 		cam.offsetAngleFactor = 2.5
 		
-		cam.update = function (self,elapsedTime,move,zoom)
+		cam.update = function (self,elapsedTime,move,zoom,rotateCam)
 			-- set zoom
 			if(zoom~=0) then
 				local newoffset = self.camOffset:add(self.camOffset:normalized():mulScalar(-zoom*30))
@@ -93,11 +94,14 @@ function createCamera(guid,viewtarget,camOffset)
 
 			local viewTargetVel = cam.viewTarget.rb:getLinearVelocity()
 			
+			local offsetAngle = 0
 			if(move:length() > 0) then
-				local offsetAngle = angleBetweenVec2(Vec2(-self.camOffset.x,-self.camOffset.y),Vec2(viewTargetVel.x,viewTargetVel.y))
-				local q = Quaternion(Vec3(0.0, 0.0, 1.0), offsetAngle*elapsedTime*self.offsetAngleFactor)
-				self.camOffset = q:toMat3():mulVec3(self.camOffset)		
+				offsetAngle = angleBetweenVec2(Vec2(-self.camOffset.x,-self.camOffset.y),Vec2(viewTargetVel.x,viewTargetVel.y))	
+				elseif(rotateCam) then
+				offsetAngle = rotateCam*self.camRotationSpeed
 			end
+			local q = Quaternion(Vec3(0.0, 0.0, 1.0), offsetAngle*elapsedTime*self.offsetAngleFactor)
+			self.camOffset = q:toMat3():mulVec3(self.camOffset)	
 			
 			self.newCamPos = cam.viewTarget:getPosition()+self.camOffset
 

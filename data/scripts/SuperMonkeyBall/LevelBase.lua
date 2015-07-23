@@ -32,8 +32,7 @@ function LevelBase:create(guid, position, mpath, cpath)
 end
 
 function LevelBase:update(elapsedTime)
-
-	self.go.rb:setRotation(Quaternion(Vec3(1,0,0),90))
+	--self.go.rb:setRotation(Quaternion(Vec3(1,0,0),90)) -- Collision meshes are rotated
 	for _, go in pairs(self.gameObjects) do
 		go:update(elapsedTime)
 	end

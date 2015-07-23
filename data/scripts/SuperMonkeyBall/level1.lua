@@ -21,7 +21,7 @@ function Level1:destroy()
 end
 
 function Level1:create()
-	LevelBase.create(self, "level1", Vec3(0,0,-4), "data/models/Level3/Level3.FBX", "data/collision/Level3.hkx")
+	LevelBase.create(self, "level1", Vec3(0,0,-4), "data/models/Levels/Level5.FBX", "data/collision/Level5.hkx")
 	self.speedPickup1 = SpeedPickup()
 	self.speedPickup1:create("SpeedPickup",Vec3(60,80,30),0x1,15,15,15,self,2)
 	self.gameObjects[self.speedPickup1.go:getGuid()]=self.speedPickup1
