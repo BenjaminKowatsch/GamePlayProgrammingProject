@@ -14,7 +14,7 @@ function Level1:manageList(guid)
 end
 
 function Level1:destroy()
-	GameObjectManager:destroyGameObject(self.map)
+	GameObjectManager:destroyGameObject(self.go)
 	for _, go in pairs(self.gameObjects) do
 		GameObjectManager:destroyGameObject(go.go)
 	end

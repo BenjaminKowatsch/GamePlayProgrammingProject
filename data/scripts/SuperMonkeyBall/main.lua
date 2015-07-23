@@ -58,32 +58,60 @@ cinfo.collisionFilterInfo = 0x4
 cinfo.position = Vec3(0,0,0)
 background.rb = background.pc:createRigidBody(cinfo)
 --speedPickup = SpeedPickup()
+local clock = os.clock
+function sleep(n)  -- seconds
+  local t0 = clock()
+  while clock() - t0 <= n do end
+end
 
 function mainmenuEnter()
+
+	player.ball:setComponentStates(ComponentState.Active)
 	level0:create()
 	player.ball:setPosition(Vec3(0,0,14))
 end
 function mainmenuLeave()
 	level0:destroy()
 end
-function Level1Enter()
+function level1Enter()
 	level1:create()
 	player.ball:setPosition(Vec3(0,0,14))
 end
-function Level1Leave()
+function level1Leave()
 	level1:destroy()
 end
 function level2Enter()
 	level2:create()
-	player.ball:setPosition(Vec3(0,536.776,14))
+	player.ball:setPosition(Vec3(0,0,14))
 end
 function level2Leave()
 	level2:destroy()
 end
+function level3Enter()
+	level3:create()
+	player.ball:setPosition(Vec3(0,0,14))
+end
+function level3Leave()
+	level3:destroy()
+end
+function level4Enter()
+	level4:create()
+	player.ball:setPosition(Vec3(0,0,14))
+end
+function level4Leave()
+	level4:destroy()
+end
+function level5Enter()
+	level5:create()
+	player.ball:setPosition(Vec3(0,0,14))
+end
+function level5Leave()
+	level5:destroy()
+end
 function scoreEnter()
 	player.ball:setComponentStates(ComponentState.Inactive)
 end
-function ScoreUpdate(updateData)
+function scoreUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
 	--DebugRenderer:printText(Vec2(0,0), "Score: "..tostring(player.ball.coinCount))
 	player:update(elapsedTime)
@@ -96,6 +124,7 @@ function scoreLeave()
 end
 function defaultUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
+	
 	level0:update(elapsedTime)
 	if(InputHandler:wasTriggered(Key.F12)) then
 		level0:destroy()
@@ -113,7 +142,6 @@ function defaultUpdate(updateData)
 
 	return EventResult.Handled
 end
-
 
 
 -- global state machine
@@ -150,7 +178,7 @@ StateMachine{
 			name = "level3",
 			eventListeners = {
 				enter  = { level3Enter },
-				update = { level3Update },
+				update = { defaultUpdate },
 				leave  = { level3Leave }
 			}
 		},
@@ -158,7 +186,7 @@ StateMachine{
 			name = "level4",
 			eventListeners = {
 				enter  = { level4Enter },
-				update = { level4Update },
+				update = { defaultUpdate },
 				leave  = { level4Leave }
 			}
 		},
@@ -166,7 +194,7 @@ StateMachine{
 			name = "level5",
 			eventListeners = {
 				enter  = { level5Enter },
-				update = { level5Update },
+				update = { defaultUpdate },
 				leave  = { level5Leave }
 			}
 		},
@@ -174,7 +202,7 @@ StateMachine{
 			name = "score",
 			eventListeners = {
 				enter  = { scoreEnter },
-				update = { ScoreUpdate },
+				update = { scoreUpdate },
 				leave  = { scoreLeave }
 			}
 		}
@@ -183,22 +211,22 @@ StateMachine{
 	transitions =
 	{
 		{ from = "__enter", to = "mainmenu" },
-		{ from = "mainmenu", to = "level1", condition = function() return level0.glevel1.goal end },
-		{ from = "mainmenu", to = "level2", condition = function() return InputHandler:wasTriggered(Key.F2) end },
-		{ from = "mainmenu", to = "level3", condition = function() return InputHandler:wasTriggered(Key.F3) end },
-		{ from = "mainmenu", to = "level4", condition = function() return InputHandler:wasTriggered(Key.F4) end },
-		{ from = "mainmenu", to = "level5", condition = function() return InputHandler:wasTriggered(Key.F5) end },
-		{ from = "level1", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F6) end },
-		{ from = "level2", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F2) end },
-		{ from = "level3", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F6) end },
-		{ from = "level4", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F6) end },
-		{ from = "level5", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F6) end },
-		{ from = "level1", to = "score", condition = function() return InputHandler:wasTriggered(Key.F5) end },
-		{ from = "level2", to = "score", condition = function() return InputHandler:wasTriggered(Key.F5) end },
-		{ from = "level3", to = "score", condition = function() return InputHandler:wasTriggered(Key.F3) end },
-		{ from = "level4", to = "score", condition = function() return InputHandler:wasTriggered(Key.F4) end },
-		{ from = "level5", to = "score", condition = function() return InputHandler:wasTriggered(Key.F5) end },
-		{ from = "score", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F1) end }
+		{ from = "mainmenu", to = "mainmenu", condition = function() return level0.glevel1.goal end },
+		{ from = "mainmenu", to = "level2", condition = function() return level0.glevel2.goal end },
+		{ from = "mainmenu", to = "level3", condition = function() return level0.glevel3.goal end },
+		{ from = "mainmenu", to = "level4", condition = function() return level0.glevel4.goal end },
+		{ from = "mainmenu", to = "level5", condition = function() return level0.glevel5.goal end },
+		{ from = "level1", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F1) end },
+		{ from = "level2", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F1) end },
+		{ from = "level3", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F1) end },
+		{ from = "level4", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F1) end },
+		{ from = "level5", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F1) end },
+		{ from = "level1", to = "score", condition = function() return level1.goal.goal end },
+		{ from = "level2", to = "score", condition = function() return level2.goal.goal end },
+		{ from = "level3", to = "score", condition = function() return level3.goal.goal end },
+		{ from = "level4", to = "score", condition = function() return level4.goal.goal end },
+		{ from = "level5", to = "score", condition = function() return level5.goal.goal end },
+		{ from = "score", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.Space) end }
 
 	},
 	eventListeners =
