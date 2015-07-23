@@ -71,15 +71,16 @@ function mainmenuEnter()
 	player.ball:setComponentStates(ComponentState.Active)
 	level0:create()
 	player.ball:setPosition(Vec3(0,0,14))
-	
+	player.ball.rb:setLinearVelocity(Vec3(0,0,0))	
 end
 function mainmenuLeave()
 	level0:destroy()
-	respawn.goal = false
+
 end
 function level1Enter()
 	level1:create()
 	player.ball:setPosition(Vec3(0,0,14))
+	player.ball.rb:setLinearVelocity(Vec3(0,0,0))
 end
 function level1Leave()
 	level1:destroy()
@@ -88,6 +89,7 @@ end
 function level2Enter()
 	level2:create()
 	player.ball:setPosition(Vec3(0,0,14))
+	player.ball.rb:setLinearVelocity(Vec3(0,0,0))
 end
 function level2Leave()
 	level2:destroy()
@@ -96,6 +98,7 @@ end
 function level3Enter()
 	level3:create()
 	player.ball:setPosition(Vec3(0,0,14))
+	player.ball.rb:setLinearVelocity(Vec3(0,0,0))
 end
 function level3Leave()
 	level3:destroy()
@@ -104,6 +107,7 @@ end
 function level4Enter()
 	level4:create()
 	player.ball:setPosition(Vec3(0,0,14))
+	player.ball.rb:setLinearVelocity(Vec3(0,0,0))
 end
 function level4Leave()
 	level4:destroy()
@@ -112,6 +116,7 @@ end
 function level5Enter()
 	level5:create()
 	player.ball:setPosition(Vec3(0,0,14))
+	player.ball.rb:setLinearVelocity(Vec3(0,0,0))
 end
 function level5Leave()
 	level5:destroy()

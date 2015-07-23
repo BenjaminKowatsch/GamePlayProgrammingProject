@@ -13,6 +13,7 @@ function createPlayer()
 		
 		if player.ball:getPosition().z < -1000 or player.ball:getPosition().z > 2000 then
 			player.ball:setPosition(Vec3(0,0,14))
+			player.ball.rb:setLinearVelocity(Vec3(0,0,0))
 		end
 		-- keyboard player input
 
