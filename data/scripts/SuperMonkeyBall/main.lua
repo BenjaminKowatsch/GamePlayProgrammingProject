@@ -131,9 +131,6 @@ function level3Update(updateData)
 	local elapsedTime = updateData:getElapsedTime()
 	level3:update(elapsedTime)
 	player:update(elapsedTime)
-	if(InputHandler:wasTriggered(Key.P)) then
-		player.ball:setPosition(Vec3(-659,707,-50))
-	end
 	return EventResult.Handled
 end
 
