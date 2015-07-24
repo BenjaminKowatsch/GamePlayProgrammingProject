@@ -114,6 +114,7 @@ function level2Leave()
 end
 function level2Update(updateData)
 	local elapsedTime = updateData:getElapsedTime()
+	DebugRenderer:printText(Vec2(0.5,-0.6), "Score: "..tostring(player.ball.coinCount))
 	level2:update(elapsedTime)
 	player:update(elapsedTime)
 	return EventResult.Handled
@@ -130,6 +131,7 @@ function level3Leave()
 end
 function level3Update(updateData)
 	local elapsedTime = updateData:getElapsedTime()
+	DebugRenderer:printText(Vec2(0.5,-0.6), "Score: "..tostring(player.ball.coinCount))
 	level3:update(elapsedTime)
 	player:update(elapsedTime)
 	return EventResult.Handled
@@ -146,6 +148,7 @@ function level4Leave()
 end
 function level4Update(updateData)
 	local elapsedTime = updateData:getElapsedTime()
+	DebugRenderer:printText(Vec2(0.5,-0.6), "Score: "..tostring(player.ball.coinCount))
 	level4:update(elapsedTime)
 	player:update(elapsedTime)
 	return EventResult.Handled
@@ -162,6 +165,7 @@ function level5Leave()
 end
 function level5Update(updateData)
 	local elapsedTime = updateData:getElapsedTime()
+	DebugRenderer:printText(Vec2(0.5,-0.6), "Score: "..tostring(player.ball.coinCount))
 	level5:update(elapsedTime)
 	player:update(elapsedTime)
 	return EventResult.Handled
