@@ -184,7 +184,7 @@ function scoreUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
 	DebugRenderer:printText(Vec2(0,0), "Score: "..tostring(math.floor(player.ball.coinCount+player.timeCounter)))
 	DebugRenderer:printText(Vec2(0,0.2), "Remaining time: ".. string.format("%5.2f", player.timeCounter).." s")
-	DebugRenderer:printText(Vec2(0,-0.2), "PRESS SPACE TO CONTINUE")
+	DebugRenderer:printText(Vec2(0,-0.2), "PRESS SPACE/A TO CONTINUE")
 	--player:update(elapsedTime)
 	return EventResult.Handled
 end
