@@ -61,4 +61,22 @@ function Level5:create()
 	self.coin12 = CoinPickup()
 	self.coin12:create("c12",Vec3(304,546,24),0x1,2,2,2,self)
 	self.gameObjects[self.coin12.go:getGuid()]=self.coin12
+	self.coin13 = CoinPickup()
+	self.coin13:create("c13",Vec3(-328,742,24),0x1,2,2,2,self)
+	self.gameObjects[self.coin13.go:getGuid()]=self.coin13
+	self.coin14 = CoinPickup()
+	self.coin14:create("c14",Vec3(328,742,24),0x1,2,2,2,self)
+	self.gameObjects[self.coin14.go:getGuid()]=self.coin14
+	self.coin15 = CoinPickup()
+	self.coin15:create("c15",Vec3(-413,690,24),0x1,2,2,2,self)
+	self.gameObjects[self.coin15.go:getGuid()]=self.coin15
+	self.coin16 = CoinPickup()
+	self.coin16:create("c16",Vec3(413,690,24),0x1,2,2,2,self)
+	self.gameObjects[self.coin16.go:getGuid()]=self.coin16
+	self.coin17 = CoinPickup()
+	self.coin17:create("c17",Vec3(-511,630,24),0x1,2,2,2,self)
+	self.gameObjects[self.coin17.go:getGuid()]=self.coin17
+	self.coin18 = CoinPickup()
+	self.coin18:create("c18",Vec3(511,630,24),0x1,2,2,2,self)
+	self.gameObjects[self.coin18.go:getGuid()]=self.coin18
 end
