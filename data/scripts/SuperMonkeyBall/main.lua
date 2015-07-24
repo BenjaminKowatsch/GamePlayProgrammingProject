@@ -73,12 +73,14 @@ end
 
 -- state machine events
 function mainmenuEnter()
+	respawn:setComponentStates(ComponentState.Inactive)
 	player.ball:setComponentStates(ComponentState.Active)
 	level0:create()
 	player:reset(-1,false)
 end
 function mainmenuLeave()
 	level0:destroy()
+	respawn:setComponentStates(ComponentState.Active)
 end
 function mainmenuUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
@@ -97,6 +99,7 @@ function level1Leave()
 end
 function level1Update(updateData)
 	local elapsedTime = updateData:getElapsedTime()
+	DebugRenderer:printText(Vec2(0.5,-0.6), "Score: "..tostring(player.ball.coinCount))
 	level1:update(elapsedTime)
 	player:update(elapsedTime)
 	return EventResult.Handled
@@ -113,6 +116,7 @@ function level2Leave()
 end
 function level2Update(updateData)
 	local elapsedTime = updateData:getElapsedTime()
+	DebugRenderer:printText(Vec2(0.5,-0.6), "Score: "..tostring(player.ball.coinCount))
 	level2:update(elapsedTime)
 	player:update(elapsedTime)
 	return EventResult.Handled
@@ -129,6 +133,7 @@ function level3Leave()
 end
 function level3Update(updateData)
 	local elapsedTime = updateData:getElapsedTime()
+	DebugRenderer:printText(Vec2(0.5,-0.6), "Score: "..tostring(player.ball.coinCount))
 	level3:update(elapsedTime)
 	player:update(elapsedTime)
 	return EventResult.Handled
@@ -145,6 +150,7 @@ function level4Leave()
 end
 function level4Update(updateData)
 	local elapsedTime = updateData:getElapsedTime()
+	DebugRenderer:printText(Vec2(0.5,-0.6), "Score: "..tostring(player.ball.coinCount))
 	level4:update(elapsedTime)
 	player:update(elapsedTime)
 	return EventResult.Handled
@@ -161,6 +167,7 @@ function level5Leave()
 end
 function level5Update(updateData)
 	local elapsedTime = updateData:getElapsedTime()
+	DebugRenderer:printText(Vec2(0.5,-0.6), "Score: "..tostring(player.ball.coinCount))
 	level5:update(elapsedTime)
 	player:update(elapsedTime)
 	return EventResult.Handled
@@ -175,7 +182,7 @@ function scoreLeave()
 end
 function scoreUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
-	DebugRenderer:printText(Vec2(0,0), "Score: "..tostring(player.ball.coinCount))
+	DebugRenderer:printText(Vec2(0,0), "Score: "..tostring(player.ball.coinCount+player.timeCounter))
 	DebugRenderer:printText(Vec2(0,0.2), "Remaining time: ".. string.format("%5.2f", player.timeCounter).." s")
 	--player:update(elapsedTime)
 	return EventResult.Handled
@@ -268,7 +275,13 @@ StateMachine{
 		{ from = "level3", to = "score", condition = function() return level3.goal.goalEntered end },
 		{ from = "level4", to = "score", condition = function() return level4.goal.goalEntered end },
 		{ from = "level5", to = "score", condition = function() return level5.goal.goalEntered end },
-		{ from = "score", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.Space) or bit32.btest(gamepad:buttonsTriggered(), Button.A) end }
+		{ from = "level1", to = "score", condition = function() return player.timeCounter == 0 end },
+		{ from = "level2", to = "score", condition = function() return player.timeCounter == 0 end },
+		{ from = "level3", to = "score", condition = function() return player.timeCounter == 0 end },
+		{ from = "level4", to = "score", condition = function() return player.timeCounter == 0 end },
+		{ from = "level5", to = "score", condition = function() return player.timeCounter == 0 end },
+		{ from = "score", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.Space) or bit32.btest(InputHandler:gamepad(0):buttonsTriggered(), Button.A) end }
+
 
 	},
 	eventListeners =

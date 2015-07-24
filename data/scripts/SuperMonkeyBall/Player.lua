@@ -25,6 +25,10 @@ function createPlayer()
 				self.displayTime = true
 			end
 		end
+
+		if player.ball:getPosition().z < -400 then
+			player.ball:setPosition(Vec3(0,0,14))
+		end
 		-- keyboard player input
 		local move = Vec2(0, 0)
 		if (InputHandler:isPressed(Key.A)) then move.x = - 1 end

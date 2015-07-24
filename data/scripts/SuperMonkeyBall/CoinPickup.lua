@@ -15,7 +15,7 @@ function CoinPickup:create(guid,position,cfi,w,h,d,level)
 end
 
 function CoinPickup:onBeginOverlap(go)
-	go.coinCount = go.coinCount+1;	
+	go.coinCount = go.coinCount+10;	
 	self.level:manageList(self.go:getGuid())
 	GameObjectManager:destroyGameObject(self.go)
 end
