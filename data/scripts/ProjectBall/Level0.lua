@@ -13,7 +13,7 @@ function Level0:create()
 	LevelBase.create(self, "level0", Vec3(0,0,-4), "data/models/Levels/Level0.FBX", "data/collision/Level0.hkx")
 	
 	self.glevel1 = Goal()
-	self.glevel1:create("glevel1", Vec3(-118,134,0),0x1,15,15,1, self)
+	self.glevel1:create("glevel1", Vec3(-118,139,0),0x1,15,15,1, self)
 	self.glevel1.go:setRotation(Quaternion(Vec3(0,0,1),90))
 	self.gameObjects[self.glevel1.go:getGuid()]=self.glevel1
 	self.glevel2 = Goal()
