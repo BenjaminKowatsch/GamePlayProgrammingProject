@@ -26,7 +26,7 @@ function createPlayer()
 			end
 		end
 
-		if player.ball:getPosition().z < -400 then
+		if player.ball:getPosition().z < -750 then
 			player.ball:setPosition(Vec3(0,0,14))
 		end
 		-- keyboard player input
