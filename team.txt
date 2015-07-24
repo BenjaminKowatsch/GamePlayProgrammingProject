@@ -2,6 +2,6 @@
 	Name				Matriculation Number		E-Mail
 	====				====================		======
 	Tobias Schwarz			28293				ts132@hdm-stuttgart.de
-	Stephan Dittmann			####			sd085@hdm-stuttgart.de
+	Stephan Dittmann		28265				sd085@hdm-stuttgart.de
 	Benjamin Kowatsch		28281				bk077@hdm-stuttgart.de
 	
