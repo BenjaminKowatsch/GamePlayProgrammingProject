@@ -258,12 +258,17 @@ StateMachine{
 		{ from = "level3", to = "mainmenu", condition = function() return respawn.fallOut end },
 		{ from = "level4", to = "mainmenu", condition = function() return respawn.fallOut end },
 		{ from = "level5", to = "mainmenu", condition = function() return respawn.fallOut end },
+		{ from = "level1", to = "score", condition = function() return player.timeCounter == 0 end },
+		{ from = "level2", to = "score", condition = function() return player.timeCounter == 0 end },
+		{ from = "level3", to = "score", condition = function() return player.timeCounter == 0 end },
+		{ from = "level4", to = "score", condition = function() return player.timeCounter == 0 end },
+		{ from = "level5", to = "score", condition = function() return player.timeCounter == 0 end },
 		{ from = "level1", to = "score", condition = function() return level1.goal.goalEntered end },
 		{ from = "level2", to = "score", condition = function() return level2.goal.goalEntered end },
 		{ from = "level3", to = "score", condition = function() return level3.goal.goalEntered end },
 		{ from = "level4", to = "score", condition = function() return level4.goal.goalEntered end },
 		{ from = "level5", to = "score", condition = function() return level5.goal.goalEntered end },
-		{ from = "score", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.Space) end }
+		{ from = "score", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.Space) or bit32.btest(gamepad:buttonsTriggered(), Button.A) end }
 
 	},
 	eventListeners =
