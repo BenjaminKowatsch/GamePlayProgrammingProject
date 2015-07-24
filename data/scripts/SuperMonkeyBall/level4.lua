@@ -23,7 +23,7 @@ function Level4:create()
 	self.gameObjects[self.speed.go:getGuid()]=self.speed
 	--Double Jump
 	self.jump = DoubleJumpPickup()
-	self.jump:create("jump",Vec3(0,1039,5),0x1,5,5,5,self)
+	self.jump:create("jump",Vec3(0,1039,7.5),0x1,5,5,5,self)
 	self.gameObjects[self.jump.go:getGuid()]=self.jump
 	--Coins
 	self.coin1 = CoinPickup()
