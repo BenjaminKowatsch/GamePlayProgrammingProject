@@ -25,9 +25,8 @@ respawn.onBeginOverlap = function ()
 	logMessage("TOT")
 	respawn.fallOut = true
 end
-	-- not used anymore!
-	--respawn.objectType = "Respawn"
-	--respawn.go = respawn
+	respawn.objectType = "Respawn"
+	respawn.go = respawn
 	respawn.rb:setUserData(respawn)	
 	return respawn
 end
