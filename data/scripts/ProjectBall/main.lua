@@ -32,7 +32,7 @@ include("ProjectBall/Level5.lua")
 
 --initialization
 player = createPlayer()
-respawn = createRespawn("bottom",Vec3(0,0,-300))
+respawn = createRespawn("bottom",Vec3(0,0,-700))
 --respawnTop = createRespawn("top",Vec3(0,0,1000))
 
 level0 = Level0()
