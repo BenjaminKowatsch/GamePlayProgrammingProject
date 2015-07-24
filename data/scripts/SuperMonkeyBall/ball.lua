@@ -1,5 +1,4 @@
-function createBall()
-	
+function createBall(position)
 	local ball = GameObjectManager:createGameObject("ball")
 	ball.rc = ball:createRenderComponent()
 	ball.rc:setPath("data/models/monkey/monkey.FBX")
@@ -10,7 +9,7 @@ function createBall()
 	cinfo.shape = PhysicsFactory:createSphere(8.181)
 	cinfo.motionType = MotionType.Dynamic
 	cinfo.mass = 20
-	cinfo.position = Vec3(0,0,18)
+	cinfo.position = position
 	cinfo.maxLinearVelocity = 280
 	cinfo.restitution = 0.7
 	cinfo.linearDamping = 1.0
@@ -21,6 +20,7 @@ function createBall()
 	cinfo.collisionFilterInfo = 0x1
 	ball.rb = ball.pc:createRigidBody(cinfo)
 	--Custom attributes
+	ball.initPosition = position
 	ball.coinCount = 0
 	ball.maxMoveSpeed = 180
 	ball.maxJumpCount = 1
@@ -45,14 +45,55 @@ function createBall()
 		end
 		
 	end)
-	ball.jump = function()
-	logMessage(" jumpCount ".. ball.jumpCount )
-		if ball.jumpCount<ball.maxJumpCount then
-			ball.jumping = true
-			ball.jumpCount = ball.jumpCount +1
-			if ball.jumpCount == ball.maxJumpCount then
-				logMessage("JumpCount Reset")
-				ball.maxJumpCount = 1
+	
+	ball.increaseSpeed = function(self,maxTime)
+		self.timerCount = 0
+		self.maxTime = maxTime
+		if( self.speedTimer == false) then
+			self.speedTimer = true
+			local c = self.maxMoveSpeed
+			self.maxMoveSpeed = self.speedPickupSpeed
+			self.speedPickupSpeed = c
+		end
+		logMessage("Increased speed")
+	end
+	
+	ball.resetSpeed = function(self)
+		if(self.speedTimer) then
+				self.timerCount = 0
+				self.speedTimer = false
+				local c = self.maxMoveSpeed
+				self.maxMoveSpeed = self.speedPickupSpeed
+				self.speedPickupSpeed = c
+				logMessage("Reset speed")
+		end
+	end
+	
+	ball.enableDoubleJump = function(self)
+		logMessage("DoubleJump enabled")
+		self.maxJumpCount = 2
+	end
+	
+	ball.disableDoubleJump = function(self)
+		logMessage("DoubleJump disabled")
+		self.maxJumpCount = 1
+	end
+	
+	ball.reset = function(self)
+		gravityFactor = -1
+		self:disableDoubleJump()
+		self:resetSpeed()
+		self.rb:setPosition(self.initPosition)
+		self.rb:setLinearVelocity(Vec3(0,0,0))	
+	end
+	
+	ball.jump = function(self)
+		if self.jumpCount<self.maxJumpCount then
+			logMessage("Jump ".. self.jumpCount)
+			self.jumping = true
+			self.jumpCount = self.jumpCount +1
+			if self.jumpCount == self.maxJumpCount then
+				self:disableDoubleJump()
 			end
 		end		
 	end		
@@ -62,16 +103,10 @@ function createBall()
 		
 		-- add input to current velocity
 		vel = vel:add(Vec3(input.x,input.y,0):mulScalar(self.maxMoveSpeed * elapsedTime))
-		
-		if(self.speedTimer) then
-			self.timerCount = self.timerCount + elapsedTime
-			if( self.timerCount>self.maxTime) then
-				self.speedTimer = false
-				local c = self.maxMoveSpeed
-				self.maxMoveSpeed = self.speedPickupSpeed
-				self.speedPickupSpeed = c
-				logMessage("Ball speed reset")
-			end
+			
+		self.timerCount = self.timerCount + elapsedTime
+		if( self.timerCount>self.maxTime) then
+			self:resetSpeed()
 		end
 		
 		if(self.jumping)then
@@ -81,7 +116,7 @@ function createBall()
 		self.rb:setLinearVelocity(vel)
 	end
 	
-	ball.rb:setUserData(ball) -- Always a good idea
+	ball.rb:setUserData(ball)
 	
 	return ball
 end

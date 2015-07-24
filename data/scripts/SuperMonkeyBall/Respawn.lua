@@ -23,6 +23,7 @@ respawn.onBeginOverlap = function ()
 	logMessage("TOT")
 	respawn.goal = true
 end
+
 	respawn.go = respawn
 	respawn.rb:setUserData(respawn)
 	return respawn

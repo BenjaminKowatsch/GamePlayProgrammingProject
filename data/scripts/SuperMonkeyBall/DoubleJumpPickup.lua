@@ -14,7 +14,7 @@ function DoubleJumpPickup:create(guid,position,cfi,w,h,d,level)
 end
 
 function DoubleJumpPickup:onBeginOverlap(go)
-	go.maxJumpCount = 2
+	go:enableDoubleJump()
 	self.level:manageList(self.go:getGuid())
 	GameObjectManager:destroyGameObject(self.go)
 end

@@ -8,7 +8,6 @@ setmetatable(LevelBase,{
 	end,
 })
 
-
 -- define constructor
 function LevelBase:create(guid, position, mpath, cpath)
 	local go = GameObjectManager:createGameObjectUninitialized(guid)

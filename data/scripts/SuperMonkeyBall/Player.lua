@@ -5,7 +5,7 @@ include("SuperMonkeyBall/camera.lua")
 
 function createPlayer()
 	local player = {}
-	player.ball = createBall()
+	player.ball = createBall(Vec3(0,0,14))
 	--player.capsule = createCollisionCapsule("capsule",Vec3(0,0,-250),Vec3(0,0,500),65)
 	--player.capsule:setPosition(player.ball:getPosition())
 	player.cam = createCamera("camera",player.ball,Vec3(0,-50,24))
@@ -32,8 +32,9 @@ function createPlayer()
 		move.x = move.x * -gravityFactor
 		local zoom = mouseDelta.z + rightStick.y	
 		local rotateCam = -rightStick.x + -mouseDelta.x
+		-- jump
 		if(InputHandler:wasTriggered(Key.Space) or bit32.btest(gamepad:buttonsTriggered(), Button.A)) then
-			self.ball.jump()
+			self.ball:jump()
 		end
 		
 		local moveVector3Rot = self.cam:update(elapsedTime,move,zoom,rotateCam)
