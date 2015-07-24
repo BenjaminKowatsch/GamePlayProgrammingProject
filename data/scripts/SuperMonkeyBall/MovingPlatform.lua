@@ -9,7 +9,7 @@ setmetatable(MovingPlatform,{
 	end,
 })
 
-
+-- create game object
 function MovingPlatform:create(guid,position,cfi,size,moveSpeed,dest,rcpath)
 	PlatformBase.create(self,guid,position,cfi,size,rcpath)
 	self.start = position
@@ -22,10 +22,8 @@ function MovingPlatform:update(elapsedTime)
 		local a = self.go.rb:getPosition()-self.dest
 		local b = self.go.rb:getPosition()-self.start
 		if( (a.x*b.x+a.y*b.y+a.z*b.z)>0)  then
-			logMessage("Direction Changed")
+			logMessage("Direction changed")
 			self.moveVec = self.moveVec:mulScalar(-1)
 		end
-		--self.go.rb:applyLinearImpulse(self.moveVec:mulScalar(elapsedTime*500))
 		self.go.rb:setLinearVelocity(self.moveVec:mulScalar(elapsedTime*self.moveSpeed))
-		--self.go.rb:setPosition(self.go.rb:getPosition()+self.moveVec:mulScalar(elapsedTime))
 end

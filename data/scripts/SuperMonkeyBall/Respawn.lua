@@ -1,17 +1,19 @@
-function createRespawn()
-	local respawn = GameObjectManager:createGameObject("respawn")
+function createRespawn(guid,position)
+	local respawn = GameObjectManager:createGameObject(guid)
 	respawn.pc = respawn:createPhysicsComponent()
 	local cinfo = RigidBodyCInfo()
-	respawn.goal = false
+	respawn.fallOut = false
+	respawn.initPosition = position
 	cinfo.collisionFilterInfo = 0x1
 	cinfo.motionType = MotionType.Keyframed
-	cinfo.position=Vec3(0,0,-300)
+	cinfo.position=position
 	cinfo.shape = PhysicsFactory:createBox(2000,2000,15)
 	cinfo.isTriggerVolume = true
-	--respawn.objectType = "Respawn"
 	respawn.rb = respawn.pc:createRigidBody(cinfo)
 	respawn.rb:getTriggerEvent():registerListener(function(args)
- 		local gameo = args:getRigidBody():getUserData()
+		-- not used anymore!
+ 		--local gameo = args:getRigidBody():getUserData()
+		logMessage("test ".. respawn:getGuid())
  		if args:getEventType() == TriggerEventType.Entered then
  			respawn.onBeginOverlap()
  		end
@@ -21,10 +23,11 @@ function createRespawn()
 
 respawn.onBeginOverlap = function ()
 	logMessage("TOT")
-	respawn.goal = true
+	respawn.fallOut = true
 end
-
-	respawn.go = respawn
-	respawn.rb:setUserData(respawn)
+	-- not used anymore!
+	--respawn.objectType = "Respawn"
+	--respawn.go = respawn
+	respawn.rb:setUserData(respawn)	
 	return respawn
 end

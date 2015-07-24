@@ -8,7 +8,7 @@ setmetatable(DoubleJumpPickup, {
 		return self
 	end,
 })
-
+-- create game object
 function DoubleJumpPickup:create(guid,position,cfi,w,h,d,level)
 	PickupBase.create(self, guid, position, cfi, w, h, d,level,"data/models/Pickups/DoubleJump.fbx",Vec3(0.3,0.3,0.2))
 end

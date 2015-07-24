@@ -8,7 +8,7 @@ setmetatable(SpeedPickup, {
 		return self
 	end,
 })
-
+-- create game object
 function SpeedPickup:create(guid,position,cfi,w,h,d,level,maxTime)
 	PickupBase.create(self, guid, position, cfi, w, h, d, level,"data/models/Pickups/SpeedPickup.fbx",Vec3(0.6,0.6,0.6))
 	self.maxTime = maxTime

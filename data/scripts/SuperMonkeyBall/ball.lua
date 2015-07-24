@@ -79,7 +79,6 @@ function createBall(position)
 	end
 	
 	ball.reset = function(self)
-		gravityFactor = -1
 		self:disableDoubleJump()
 		self:resetSpeed()
 		self.rb:setPosition(self.initPosition)

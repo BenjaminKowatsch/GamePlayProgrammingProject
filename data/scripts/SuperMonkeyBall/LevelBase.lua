@@ -7,7 +7,7 @@ setmetatable(LevelBase,{
 	return self
 	end,
 })
-
+-- create game object
 function LevelBase:create(guid, position, mpath, cpath)
 	local go = GameObjectManager:createGameObjectUninitialized(guid)
 	go.rc = go:createRenderComponent()
@@ -23,7 +23,6 @@ function LevelBase:create(guid, position, mpath, cpath)
 	go.objectType = "Ground"
 	go.rb:setUserData(self)
 	go:initialize()
-	self.goal = false
 	self.go = go
 	self.gameObjects = {}
 end
@@ -34,8 +33,15 @@ function LevelBase:update(elapsedTime)
 	end
 end
 
+function LevelBase:manageList(guid)
+	self.gameObjects[guid]=nil
+end
+
 function LevelBase:destroy()
 	GameObjectManager:destroyGameObject(self.go)
+	for _, go in pairs(self.gameObjects) do
+		GameObjectManager:destroyGameObject(go.go)
+	end
 end
 
 

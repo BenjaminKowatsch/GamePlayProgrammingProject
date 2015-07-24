@@ -7,7 +7,7 @@ setmetatable(PickupBase,{
 	return self
 	end,
 })
--- define constructor
+-- create game object
 function PickupBase:create(guid,position,cfi,w,h,d,level,rcpath,scale)
 	local go = GameObjectManager:createGameObjectUninitialized(guid)
 	go.rc = go:createRenderComponent()
@@ -38,7 +38,6 @@ function PickupBase:update(elapsedTime)
 end
 
 function PickupBase:onBeginOverlap(go)
-	--logMessage("BeginOverlap Base")
 end
 
 

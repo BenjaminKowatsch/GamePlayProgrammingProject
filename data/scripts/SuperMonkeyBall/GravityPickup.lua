@@ -9,15 +9,14 @@ setmetatable(GravityPickup, {
 	end,
 })
 
+-- create game object
 function GravityPickup:create(guid,position,cfi,w,h,d,level)
 	PickupBase.create(self, guid, position, cfi, w, h, d,level,"data/models/Pickups/GravityPickup.fbx",Vec3(2,2,2))
 end
 
 function GravityPickup:onBeginOverlap(go)
-	gravityFactor = -gravityFactor
-	PhysicsSystem:getWorld():setGravity(Vec3(0,0,9.8*gravityFactor))
-	player.cam.camOffset.z = -player.cam.camOffset.z
-	player.cam.cc:tilt(180)
+	-- switch gravity and adjust camera rotation and position
+	setGravity(-gravityFactor)
 	self.level:manageList(self.go:getGuid())
 	GameObjectManager:destroyGameObject(self.go)
 end

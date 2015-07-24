@@ -1,4 +1,3 @@
-		-- https://github.com/pampersrocker/risky-epsilon/blob/master/Game/data/scripts/Camera/IsometricCamera.lua
 -- physics world
 gravityFactor = -1
 do
@@ -11,10 +10,9 @@ do
 	PhysicsSystem:setDebugDrawingEnabled(true)
 end
 
---Dependencies
+--dependencies
 include("SuperMonkeyBall/Player.lua")
 include("SuperMonkeyBall/Respawn.lua")
-include("SuperMonkeyBall/box.lua")
 include("SuperMonkeyBall/PickupBase.lua")
 include("SuperMonkeyBall/DoubleJumpPickup.lua")
 include("SuperMonkeyBall/GravityPickup.lua")
@@ -32,10 +30,10 @@ include("SuperMonkeyBall/Level3.lua")
 include("SuperMonkeyBall/Level4.lua")
 include("SuperMonkeyBall/Level5.lua")
 
-
---Initialization
+--initialization
 player = createPlayer()
-respawn = createRespawn()
+respawn = createRespawn("bottom",Vec3(0,0,-300))
+--respawnTop = createRespawn("top",Vec3(0,0,1000))
 
 level0 = Level0()
 level1 = Level1()
@@ -56,6 +54,22 @@ cinfo.mass = 10
 cinfo.collisionFilterInfo = 0x4
 cinfo.position = Vec3(0,120,0)
 background.rb = background.pc:createRigidBody(cinfo)
+
+function setGravity(a)
+		if gravityFactor > a then
+			gravityFactor = -1
+			respawn:setPosition(respawn.initPosition)
+			PhysicsSystem:getWorld():setGravity(Vec3(0,0,9.8*gravityFactor))
+			player.cam.camOffset.z = math.abs(player.cam.camOffset.z)
+			player.cam.cc:tilt(180)
+		elseif gravityFactor < a then
+			gravityFactor = 1
+			respawn:setPosition(respawn.initPosition:mulScalar(-1))
+			PhysicsSystem:getWorld():setGravity(Vec3(0,0,9.8*gravityFactor))
+			player.cam.camOffset.z = -player.cam.camOffset.z
+			player.cam.cc:tilt(180)
+		end
+end
 
 -- state machine events
 function mainmenuEnter()
@@ -79,7 +93,7 @@ function level1Enter()
 end
 function level1Leave()
 	level1:destroy()
-	respawn.goal = false
+	respawn.fallOut = false
 end
 function level1Update(updateData)
 	local elapsedTime = updateData:getElapsedTime()
@@ -95,7 +109,7 @@ function level2Enter()
 end
 function level2Leave()
 	level2:destroy()
-	respawn.goal = false
+	respawn.fallOut = false
 end
 function level2Update(updateData)
 	local elapsedTime = updateData:getElapsedTime()
@@ -111,12 +125,15 @@ function level3Enter()
 end
 function level3Leave()
 	level3:destroy()
-	respawn.goal = false
+	respawn.fallOut = false
 end
 function level3Update(updateData)
 	local elapsedTime = updateData:getElapsedTime()
 	level3:update(elapsedTime)
 	player:update(elapsedTime)
+	if(InputHandler:wasTriggered(Key.P)) then
+		player.ball:setPosition(Vec3(-659,707,-50))
+	end
 	return EventResult.Handled
 end
 
@@ -127,7 +144,7 @@ function level4Enter()
 end
 function level4Leave()
 	level4:destroy()
-	respawn.goal = false
+	respawn.fallOut = false
 end
 function level4Update(updateData)
 	local elapsedTime = updateData:getElapsedTime()
@@ -143,7 +160,7 @@ function level5Enter()
 end
 function level5Leave()
 	level5:destroy()
-	respawn.goal = false
+	respawn.fallOut = false
 end
 function level5Update(updateData)
 	local elapsedTime = updateData:getElapsedTime()
@@ -157,11 +174,12 @@ function scoreEnter()
 end
 function scoreLeave()
 	player.ball.coinCount = 0
-	respawn.goal = false
+	respawn.fallOut = false
 end
 function scoreUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
 	DebugRenderer:printText(Vec2(0,0), "Score: "..tostring(player.ball.coinCount))
+	DebugRenderer:printText(Vec2(0,0.2), "Remaining time: ".. string.format("%5.2f", player.timeCounter).." s")
 	--player:update(elapsedTime)
 	return EventResult.Handled
 end
@@ -233,21 +251,21 @@ StateMachine{
 	transitions =
 	{
 		{ from = "__enter", to = "mainmenu" },
-		{ from = "mainmenu", to = "level1", condition = function() return level0.glevel1.goal end },
-		{ from = "mainmenu", to = "level2", condition = function() return level0.glevel2.goal end },
-		{ from = "mainmenu", to = "level3", condition = function() return level0.glevel3.goal end },
-		{ from = "mainmenu", to = "level4", condition = function() return level0.glevel4.goal end },
-		{ from = "mainmenu", to = "level5", condition = function() return level0.glevel5.goal end },
-		{ from = "level1", to = "mainmenu", condition = function() return respawn.goal end },
-		{ from = "level2", to = "mainmenu", condition = function() return respawn.goal end },
-		{ from = "level3", to = "mainmenu", condition = function() return respawn.goal end },
-		{ from = "level4", to = "mainmenu", condition = function() return respawn.goal end },
-		{ from = "level5", to = "mainmenu", condition = function() return respawn.goal end },
-		{ from = "level1", to = "score", condition = function() return level1.goal.goal end },
-		{ from = "level2", to = "score", condition = function() return level2.goal.goal end },
-		{ from = "level3", to = "score", condition = function() return level3.goal.goal end },
-		{ from = "level4", to = "score", condition = function() return level4.goal.goal end },
-		{ from = "level5", to = "score", condition = function() return level5.goal.goal end },
+		{ from = "mainmenu", to = "level1", condition = function() return level0.glevel1.goalEntered end },
+		{ from = "mainmenu", to = "level2", condition = function() return level0.glevel2.goalEntered end },
+		{ from = "mainmenu", to = "level3", condition = function() return level0.glevel3.goalEntered end },
+		{ from = "mainmenu", to = "level4", condition = function() return level0.glevel4.goalEntered end },
+		{ from = "mainmenu", to = "level5", condition = function() return level0.glevel5.goalEntered end },
+		{ from = "level1", to = "mainmenu", condition = function() return respawn.fallOut end },
+		{ from = "level2", to = "mainmenu", condition = function() return respawn.fallOut end },
+		{ from = "level3", to = "mainmenu", condition = function() return respawn.fallOut end },
+		{ from = "level4", to = "mainmenu", condition = function() return respawn.fallOut end },
+		{ from = "level5", to = "mainmenu", condition = function() return respawn.fallOut end },
+		{ from = "level1", to = "score", condition = function() return level1.goal.goalEntered end },
+		{ from = "level2", to = "score", condition = function() return level2.goal.goalEntered end },
+		{ from = "level3", to = "score", condition = function() return level3.goal.goalEntered end },
+		{ from = "level4", to = "score", condition = function() return level4.goal.goalEntered end },
+		{ from = "level5", to = "score", condition = function() return level5.goal.goalEntered end },
 		{ from = "score", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.Space) end }
 
 	},

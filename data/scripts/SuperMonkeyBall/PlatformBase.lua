@@ -8,7 +8,7 @@ setmetatable(PlatformBase,{
 	end,
 })
 
--- define constructor
+-- create game object
 function PlatformBase:create(guid,position,cfi,size,rcpath)
 	local go = GameObjectManager:createGameObjectUninitialized(guid)
 	go.rc = go:createRenderComponent()

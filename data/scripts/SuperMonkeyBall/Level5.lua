@@ -9,17 +9,6 @@ setmetatable(Level5, {
 	end,
 })
 
-function Level5:manageList(guid)
-	self.gameObjects[guid]=nil
-end
-
-function Level5:destroy()
-	GameObjectManager:destroyGameObject(self.go)
-	for _, go in pairs(self.gameObjects) do
-		GameObjectManager:destroyGameObject(go.go)
-	end
-end
-
 function Level5:create()
 	LevelBase.create(self, "level5", Vec3(0,0,-4), "data/models/Levels/Level5.FBX", "data/collision/Level5.hkx")
 	--Goal

@@ -14,9 +14,7 @@ function createCamera(guid,viewtarget,camOffset)
 		cinfo.position = viewtarget:getWorldPosition():add(camOffset)
 		cinfo.friction = 0.0
 		cinfo.linearDamping = 5
-		------------------------------------
-		--cinfo.collisionFilterInfo = 0x2
-		------------------------------------
+		cinfo.collisionFilterInfo = 0x2
 		cam.initialCamOffset = camOffset
 		cam.rb = cam.pc:createRigidBody(cinfo)
 		--custom attributes
@@ -82,7 +80,7 @@ function createCamera(guid,viewtarget,camOffset)
 			end
 			
 			-- tilt Background
-			local z = Quaternion(cam.cc:getRightDirection(), -self.zOffset*2*-gravityFactor)
+			local z = Quaternion(cam.cc:getRightDirection(), -self.zOffset*2)
 			background.rb:setRotation(Quaternion(cam.cc:getViewDirection(),-cam.tiltAngle) * z)
 			
 			-- calculate camera impulse and relative controls
@@ -97,28 +95,17 @@ function createCamera(guid,viewtarget,camOffset)
 			if(move:length() > 0) then
 				offsetAngle = angleBetweenVec2(Vec2(-self.camOffset.x,-self.camOffset.y),Vec2(viewTargetVel.x,viewTargetVel.y))	
 				elseif(rotateCam) then
-				offsetAngle = rotateCam*self.camRotationSpeed
+				offsetAngle = rotateCam*self.camRotationSpeed*-gravityFactor
 			end
 			local q = Quaternion(Vec3(0.0, 0.0, 1.0), offsetAngle*elapsedTime*self.offsetAngleFactor)
 			self.camOffset = q:toMat3():mulVec3(self.camOffset)	
 			
 			self.newCamPos = cam.viewTarget:getPosition()+self.camOffset
 
-			-- use impulse when camera will turn around to avoid camera bug
-			--if(move.y<0 and move.x <0.2 and move.x >-0.2) then
-			--	self.rb:applyLinearImpulse((self.newCamPos-cam.rb:getPosition()):mulScalar(elapsedTime*self.moveSpeed))
-			--else
-			--logMessage("CammoveSpeed ".. self.viewTarget.maxMoveSpeed)
 			self.rb:setPosition(self.newCamPos)
-				--self.rb:setLinearVelocity((self.newCamPos-cam.rb:getPosition()):mulScalar(elapsedTime*6000))
-				--end
+			
+			-- used for alternativ camera movement
 			--self.rb:applyLinearImpulse((self.newCamPos-cam.rb:getPosition()):mulScalar(elapsedTime*self.moveSpeed))
-			--self.rb:setLinearVelocity((self.newCamPos-cam.rb:getPosition()):mulScalar(elapsedTime*self.viewTarget.maxMoveSpeed))
-			---self.rb:setLinearVelocity(self.viewTarget.rb:getLinearVelocity())
-
-			--self.rb:applyLinearImpulse((self.newCamPos-cam.rb:getPosition()):mulScalar(elapsedTime*self.moveSpeed))
-			--self.rb:setLinearVelocity((self.newCamPos-cam.rb:getPosition()):mulScalar(elapsedTime*self.moveSpeed))
-			--self.cc:setViewTarget(cam.viewTarget)
 			return moveVector3Rot
 		end
 		
