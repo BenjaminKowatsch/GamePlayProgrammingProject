@@ -43,7 +43,6 @@ function createBall(position)
 		if other:getUserData().go.objectType == "Ground" then
 			ball.jumpCount = 0
 		end
-		
 	end)
 	
 	ball.increaseSpeed = function(self,maxTime)

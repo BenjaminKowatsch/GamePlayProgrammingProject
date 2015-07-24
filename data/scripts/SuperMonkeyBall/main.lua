@@ -33,9 +33,9 @@ include("SuperMonkeyBall/Level4.lua")
 include("SuperMonkeyBall/Level5.lua")
 
 
-respawn = createRespawn()
 --Initialization
 player = createPlayer()
+respawn = createRespawn()
 
 level0 = Level0()
 level1 = Level1()
@@ -44,6 +44,7 @@ level3 = Level3()
 level4 = Level4()
 level5 = Level5()
 
+-- create sphere background
 background = GameObjectManager:createGameObject("background")
 background.rc = background:createRenderComponent()
 background.rc:setPath("data/models/Background.FBX")
@@ -56,105 +57,112 @@ cinfo.collisionFilterInfo = 0x4
 cinfo.position = Vec3(0,120,0)
 background.rb = background.pc:createRigidBody(cinfo)
 
---speedPickup = SpeedPickup()
-local clock = os.clock
-function sleep(n)  -- seconds
-  local t0 = clock()
-  while clock() - t0 <= n do end
-end
-
+-- state machine events
 function mainmenuEnter()
 	player.ball:setComponentStates(ComponentState.Active)
 	level0:create()
-	player.cam:resetCamOffset()
-	player.ball:reset()
+	player:reset(-1,false)
 end
 function mainmenuLeave()
 	level0:destroy()
 end
+function mainmenuUpdate(updateData)
+	local elapsedTime = updateData:getElapsedTime()
+	level0:update(elapsedTime)
+	player:update(elapsedTime)
+	return EventResult.Handled
+end
+
 function level1Enter()
 	level1:create()
-	player.ball:setPosition(Vec3(0,0,14))
-	player.ball:reset()
+	player:reset(30,true)
 end
 function level1Leave()
 	level1:destroy()
 	respawn.goal = false
 end
+function level1Update(updateData)
+	local elapsedTime = updateData:getElapsedTime()
+	level1:update(elapsedTime)
+	player:update(elapsedTime)
+	return EventResult.Handled
+end
+
 function level2Enter()
 	level2:create()
 	background:setPosition(Vec3(0,500,0))
-	player.cam:resetCamOffset()
-	player.ball:reset()
+	player:reset(40,true)
 end
 function level2Leave()
 	level2:destroy()
 	respawn.goal = false
 end
+function level2Update(updateData)
+	local elapsedTime = updateData:getElapsedTime()
+	level2:update(elapsedTime)
+	player:update(elapsedTime)
+	return EventResult.Handled
+end
+
 function level3Enter()
-	level3:create()	
-	player.cam:resetCamOffset()
+	level3:create()
 	background:setPosition(Vec3(-306,77,340))
-	player.ball:reset()
+	player:reset(90,true)
 end
 function level3Leave()
 	level3:destroy()
 	respawn.goal = false
 end
+function level3Update(updateData)
+	local elapsedTime = updateData:getElapsedTime()
+	level3:update(elapsedTime)
+	player:update(elapsedTime)
+	return EventResult.Handled
+end
+
 function level4Enter()
 	level4:create()
 	background:setPosition(Vec3(-50,500,0))
-	player.cam:resetCamOffset()
-	player.ball:reset()
+	player:reset(70,true)
 end
 function level4Leave()
 	level4:destroy()
 	respawn.goal = false
 end
+function level4Update(updateData)
+	local elapsedTime = updateData:getElapsedTime()
+	level4:update(elapsedTime)
+	player:update(elapsedTime)
+	return EventResult.Handled
+end
+
 function level5Enter()
 	level5:create()
-	player.cam:resetCamOffset()
 	background:setPosition(Vec3(0,510,212))
-	player.ball:reset()
+	player:reset(90,true)
 end
 function level5Leave()
 	level5:destroy()
 	respawn.goal = false
 end
-function scoreEnter()
-	player.ball:setComponentStates(ComponentState.Inactive)
-end
-function scoreUpdate(updateData)
+function level5Update(updateData)
 	local elapsedTime = updateData:getElapsedTime()
-	DebugRenderer:printText(Vec2(0,0), "Score: "..tostring(player.ball.coinCount))
+	level5:update(elapsedTime)
 	player:update(elapsedTime)
-	--speedPickup:update(elapsedTime)
 	return EventResult.Handled
 end
 
+function scoreEnter()
+	player.ball:setComponentStates(ComponentState.Inactive)
+end
 function scoreLeave()
 	player.ball.coinCount = 0
 	respawn.goal = false
 end
-
-function defaultUpdate(updateData)
+function scoreUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
-	level0:update(elapsedTime)
-	--DebugRenderer:printText(Vec2(-0.9,0.7), "Speed: "..tostring(player.ball.maxSpeed))
-	--DebugRenderer:printText(Vec2(-0.9,0.5), "Score: "..tostring(player.ball.coinCount))
-	player:update(elapsedTime)
-	--speedPickup:update(elapsedTime)
-	--movplatform:update(elapsedTime)
-
-	--DebugRenderer:printText3D(Vec3(-100,60,16), "Text3D colored!", Color(0,0,1,1))
-
-	--rotplatform:update(elapsedTime)
-	return EventResult.Handled
-end
-function updateLevel3(updateData)
-	local elapsedTime = updateData:getElapsedTime()
-	level3:update(elapsedTime)
-	player:update(elapsedTime)
+	DebugRenderer:printText(Vec2(0,0), "Score: "..tostring(player.ball.coinCount))
+	--player:update(elapsedTime)
 	return EventResult.Handled
 end
 
@@ -168,7 +176,7 @@ StateMachine{
 			name = "mainmenu",
 			eventListeners = {
 				enter  = { mainmenuEnter },
-				update = { defaultUpdate },
+				update = { mainmenuUpdate },
 				leave  = { mainmenuLeave }
 			}
 		},
@@ -176,7 +184,7 @@ StateMachine{
 			name = "level1",
 			eventListeners = {
 				enter  = { level1Enter },
-				update = { defaultUpdate },
+				update = { level1Update },
 				leave  = { level1Leave }
 			}
 		},
@@ -184,7 +192,7 @@ StateMachine{
 			name = "level2",
 			eventListeners = {
 				enter  = { level2Enter },
-				update = { defaultUpdate },
+				update = { level2Update },
 				leave  = { level2Leave }
 			}
 		},
@@ -192,7 +200,7 @@ StateMachine{
 			name = "level3",
 			eventListeners = {
 				enter  = { level3Enter },
-				update = { updateLevel3 },
+				update = { level3Update },
 				leave  = { level3Leave }
 			}
 		},
@@ -200,7 +208,7 @@ StateMachine{
 			name = "level4",
 			eventListeners = {
 				enter  = { level4Enter },
-				update = { defaultUpdate },
+				update = { level4Update },
 				leave  = { level4Leave }
 			}
 		},
@@ -208,7 +216,7 @@ StateMachine{
 			name = "level5",
 			eventListeners = {
 				enter  = { level5Enter },
-				update = { defaultUpdate },
+				update = { level5Update },
 				leave  = { level5Leave }
 			}
 		},

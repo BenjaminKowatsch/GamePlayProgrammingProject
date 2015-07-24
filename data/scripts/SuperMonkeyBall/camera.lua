@@ -81,10 +81,6 @@ function createCamera(guid,viewtarget,camOffset)
 				end
 			end
 			
-			--local q = Quaternion(cam.cc:getRightDirection(), (10-self.zOffset)*-gravityFactor)
-			local q = Quaternion(cam.cc:getRightDirection(), 10*-gravityFactor)
-			cam.cc:setViewDirection(q:toMat3():mulVec3(cam.cc:getViewDirection()))
-			
 			-- tilt Background
 			local z = Quaternion(cam.cc:getRightDirection(), -self.zOffset*2*-gravityFactor)
 			background.rb:setRotation(Quaternion(cam.cc:getViewDirection(),-cam.tiltAngle) * z)

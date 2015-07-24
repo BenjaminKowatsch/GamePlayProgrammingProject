@@ -8,9 +8,21 @@ function createPlayer()
 	player.ball = createBall(Vec3(0,0,14))
 	--player.capsule = createCollisionCapsule("capsule",Vec3(0,0,-250),Vec3(0,0,500),65)
 	--player.capsule:setPosition(player.ball:getPosition())
+	player.displayTime = false
+	player.timeCounter = -1	
 	player.cam = createCamera("camera",player.ball,Vec3(0,-50,24))
-	player.update= function(self,elapsedTime)
-		
+	
+	player.update= function(self,elapsedTime)	
+		--display time counter
+		if self.displayTime then
+			if (self.timeCounter>=0) then			
+				DebugRenderer:printText(Vec2(0.5,0.5), "Time: ".. string.format("%5.2f", self.timeCounter))
+				self.timeCounter  = self.timeCounter - elapsedTime
+			else
+				DebugRenderer:printText(Vec2(0.5,0.5), "Time is up!")
+				self.displayTime = true
+			end
+		end
 		if player.ball:getPosition().z < -1000 or player.ball:getPosition().z > 2000 then
 			player.ball:setPosition(Vec3(0,0,14))
 			player.ball.rb:setLinearVelocity(Vec3(0,0,0))
@@ -44,6 +56,12 @@ function createPlayer()
 		--self.capsule:update((self.ball:getPosition()-self.capsule.rb:getPosition()),elapsedTime)
 	end
 
+	player.reset = function(self,t,dT)
+		self.timeCounter = t 
+		self.displayTime = dT
+		self.ball:reset()
+		self.cam:resetCamOffset()
+	end
 	
 	return player
 end
