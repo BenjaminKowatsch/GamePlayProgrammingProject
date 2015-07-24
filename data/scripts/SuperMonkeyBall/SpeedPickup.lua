@@ -16,10 +16,13 @@ end
 
 function SpeedPickup:onBeginOverlap(go)
 	self.level:manageList(self.go:getGuid())
-	go.speedTimer = true
+	go.timerCount = 0
 	go.maxTime = self.maxTime
-	local c = go.maxMoveSpeed
-	go.maxMoveSpeed = go.speedPickupSpeed
-	go.speedPickupSpeed = c
+	if( go.speedTimer == false) then
+		go.speedTimer = true
+		local c = go.maxMoveSpeed
+		go.maxMoveSpeed = go.speedPickupSpeed
+		go.speedPickupSpeed = c
+	end
 	GameObjectManager:destroyGameObject(self.go)
 end

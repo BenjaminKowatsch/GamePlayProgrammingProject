@@ -3,7 +3,7 @@ function createBall()
 	local ball = GameObjectManager:createGameObject("ball")
 	ball.rc = ball:createRenderComponent()
 	ball.rc:setPath("data/models/monkey/monkey.FBX")
-	ball.rc:setScale(Vec3(0.8,0.8,0.8))
+	ball.rc:setScale(Vec3(0.7,0.7,0.7))
 	ball.pc = ball:createPhysicsComponent()
 	local cinfo = RigidBodyCInfo()
 	--cinfo.shape = PhysicsFactory:createSphere(11.181)
@@ -26,6 +26,7 @@ function createBall()
 	ball.maxJumpCount = 1
 	ball.jumping = false
 	ball.jumpCount = 1
+	ball.jumpHeight = 100
 	-- Speed Pickup
 	ball.speedTimer = false
 	ball.speedPickupSpeed = 500
@@ -46,12 +47,11 @@ function createBall()
 	end)
 	ball.jump = function()
 	logMessage(" jumpCount ".. ball.jumpCount )
-
 		if ball.jumpCount<ball.maxJumpCount then
 			ball.jumping = true
 			ball.jumpCount = ball.jumpCount +1
-
 			if ball.jumpCount == ball.maxJumpCount then
+				logMessage("JumpCount Reset")
 				ball.maxJumpCount = 1
 			end
 		end		
@@ -75,7 +75,7 @@ function createBall()
 		end
 		
 		if(self.jumping)then
-			vel.z = vel.z+95*-gravityFactor
+			vel.z = vel.z+self.jumpHeight*-gravityFactor
 			self.jumping = false
 		end
 		self.rb:setLinearVelocity(vel)

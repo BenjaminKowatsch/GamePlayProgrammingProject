@@ -13,6 +13,7 @@ end
 
 --Dependencies
 include("SuperMonkeyBall/Player.lua")
+include("SuperMonkeyBall/Respawn.lua")
 include("SuperMonkeyBall/box.lua")
 include("SuperMonkeyBall/PickupBase.lua")
 include("SuperMonkeyBall/DoubleJumpPickup.lua")
@@ -32,7 +33,7 @@ include("SuperMonkeyBall/Level4.lua")
 include("SuperMonkeyBall/Level5.lua")
 
 
-
+respawn = createRespawn()
 --Initialization
 player = createPlayer()
 
@@ -41,6 +42,7 @@ level1 = Level1()
 level2 = Level2()
 level3 = Level3()
 level4 = Level4()
+level5 = Level5()
 
 background = GameObjectManager:createGameObject("background")
 background.rc = background:createRenderComponent()
@@ -49,11 +51,11 @@ background.pc = background:createPhysicsComponent()
 local cinfo = RigidBodyCInfo()
 cinfo.motionType = MotionType.Keyframed
 cinfo.shape = PhysicsFactory:createSphere(1000)
-cinfo.rotation = Quaternion(Vec3(0,0,1),180)
 cinfo.mass = 10
 cinfo.collisionFilterInfo = 0x4
-cinfo.position = Vec3(0,0,0)
+cinfo.position = Vec3(0,120,0)
 background.rb = background.pc:createRigidBody(cinfo)
+
 --speedPickup = SpeedPickup()
 local clock = os.clock
 function sleep(n)  -- seconds
@@ -62,55 +64,76 @@ function sleep(n)  -- seconds
 end
 
 function mainmenuEnter()
-
 	player.ball:setComponentStates(ComponentState.Active)
 	level0:create()
+	player.cam:resetCamOffset()
 	player.ball:setPosition(Vec3(0,0,14))
+	player.ball.rb:setLinearVelocity(Vec3(0,0,0))	
 end
 function mainmenuLeave()
 	level0:destroy()
+
 end
 function level1Enter()
 	level1:create()
 	player.ball:setPosition(Vec3(0,0,14))
+	player.cam:resetCamOffset()
+	player.ball.rb:setLinearVelocity(Vec3(0,0,0))
 end
 function level1Leave()
 	level1:destroy()
+	respawn.goal = false
 end
 function level2Enter()
 	level2:create()
+	background:setPosition(Vec3(0,500,0))
+	player.cam:resetCamOffset()
 	player.ball:setPosition(Vec3(0,0,14))
+	player.ball.rb:setLinearVelocity(Vec3(0,0,0))
 end
 function level2Leave()
 	level2:destroy()
+	respawn.goal = false
 end
 function level3Enter()
-	level3:create()
+	level3:create()	
+	player.cam:resetCamOffset()
+	background:setPosition(Vec3(-306,77,340))
 	player.ball:setPosition(Vec3(0,0,14))
+	player.ball.rb:setLinearVelocity(Vec3(0,0,0))
 end
 function level3Leave()
 	level3:destroy()
+	respawn.goal = false
 end
 function level4Enter()
 	level4:create()
+	background:setPosition(Vec3(-50,500,0))
+	player.cam:resetCamOffset()
 	player.ball:setPosition(Vec3(0,0,14))
+	player.ball.rb:setLinearVelocity(Vec3(0,0,0))
 end
 function level4Leave()
 	level4:destroy()
+	respawn.goal = false
 end
 function level5Enter()
 	level5:create()
+	player.cam:resetCamOffset()
+	background:setPosition(Vec3(0,510,212))
 	player.ball:setPosition(Vec3(0,0,14))
+	player.ball.rb:setLinearVelocity(Vec3(0,0,0))
 end
 function level5Leave()
 	level5:destroy()
+	respawn.goal = false
 end
 function scoreEnter()
 	player.ball:setComponentStates(ComponentState.Inactive)
 end
 function scoreUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
-	--DebugRenderer:printText(Vec2(0,0), "Score: "..tostring(player.ball.coinCount))
+	DebugRenderer:printText(Vec2(0,0), "Score: "..tostring(player.ball.coinCount))
 	player:update(elapsedTime)
 	--speedPickup:update(elapsedTime)
 	return EventResult.Handled
@@ -118,6 +141,7 @@ end
 
 function scoreLeave()
 	player.ball.coinCount = 0
+	respawn.goal = false
 end
 
 function defaultUpdate(updateData)
@@ -128,12 +152,18 @@ function defaultUpdate(updateData)
 	player:update(elapsedTime)
 	--speedPickup:update(elapsedTime)
 	--movplatform:update(elapsedTime)
-	--DebugRenderer:printText3D(Vec3(-100,60,16), "Text3D colored!", Color(0,0,1,1))
-	--rotplatform:update(elapsedTime)
 
+	--DebugRenderer:printText3D(Vec3(-100,60,16), "Text3D colored!", Color(0,0,1,1))
+
+	--rotplatform:update(elapsedTime)
 	return EventResult.Handled
 end
-
+function updateLevel3(updateData)
+	local elapsedTime = updateData:getElapsedTime()
+	level3:update(elapsedTime)
+	player:update(elapsedTime)
+	return EventResult.Handled
+end
 
 -- global state machine
 StateMachine{
@@ -169,7 +199,7 @@ StateMachine{
 			name = "level3",
 			eventListeners = {
 				enter  = { level3Enter },
-				update = { defaultUpdate },
+				update = { updateLevel3 },
 				leave  = { level3Leave }
 			}
 		},
@@ -202,16 +232,16 @@ StateMachine{
 	transitions =
 	{
 		{ from = "__enter", to = "mainmenu" },
-		{ from = "mainmenu", to = "mainmenu", condition = function() return level0.glevel1.goal end },
+		{ from = "mainmenu", to = "level1", condition = function() return level0.glevel1.goal end },
 		{ from = "mainmenu", to = "level2", condition = function() return level0.glevel2.goal end },
 		{ from = "mainmenu", to = "level3", condition = function() return level0.glevel3.goal end },
 		{ from = "mainmenu", to = "level4", condition = function() return level0.glevel4.goal end },
 		{ from = "mainmenu", to = "level5", condition = function() return level0.glevel5.goal end },
-		{ from = "level1", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F1) end },
-		{ from = "level2", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F1) end },
-		{ from = "level3", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F1) end },
-		{ from = "level4", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F1) end },
-		{ from = "level5", to = "mainmenu", condition = function() return InputHandler:wasTriggered(Key.F1) end },
+		{ from = "level1", to = "mainmenu", condition = function() return respawn.goal end },
+		{ from = "level2", to = "mainmenu", condition = function() return respawn.goal end },
+		{ from = "level3", to = "mainmenu", condition = function() return respawn.goal end },
+		{ from = "level4", to = "mainmenu", condition = function() return respawn.goal end },
+		{ from = "level5", to = "mainmenu", condition = function() return respawn.goal end },
 		{ from = "level1", to = "score", condition = function() return level1.goal.goal end },
 		{ from = "level2", to = "score", condition = function() return level2.goal.goal end },
 		{ from = "level3", to = "score", condition = function() return level3.goal.goal end },

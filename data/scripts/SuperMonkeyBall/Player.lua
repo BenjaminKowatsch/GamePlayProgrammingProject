@@ -8,15 +8,14 @@ function createPlayer()
 	player.ball = createBall()
 	--player.capsule = createCollisionCapsule("capsule",Vec3(0,0,-250),Vec3(0,0,500),65)
 	--player.capsule:setPosition(player.ball:getPosition())
-	player.cam = createCamera("camera",player.ball,Vec3(0,-70,25))
+	player.cam = createCamera("camera",player.ball,Vec3(0,-50,24))
 	player.update= function(self,elapsedTime)
-		-- keyboard player input
-
-		if player.ball:getPosition().z < -400 then
-			player.ball:setPosition(Vec3(0,0,18))
+		
+		if player.ball:getPosition().z < -1000 or player.ball:getPosition().z > 2000 then
+			player.ball:setPosition(Vec3(0,0,14))
+			player.ball.rb:setLinearVelocity(Vec3(0,0,0))
 		end
-
-
+		-- keyboard player input
 		local move = Vec2(0, 0)
 		if (InputHandler:isPressed(Key.A)) then move.x = - 1 end
 		if (InputHandler:isPressed(Key.D)) then move.x = 1 end

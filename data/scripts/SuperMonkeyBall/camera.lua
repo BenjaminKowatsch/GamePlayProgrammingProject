@@ -1,5 +1,4 @@
 function createCamera(guid,viewtarget,camOffset)
-		
 		local cam = GameObjectManager:createGameObject(guid)
 		cam.cc = cam:createCameraComponent()
 		cam.cc:setPosition(Vec3(0,0,0))
@@ -18,12 +17,14 @@ function createCamera(guid,viewtarget,camOffset)
 		------------------------------------
 		--cinfo.collisionFilterInfo = 0x2
 		------------------------------------
+		cam.initialCamOffset = camOffset
 		cam.rb = cam.pc:createRigidBody(cinfo)
 		--custom attributes
 		cam.camRotationSpeed = 40
 		cam.viewTarget = viewtarget
 		cam.camOffset = camOffset
 		cam.minLength = camOffset:length()
+		cam.maxZoom = 50
 		cam.tiltSpeed = 90
 		cam.tiltAngle = 0
 		cam.maxTiltAngle = 30
@@ -34,12 +35,13 @@ function createCamera(guid,viewtarget,camOffset)
 		cam.pitchSpeed = 25
 		cam.maxPitchAngle = 8
 		cam.offsetAngleFactor = 2.5
+		cam.zoomSpeed = 300
 		
 		cam.update = function (self,elapsedTime,move,zoom,rotateCam)
 			-- set zoom
 			if(zoom~=0) then
-				local newoffset = self.camOffset:add(self.camOffset:normalized():mulScalar(-zoom*30))
-				if(self.minLength<=newoffset:length()) then
+				local newoffset = self.camOffset:add(self.camOffset:normalized():mulScalar(-zoom*self.zoomSpeed*elapsedTime))
+				if(self.minLength<=newoffset:length() and newoffset:length()< self.minLength+self.maxZoom ) then
 					self.camOffset = newoffset
 				end
 			end
@@ -125,6 +127,10 @@ function createCamera(guid,viewtarget,camOffset)
 		end
 		
 		--cam.rb.setUserData(cam)	
+		
+		cam.resetCamOffset = function(self)
+			self.camOffset = self.initialCamOffset
+		end
 	
 	return cam		
 end
