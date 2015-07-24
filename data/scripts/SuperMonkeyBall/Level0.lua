@@ -34,6 +34,10 @@ function Level0:create()
 	--self.glevel5:create("glevel5", Vec3(70,205,0),0x1,15,15,1, self)
 	self.gameObjects[self.glevel5.go:getGuid()]=self.glevel5
 	
+	--self.rotplatform5 = RotationPlatform()
+	--self.rotplatform5:create("rotplatform5",Vec3(-10.448,92.883,-80.175),0x1,Vec3(15.8,153.5,2.5),20,40,"data/models/Platforms/RotationPlatform_level5.FBX",90)
+	--self.gameObjects[self.rotplatform5.go:getGuid()]=self.rotplatform5
+	
 	--
 	--self.coin1 = CoinPickup()
 	--self.coin1:create("c1",Vec3(0,42,3),0x1,4,1,4,self)
