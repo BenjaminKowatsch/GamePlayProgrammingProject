@@ -73,12 +73,14 @@ end
 
 -- state machine events
 function mainmenuEnter()
+	respawn:setComponentStates(ComponentState.Inactive)
 	player.ball:setComponentStates(ComponentState.Active)
 	level0:create()
 	player:reset(-1,false)
 end
 function mainmenuLeave()
 	level0:destroy()
+	respawn:setComponentStates(ComponentState.Active)
 end
 function mainmenuUpdate(updateData)
 	local elapsedTime = updateData:getElapsedTime()
